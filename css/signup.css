@@ -1,0 +1,11 @@
+/* signup.css */
+.auth-card {
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  background: rgba(13, 15, 22, 0.85);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.max-w-550 {
+  max-width: 540px;
+}

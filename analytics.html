@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics — ELXO PromptPilot</title>
+  <meta name="description" content="ELXO PromptPilot production analytics dashboard for AI usage monitoring, cost metrics, and performance telemetry.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/analytics.css">
+</head>
+<body class="bg-dark-foundation text-light">
+
+  <!-- 6-L
+   ayer Background -->
+  <div class="aurora-container position-fixed w-100 h-100 top-0 start-0 pe-none z-0">
+    <div class="cursor-spotlight" id="cursorSpotlight"></div>
+    <div class="aurora-blob blob-purple parallax-layer" data-speed="0.4"></div>
+    <div class="gradient-mesh-layer parallax-layer" data-speed="0.6"></div>
+    <div class="grid-overlay parallax-layer" data-speed="0.5"></div>
+    <div class="noise-overlay"></div>
+  </div>
+
+  <div class="app-layout position-relative z-1">
+    
+    <!-- Sidebar Container -->
+    <div id="sidebarContainer">
+      <aside class="app-sidebar glass-panel position-fixed top-0 start-0 h-100 p-3 z-3 border-end border-subtle d-flex flex-column justify-content-between">
+        <div>
+          <a href="dashboard.html" class="d-flex align-items-center gap-2 mb-4 px-2 text-decoration-none">
+            <div class="brand-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#3B82F6" stroke-width="2"/>
+                <path d="M2 17L12 22L22 17" stroke="#8B5CF6" stroke-width="2"/>
+                <path d="M2 12L12 17L22 12" stroke="#06B6D4" stroke-width="2"/>
+              </svg>
+            </div>
+            <span class="brand-text fs-6">ELXO <span class="brand-text-accent">PromptPilot</span></span>
+          </a>
+
+          <div class="dropdown mb-4">
+            <button class="btn btn-dark-pill w-100 d-flex align-items-center justify-content-between p-2 font-mono fs-8 text-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <div class="d-flex align-items-center gap-2">
+                <span class="avatar-circle bg-purple-subtle text-purple font-mono fw-bold fs-8" style="width: 26px; height: 26px;">PR</span>
+                <span class="fw-semibold">Prod Workspace</span>
+              </div>
+              <i class="bi bi-chevron-expand text-secondary-body"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end w-100 fs-7 shadow-lg">
+              <li><a class="dropdown-item active d-flex align-items-center justify-content-between" href="#"><span class="fw-semibold">Prod Workspace</span><i class="bi bi-check2 text-cyan"></i></a></li>
+              <li><a class="dropdown-item" href="#">Staging Environment</a></li>
+              <li><a class="dropdown-item text-cyan fw-bold" href="#"><i class="bi bi-plus-circle me-1"></i> New Workspace</a></li>
+            </ul>
+          </div>
+
+          <nav class="nav flex-column gap-1 sidebar-nav-list">
+            <a href="dashboard.html" class="nav-link sidebar-link d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-secondary-body fw-semibold">
+              <i class="bi bi-grid-1x2-fill fs-6"></i><span>Dashboard</span>
+            </a>
+            <a href="studio.html" class="nav-link sidebar-link d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-secondary-body fw-semibold">
+              <i class="bi bi-sliders fs-6 text-purple"></i><span>Prompt Studio</span>
+            </a>
+            <a href="library.html" class="nav-link sidebar-link d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-secondary-body fw-semibold">
+              <i class="bi bi-journal-code fs-6 text-cyan"></i><span>Prompt Library</span>
+            </a>
+            <a href="optimizer.html" class="nav-link sidebar-link d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-secondary-body fw-semibold">
+              <i class="bi bi-magic fs-6 text-warning"></i><span>Prompt Optimizer</span>
+            </a>
+            <a href="analytics.html" class="nav-link sidebar-link active d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-light fw-semibold">
+              <i class="bi bi-graph-up-arrow fs-6 text-blue"></i><span>Analytics</span>
+            </a>
+            <a href="settings.html" class="nav-link sidebar-link d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-secondary-body fw-semibold">
+              <i class="bi bi-gear-fill fs-6"></i><span>Settings</span>
+            </a>
+          </nav>
+        </div>
+
+        <div class="border-top border-subtle pt-3 mt-3">
+          <a href="profile.html" class="d-flex align-items-center justify-content-between text-decoration-none text-light p-2 rounded-3 sidebar-user-box">
+            <div class="d-flex align-items-center gap-2">
+              <div class="avatar-circle bg-cyan-subtle text-cyan font-mono fw-bold" style="width: 32px; height: 32px;">AL</div>
+              <div>
+                <div class="fw-bold fs-7">Alex Vance</div>
+                <div class="fs-8 text-secondary-body font-mono">alex@elxo.dev</div>
+              </div>
+            </div>
+            <i class="bi bi-box-arrow-right text-secondary-body fs-6" title="Sign Out"></i>
+          </a>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Main Content View Area -->
+    <div class="main-content-wrapper">
+      
+      <!-- Topbar Header -->
+      <header class="app-topbar glass-panel position-sticky top-0 z-2 py-2.5 px-4 border-bottom border-subtle d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+          <span class="fs-6 fw-bold font-mono text-light">Analytics Dashboard</span>
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+          <div class="d-none d-md-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-dark-pill border border-subtle font-mono fs-8 text-success fw-semibold">
+            <span class="status-indicator-dot"></span>
+            <span>Sub-10ms Proxy Active</span>
+          </div>
+
+          <a href="studio.html" class="btn btn-accent-gradient btn-sm rounded-pill px-3 py-1.5 font-mono fs-7 fw-semibold d-inline-flex align-items-center gap-2">
+            <i class="bi bi-plus-lg"></i>
+            <span>New Prompt</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- Analytics Workspace Body -->
+      <div class="p-4 p-md-5">
+        
+        <!-- Welcome Banner Row -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+          <div>
+            <h1 class="fw-bold fs-3 text-light mb-1">Analytics</h1>
+            <p class="text-body-contrast fs-7 mb-0">Monitor AI usage, performance, token cost, latency, provider insights, and business growth.</p>
+          </div>
+        </div>
+
+        <!-- 6 KPI Metric Cards Grid -->
+        <div class="row g-4 mb-4">
+          <div class="col-sm-6 col-md-4 col-xl-2">
+            <div class="metric-card rounded-4 border border-subtle glass-card">
+              <div class="metric-title d-flex align-items-center justify-content-between">
+                <span class="fs-8 font-mono fw-bold text-secondary-body">TOTAL REQUESTS</span>
+                <i class="bi bi-cpu fs-5 text-purple"></i>
+              </div>
+              <div class="metric-value font-mono counter-val text-light" data-target="2,847,912">0</div>
+              <div class="metric-status fs-8 font-mono text-success"><i class="bi bi-arrow-up-right me-1"></i>+18%</div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-4 col-xl-2">
+            <div class="metric-card rounded-4 border border-subtle glass-card">
+              <div class="metric-title d-flex align-items-center justify-content-between">
+                <span class="fs-8 font-mono fw-bold text-secondary-body">TOKEN USAGE</span>
+                <i class="bi bi-lightning-charge fs-5 text-cyan"></i>
+              </div>
+              <div class="metric-value font-mono counter-val text-light" data-target="89.4M Tokens">0M Tokens</div>
+              <div class="metric-status fs-8 font-mono text-success"><i class="bi bi-arrow-up-right me-1"></i>+11%</div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-4 col-xl-2">
+            <div class="metric-card rounded-4 border border-subtle glass-card">
+              <div class="metric-title d-flex align-items-center justify-content-between">
+                <span class="fs-8 font-mono fw-bold text-secondary-body">ESTIMATED COST</span>
+                <i class="bi bi-cash-stack fs-5 text-emerald"></i>
+              </div>
+              <div class="metric-value font-mono counter-val text-light" data-target="$8,942">$0</div>
+              <div class="metric-status fs-8 font-mono text-emerald"><i class="bi bi-arrow-down-right me-1"></i>-14%</div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-4 col-xl-2">
+            <div class="metric-card rounded-4 border border-subtle glass-card">
+              <div class="metric-title d-flex align-items-center justify-content-between">
+                <span class="fs-8 font-mono fw-bold text-secondary-body">AVG LATENCY</span>
+                <i class="bi bi-speedometer2 fs-5 text-warning"></i>
+              </div>
+              <div class="metric-value font-mono counter-val text-light" data-target="126ms">0ms</div>
+              <div class="metric-status fs-8 font-mono text-success fw-bold">Excellent</div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-4 col-xl-2">
+            <div class="metric-card rounded-4 border border-subtle glass-card">
+              <div class="metric-title d-flex align-items-center justify-content-between">
+                <span class="fs-8 font-mono fw-bold text-secondary-body">SUCCESS RATE</span>
+                <i class="bi bi-shield-check fs-5 text-blue"></i>
+              </div>
+              <div class="metric-value font-mono counter-val text-light" data-target="99.98%">0%</div>
+              <div class="metric-status fs-8 font-mono text-success fw-bold">Optimal SLA</div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-4 col-xl-2">
+            <div class="metric-card rounded-4 border border-subtle glass-card">
+              <div class="metric-title d-flex align-items-center justify-content-between">
+                <span class="fs-8 font-mono fw-bold text-secondary-body">ACTIVE USERS</span>
+                <i class="bi bi-people fs-5 text-secondary-body"></i>
+              </div>
+              <div class="metric-value font-mono counter-val text-light" data-target="1,842">0</div>
+              <div class="metric-status fs-8 font-mono text-success"><i class="bi bi-arrow-up-right me-1"></i>+27%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: AI Usage Analytics -->
+        <div class="glass-card rounded-4 border border-subtle p-4 mb-4">
+          <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-4 gap-3">
+            <div>
+              <h3 class="fw-bold fs-5 text-light mb-1">AI Usage Analytics</h3>
+              <p class="text-secondary-body fs-8 mb-0">High-resolution prompt requests, successful executions, and token usage curves</p>
+            </div>
+            <div class="d-flex gap-1 bg-dark-pill p-1 rounded-pill border border-subtle">
+              <button class="btn btn-dark-pill btn-sm px-3 rounded-pill font-mono fs-8 usage-range-btn" data-range="today">Today</button>
+              <button class="btn btn-dark-pill btn-sm px-3 rounded-pill font-mono fs-8 usage-range-btn active" data-range="7d">7 Days</button>
+              <button class="btn btn-dark-pill btn-sm px-3 rounded-pill font-mono fs-8 usage-range-btn" data-range="30d">30 Days</button>
+              <button class="btn btn-dark-pill btn-sm px-3 rounded-pill font-mono fs-8 usage-range-btn" data-range="12m">12 Months</button>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="usageChartCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Section 3: Token Cost Analytics -->
+        <div class="glass-card rounded-4 border border-subtle p-4 mb-4">
+          <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-4 gap-3">
+            <div>
+              <h3 class="fw-bold fs-5 text-light mb-1">Token Cost Analytics</h3>
+              <p class="text-secondary-body fs-8 mb-0">Estimated cost distribution and breakdown across input and output transactions</p>
+            </div>
+            <div>
+              <select class="form-select form-select-sm bg-dark-pill border-subtle font-mono text-light fs-8 rounded-pill px-3" id="costTrendSelect" style="width: auto;">
+                <option value="daily" selected>Daily Cost Trend</option>
+                <option value="monthly">Monthly Cost Trend</option>
+              </select>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="costChartCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Section 4 & 5: Latency and Provider Distribution -->
+        <div class="row g-4 mb-4">
+          <div class="col-lg-7">
+            <div class="glass-card rounded-4 border border-subtle p-4 h-100">
+              <h3 class="fw-bold fs-5 text-light mb-2">Latency Analytics</h3>
+              <p class="text-secondary-body fs-8 mb-4">Granular latency benchmarking (min, average, max response times) by model</p>
+              <div class="chart-container">
+                <canvas id="latencyChartCanvas"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-5">
+            <div class="glass-card rounded-4 border border-subtle p-4 h-100">
+              <h3 class="fw-bold fs-5 text-light mb-2">Provider Distribution</h3>
+              <p class="text-secondary-body fs-8 mb-4">Volume allocation of prompt traffic distributed across major AI providers</p>
+              <div class="donut-chart-container">
+                <canvas id="providerChartCanvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 6: Model Performance Table -->
+        <div class="glass-card rounded-4 border border-subtle p-4 mb-4">
+          <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-4 gap-3">
+            <div>
+              <h3 class="fw-bold fs-5 text-light mb-1">Model Performance Metrics</h3>
+              <p class="text-secondary-body fs-8 mb-0">Production benchmarks for accuracy, cost optimization, and gateway speeds</p>
+            </div>
+            <div style="max-width: 300px; width: 100%;">
+              <div class="input-group">
+                <span class="input-group-text bg-dark-pill border-subtle text-secondary-body fs-8"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control font-mono fs-8 bg-dark-pill text-light border-subtle" id="tableSearchInput" placeholder="Search model or provider...">
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle custom-table mb-0 fs-8 font-mono">
+              <thead>
+                <tr class="text-secondary-body border-bottom border-subtle">
+                  <th>PROVIDER</th>
+                  <th>MODEL</th>
+                  <th>REQUESTS</th>
+                  <th>AVG TOKENS</th>
+                  <th>AVG LATENCY</th>
+                  <th>SUCCESS RATE</th>
+                  <th>EST. COST</th>
+                  <th>STATUS</th>
+                </tr>
+              </thead>
+              <tbody id="modelPerformanceTableBody">
+                <tr>
+                  <td><span class="badge bg-emerald-subtle text-emerald">OpenAI</span></td>
+                  <td class="text-light fw-bold">ChatGPT-4o</td>
+                  <td>1,248,912</td>
+                  <td>2,450</td>
+                  <td>120ms</td>
+                  <td class="text-success fw-bold">99.98%</td>
+                  <td class="text-emerald">$4,892.42</td>
+                  <td><span class="badge bg-success-subtle text-success">Healthy</span></td>
+                </tr>
+                <tr>
+                  <td><span class="badge bg-purple-subtle text-purple">Anthropic</span></td>
+                  <td class="text-light fw-bold">Claude 4 (Sonnet)</td>
+                  <td>842,109</td>
+                  <td>3,820</td>
+                  <td>142ms</td>
+                  <td class="text-success fw-bold">99.97%</td>
+                  <td class="text-emerald">$2,410.88</td>
+                  <td><span class="badge bg-success-subtle text-success">Healthy</span></td>
+                </tr>
+                <tr>
+                  <td><span class="badge bg-blue-subtle text-blue">Google</span></td>
+                  <td class="text-light fw-bold">Gemini 1.5 Pro</td>
+                  <td>384,100</td>
+                  <td>5,400</td>
+                  <td>95ms</td>
+                  <td class="text-success fw-bold">99.99%</td>
+                  <td class="text-emerald">$762.10</td>
+                  <td><span class="badge bg-success-subtle text-success">Healthy</span></td>
+                </tr>
+                <tr>
+                  <td><span class="badge bg-cyan-subtle text-cyan">DeepSeek</span></td>
+                  <td class="text-light fw-bold">DeepSeek V3</td>
+                  <td>312,400</td>
+                  <td>2,100</td>
+                  <td>88ms</td>
+                  <td class="text-success fw-bold">99.95%</td>
+                  <td class="text-emerald">$210.45</td>
+                  <td><span class="badge bg-success-subtle text-success">Healthy</span></td>
+                </tr>
+                <tr>
+                  <td><span class="badge bg-warning-subtle text-warning">Mistral</span></td>
+                  <td class="text-light fw-bold">Mistral Large</td>
+                  <td>48,291</td>
+                  <td>1,840</td>
+                  <td>135ms</td>
+                  <td class="text-success fw-bold">99.88%</td>
+                  <td class="text-emerald">$162.80</td>
+                  <td><span class="badge bg-success-subtle text-success">Healthy</span></td>
+                </tr>
+                <tr>
+                  <td><span class="badge bg-secondary bg-opacity-25 text-white">Meta</span></td>
+                  <td class="text-light fw-bold">Llama 3.1 70B</td>
+                  <td>12,100</td>
+                  <td>1,540</td>
+                  <td>110ms</td>
+                  <td class="text-success fw-bold">99.92%</td>
+                  <td class="text-emerald">$3.45</td>
+                  <td><span class="badge bg-success-subtle text-success">Healthy</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mt-4">
+            <span class="text-secondary-body fs-8 font-mono">Showing 6 of 12 models</span>
+            <nav aria-label="Table navigation">
+              <ul class="pagination pagination-sm font-mono mb-0">
+                <li class="page-item disabled"><a class="page-link bg-dark-pill border-subtle text-muted" href="#">Prev</a></li>
+                <li class="page-item active"><a class="page-link bg-dark-pill border-subtle table-pagination-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link bg-dark-pill border-subtle table-pagination-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link bg-dark-pill border-subtle table-pagination-link" href="#">Next</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+        <!-- Section 7: Reports -->
+        <div class="row g-4 mb-4">
+          <div class="col-md-4">
+            <div class="glass-card rounded-4 border border-subtle p-4">
+              <h4 class="fw-bold fs-6 text-light mb-3">Daily telemetry report</h4>
+              <div class="d-flex flex-column gap-2 mb-4 fs-8 font-mono">
+                <div class="d-flex justify-content-between"><span class="text-secondary-body">AI Requests</span><span class="text-light fw-bold">94,204</span></div>
+                <div class="d-flex justify-content-between"><span class="text-secondary-body">Token Usage</span><span class="text-light fw-bold">2.9M</span></div>
+                <div class="d-flex justify-content-between"><span class="text-secondary-body">Average Cost</span><span class="text-emerald fw-bold">$298</span></div>
+                <div class="d-flex justify-content-between"><span class="text-secondary-body">Success %</span><span class="text-success fw-bold">99.98%</span></div>
+              </div>
+              <button class="btn btn-dark-pill w-100 font-mono fs-8 py-2 report-download-btn" data-report-type="Daily"><i class="bi bi-download me-2"></i>Download Report</button>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="glass-card rounded-4 border border-subtle p-4">
+              <h4 class="fw-bold fs-6 text-light mb-3">Weekly summary report</h4>
+              <div class="d-flex flex-column gap-2 mb-4 fs-8 font-mono">
+                <div class="d-flex justify-content-between"><span class="text-secondary-body">AI Requests</span><span class="text-light fw-bold">654,100</span></div>
+                <div class="d-flex justify-content-between"><span class="text-secondary-body">Token Usage</span><span class="text-light fw-bold">20.4M</span></div>
+                <div class="d-flex justify-content-between"><span class="text-secondary-body">Average Cost</span><span class="text-emerald fw-bold">$2,050</span></div>
+                <div class="d-flex justify-content-between"><span class="text-secondary-body">Success %</span><span class="text-success fw-bold">99.97%</span></div>
+              </div>
+              <button class="btn btn-dark-pill w-100 font-mono fs-8 py-2 report-download-btn" data-report-type="Weekly"><i class="bi bi-download me-2"></i>Download Report</button>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="glass-card rounded-4 border border-subtle p-4">
+              <h4 class="fw-bold fs-6 text-light mb-3">Monthly executive report</h4>
+              <div class="d-flex flex-column gap-2 mb-4 fs-8 font-mono">
+                <div class="d-flex justify-content-between"><span class="text-secondary-body">AI Requests</span><span class="text-light fw-bold">2,847,912</span></div>
+                <div class="d-flex justify-content-between"><span class="text-secondary-body">Token Usage</span><span class="text-light fw-bold">89.4M</span></div>
+                <div class="d-flex justify-content-between"><span class="text-secondary-body">Average Cost</span><span class="text-emerald fw-bold">$8,942</span></div>
+                <div class="d-flex justify-content-between"><span class="text-secondary-body">Success %</span><span class="text-success fw-bold">99.98%</span></div>
+              </div>
+              <button class="btn btn-dark-pill w-100 font-mono fs-8 py-2 report-download-btn" data-report-type="Monthly"><i class="bi bi-download me-2"></i>Download Report</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 8: Top Prompt Performance -->
+        <div class="glass-card rounded-4 border border-subtle p-4 mb-4">
+          <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-4 gap-3">
+            <div>
+              <h3 class="fw-bold fs-5 text-light mb-1">Top Prompt Performance</h3>
+              <p class="text-secondary-body fs-8 mb-0">High-volume template profiles with performance statistics</p>
+            </div>
+            <div style="max-width: 300px; width: 100%;">
+              <div class="input-group">
+                <span class="input-group-text bg-dark-pill border-subtle text-secondary-body fs-8"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control font-mono fs-8 bg-dark-pill text-light border-subtle" id="promptSearchInput" placeholder="Search prompt name...">
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle custom-table mb-0 fs-8 font-mono">
+              <thead>
+                <tr class="text-secondary-body border-bottom border-subtle">
+                  <th>PROMPT NAME</th>
+                  <th>EXECUTIONS</th>
+                  <th>SUCCESS RATE</th>
+                  <th>AVG LATENCY</th>
+                  <th>TOTAL COST</th>
+                </tr>
+              </thead>
+              <tbody id="topPromptsTableBody">
+                <tr>
+                  <td class="text-light fw-bold">TypeScript Security Auditor</td>
+                  <td>482,109</td>
+                  <td class="text-success fw-bold">99.98%</td>
+                  <td class="text-cyan">120ms</td>
+                  <td class="text-emerald">$1,248.15</td>
+                </tr>
+                <tr>
+                  <td class="text-light fw-bold">Strict Context Citation RAG</td>
+                  <td>410,290</td>
+                  <td class="text-success fw-bold">99.97%</td>
+                  <td class="text-cyan">142ms</td>
+                  <td class="text-emerald">$1,894.10</td>
+                </tr>
+                <tr>
+                  <td class="text-light fw-bold">Strict Zod Schema Extractor</td>
+                  <td>395,842</td>
+                  <td class="text-success fw-bold">99.99%</td>
+                  <td class="text-cyan">88ms</td>
+                  <td class="text-emerald">$342.12</td>
+                </tr>
+                <tr>
+                  <td class="text-light fw-bold">Executive Summary Generator</td>
+                  <td>320,105</td>
+                  <td class="text-success fw-bold">99.96%</td>
+                  <td class="text-cyan">95ms</td>
+                  <td class="text-emerald">$112.50</td>
+                </tr>
+                <tr>
+                  <td class="text-light fw-bold">SQL Query Planner & Optimizer</td>
+                  <td>291,048</td>
+                  <td class="text-success fw-bold">99.95%</td>
+                  <td class="text-cyan">132ms</td>
+                  <td class="text-emerald">$982.40</td>
+                </tr>
+                <tr>
+                  <td class="text-light fw-bold">Customer Chat Translation Router</td>
+                  <td>240,119</td>
+                  <td class="text-success fw-bold">99.98%</td>
+                  <td class="text-cyan">72ms</td>
+                  <td class="text-emerald">$48.10</td>
+                </tr>
+                <tr>
+                  <td class="text-light fw-bold">Resume Parsing JSON Pipeline</td>
+                  <td>182,490</td>
+                  <td class="text-success fw-bold">99.94%</td>
+                  <td class="text-cyan">140ms</td>
+                  <td class="text-emerald">$394.80</td>
+                </tr>
+                <tr>
+                  <td class="text-light fw-bold">Multi-Model Benchmark Orchestrator</td>
+                  <td>150,112</td>
+                  <td class="text-success fw-bold">99.99%</td>
+                  <td class="text-cyan">210ms</td>
+                  <td class="text-emerald">$1,102.50</td>
+                </tr>
+                <tr>
+                  <td class="text-light fw-bold">Sentiment Score Categorizer</td>
+                  <td>140,891</td>
+                  <td class="text-success fw-bold">99.92%</td>
+                  <td class="text-cyan">58ms</td>
+                  <td class="text-emerald">$12.45</td>
+                </tr>
+                <tr>
+                  <td class="text-light fw-bold">Dynamic Prompt Optimizer Engine</td>
+                  <td>120,410</td>
+                  <td class="text-success fw-bold">99.97%</td>
+                  <td class="text-cyan">128ms</td>
+                  <td class="text-emerald">$842.10</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Section 9 & 10: Timeline & Insights -->
+        <div class="row g-4">
+          <div class="col-lg-7">
+            <div class="glass-card rounded-4 border border-subtle p-4 h-100">
+              <h3 class="fw-bold fs-5 text-light mb-4">Recent AI Activity Timeline</h3>
+              <div class="timeline-activity">
+                <div class="timeline-item item-blue">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="fw-bold fs-7 text-light">Prompt Executed</span>
+                    <span class="fs-9 text-secondary-body font-mono">Just now</span>
+                  </div>
+                  <p class="fs-8 text-secondary-body mb-0">Template <span class="text-cyan">TypeScript Security Auditor</span> executed via ChatGPT-4o in 120ms.</p>
+                </div>
+                <div class="timeline-item item-purple">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="fw-bold fs-7 text-light">Prompt Optimized</span>
+                    <span class="fs-9 text-secondary-body font-mono">10m ago</span>
+                  </div>
+                  <p class="fs-8 text-secondary-body mb-0">AST compressor refactored <span class="text-purple">Strict Context Citation RAG</span> saving 24% tokens.</p>
+                </div>
+                <div class="timeline-item item-emerald">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="fw-bold fs-7 text-light">New Provider Connected</span>
+                    <span class="fs-9 text-secondary-body font-mono">1h ago</span>
+                  </div>
+                  <p class="fs-8 text-secondary-body mb-0">DeepSeek gateway API integration activated for workspace <span class="text-emerald">Prod Workspace</span>.</p>
+                </div>
+                <div class="timeline-item item-warning">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="fw-bold fs-7 text-light">Billing Details Updated</span>
+                    <span class="fs-9 text-secondary-body font-mono">4h ago</span>
+                  </div>
+                  <p class="fs-8 text-secondary-body mb-0">Team Pro subscription renewal verified. Next billing date: August 15, 2026.</p>
+                </div>
+                <div class="timeline-item item-blue">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="fw-bold fs-7 text-light">Workspace Created</span>
+                    <span class="fs-9 text-secondary-body font-mono">1d ago</span>
+                  </div>
+                  <p class="fs-8 text-secondary-body mb-0">New environment <span class="text-cyan">Staging Environment</span> initialized for testing.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-5">
+            <div class="glass-card rounded-4 border border-subtle p-4 h-100">
+              <h3 class="fw-bold fs-5 text-light mb-3">Quick AI Insights</h3>
+              <p class="text-secondary-body fs-8 mb-4">Machine learning analytics and provider performance suggestions</p>
+              <div class="insights-list d-flex flex-column gap-3">
+                <div class="insight-card insight-purple p-3 rounded-3">
+                  <div class="d-flex align-items-center gap-2 mb-1">
+                    <i class="bi bi-exclamation-triangle-fill text-purple fs-7"></i>
+                    <span class="fw-bold fs-8 text-light font-mono">LATENCY SPIKE</span>
+                  </div>
+                  <p class="fs-8 text-secondary-body mb-0">Claude 4 latency increased by 12% in the last 24 hours. Suggest mapping non-critical runs to DeepSeek.</p>
+                </div>
+                <div class="insight-card insight-emerald p-3 rounded-3">
+                  <div class="d-flex align-items-center gap-2 mb-1">
+                    <i class="bi bi-piggy-bank-fill text-emerald fs-7"></i>
+                    <span class="fw-bold fs-8 text-light font-mono">COST SAVINGS</span>
+                  </div>
+                  <p class="fs-8 text-secondary-body mb-0">OpenAI is the lowest-cost provider for security auditor templates this week. DeepSeek saved 24% token cost overall.</p>
+                </div>
+                <div class="insight-card insight-warning p-3 rounded-3">
+                  <div class="d-flex align-items-center gap-2 mb-1">
+                    <i class="bi bi-speedometer2 text-warning fs-7"></i>
+                    <span class="fw-bold fs-8 text-light font-mono">SPEED IMPROVEMENT</span>
+                  </div>
+                  <p class="fs-8 text-secondary-body mb-0">Gemini response speed improved by 15ms after the proxy active routing update.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/analytics.js"></script>
+</body>
+</html>

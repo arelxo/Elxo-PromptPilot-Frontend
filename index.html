@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ELXO PromptPilot — Enterprise AI Prompt Studio & Management Platform</title>
+  <meta name="description" content="ELXO PromptPilot is the unified prompt orchestration platform for engineering teams. Create, optimize, version, benchmark, and deploy prompts across ChatGPT, Claude, Gemini, Grok, and DeepSeek.">
+  <meta name="keywords" content="AI prompt management, prompt studio, OpenAI API, Anthropic Claude, Google Gemini, DeepSeek V3, Grok, prompt optimization, prompt version control">
+  <meta name="theme-color" content="#06070A">
+
+  <!-- Open Graph / Social Media Meta -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ELXO PromptPilot — Enterprise AI Prompt Studio">
+  <meta property="og:description" content="Benchmark, optimize, and version AI prompts across every frontier model in real-time.">
+  <meta property="og:image" content="https://elxo.dev/og-promptpilot.png">
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <!-- Production Custom Stylesheet -->
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-dark-foundation text-light">
+
+  <!-- 6-LAYER HIGH-VISIBILITY PARALLAX BACKGROUND & CURSOR SPOTLIGHT -->
+  <div class="aurora-container position-fixed w-100 h-100 top-0 start-0 pe-none z-0" aria-hidden="true" id="parallaxContainer">
+    <!-- Layer 6: Cursor Spotlight -->
+    <div class="cursor-spotlight" id="cursorSpotlight"></div>
+    
+    <!-- Layer 1: Animated Aurora -->
+    <div class="aurora-blob blob-purple parallax-layer" data-speed="0.4"></div>
+    
+    <!-- Layer 2: Gradient Mesh -->
+    <div class="gradient-mesh-layer parallax-layer" data-speed="0.6"></div>
+    
+    <!-- Layer 3: Soft Blur Orbs -->
+    <div class="aurora-blob blob-blue parallax-layer" data-speed="0.8"></div>
+    <div class="aurora-blob blob-cyan parallax-layer" data-speed="1.1"></div>
+    
+    <!-- Layer 5: Animated Grid -->
+    <div class="grid-overlay parallax-layer" data-speed="0.5"></div>
+    
+    <!-- Layer 4: Noise Texture Overlay -->
+    <div class="noise-overlay"></div>
+  </div>
+
+  <!-- 1. FLOATING GLASS NAVBAR -->
+  <header>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-glass py-3 reveal-item" id="mainNavbar" aria-label="Main Navigation">
+      <div class="container navbar-container">
+        
+        <!-- Brand Logo -->
+        <a class="navbar-brand d-flex align-items-center gap-2" href="#" aria-label="ELXO PromptPilot Homepage">
+          <div class="brand-icon-box">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="url(#brandGrad1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 17L12 22L22 17" stroke="url(#brandGrad2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 12L12 17L22 12" stroke="url(#brandGrad3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <defs>
+                <linearGradient id="brandGrad1" x1="2" y1="2" x2="22" y2="12" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#3B82F6"/>
+                  <stop offset="1" stop-color="#8B5CF6"/>
+                </linearGradient>
+                <linearGradient id="brandGrad2" x1="2" y1="12" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#8B5CF6"/>
+                  <stop offset="1" stop-color="#06B6D4"/>
+                </linearGradient>
+                <linearGradient id="brandGrad3" x1="2" y1="7" x2="22" y2="17" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#60A5FA"/>
+                  <stop offset="1" stop-color="#A78BFA"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <span class="brand-text">ELXO <span class="brand-text-accent">PromptPilot</span></span>
+          <span class="version-badge ms-1">v3.0</span>
+        </a>
+
+        <!-- Mobile Toggler -->
+        <button class="navbar-toggler border-0 text-light shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navContent" aria-controls="navContent" aria-expanded="false" aria-label="Toggle navigation menu">
+          <i class="bi bi-list fs-2" aria-hidden="true"></i>
+        </button>
+
+        <!-- Nav Links -->
+        <div class="collapse navbar-collapse" id="navContent">
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3 text-center">
+            <li class="nav-item"><a class="nav-link nav-link-custom" href="#studio">Studio</a></li>
+            <li class="nav-item"><a class="nav-link nav-link-custom" href="#providers">Providers</a></li>
+            <li class="nav-item"><a class="nav-link nav-link-custom" href="#optimizer">Optimizer</a></li>
+            <li class="nav-item"><a class="nav-link nav-link-custom" href="#library">Library</a></li>
+            <li class="nav-item"><a class="nav-link nav-link-custom" href="#analytics">Analytics</a></li>
+            <li class="nav-item"><a class="nav-link nav-link-custom" href="#features">Features</a></li>
+            <li class="nav-item"><a class="nav-link nav-link-custom" href="#pricing">Pricing</a></li>
+            <li class="nav-item"><a class="nav-link nav-link-custom" href="#faq">FAQ</a></li>
+          </ul>
+          
+          <div class="d-flex align-items-center justify-content-center gap-3 mt-3 mt-lg-0">
+            <a href="login.html" class="btn btn-link text-light text-decoration-none px-3 py-2 fw-semibold btn-nav-login">Login</a>
+            <a href="signup.html" class="btn btn-glow-primary rounded-pill px-4 py-2 fw-semibold d-inline-flex align-items-center gap-2">
+              <span>Launch Studio</span>
+              <i class="bi bi-arrow-right fs-6" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <main class="position-relative z-1" id="mainContent">
+
+    <!-- 2. HERO SECTION -->
+    <section class="hero-section text-center section-padding pt-6 pb-5" aria-labelledby="heroHeading">
+      <div class="container">
+        
+        <!-- Clean Status Tag -->
+        <div class="d-inline-flex align-items-center gap-2 px-3.5 py-1.5 rounded-pill hero-badge mb-4 reveal-item cinematic-blur-reveal" style="--reveal-delay: 0.1s;" data-parallax-depth="0.5">
+          <span class="badge-dot" aria-hidden="true"></span>
+          <span class="text-secondary-body fs-7 fw-semibold">Multi-LLM Prompt Engineering &amp; Sub-10ms Proxy Gateway</span>
+        </div>
+
+        <!-- Headline -->
+        <h1 class="hero-title fw-extrabold mx-auto mb-3 reveal-item cinematic-blur-reveal" style="--reveal-delay: 0.2s;" id="heroHeading" data-parallax-depth="0.5">
+          Craft, Optimize &amp; Scale AI Prompts <br class="d-none d-md-block">
+          <span class="gradient-text">Across Every Model in Seconds</span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="hero-subtitle mx-auto text-body-contrast mb-4 fs-5 fw-normal reveal-item cinematic-blur-reveal" style="--reveal-delay: 0.3s;" data-parallax-depth="0.5">
+          The unified prompt orchestration studio for developers &amp; enterprise teams. Benchmark ChatGPT, Claude, Gemini, Grok &amp; DeepSeek in real-time with automated token compression &amp; version control.
+        </p>
+
+        <!-- CTA Action Buttons -->
+        <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-3 mb-5 reveal-item cinematic-blur-reveal" style="--reveal-delay: 0.4s;" data-parallax-depth="0.75">
+          <a href="signup.html" class="btn btn-glow-lg rounded-pill px-4 py-3 fw-semibold w-100 w-sm-auto d-inline-flex align-items-center justify-content-center gap-2 magnetic-btn">
+            <i class="bi bi-play-circle-fill text-cyan fs-5" aria-hidden="true"></i>
+            <span>Try Interactive Studio</span>
+          </a>
+          <a href="#pricing" class="btn btn-outline-cyan rounded-pill px-4 py-3 fw-semibold w-100 w-sm-auto d-inline-flex align-items-center justify-content-center gap-2 magnetic-btn">
+            <span>Book Enterprise Demo</span>
+            <i class="bi bi-arrow-right-short fs-4" aria-hidden="true"></i>
+          </a>
+        </div>
+
+        <!-- 3. INTERACTIVE PROMPT STUDIO PREVIEW (HERO STUDIO) -->
+        <div class="studio-wrapper mx-auto text-start reveal-item cinematic-blur-reveal" style="--reveal-delay: 0.6s;" id="studio" role="region" aria-label="Interactive Prompt Studio Playground" data-parallax-depth="0.75">
+          <div class="studio-card glass-panel">
+            
+            <!-- Window Header Bar -->
+            <div class="studio-header d-flex align-items-center justify-content-between px-3 py-2-5 border-bottom border-subtle flex-wrap gap-2">
+              <div class="d-flex align-items-center gap-2">
+                <span class="window-dot dot-red" aria-hidden="true"></span>
+                <span class="window-dot dot-yellow" aria-hidden="true"></span>
+                <span class="window-dot dot-green" aria-hidden="true"></span>
+                <span class="ms-2 text-secondary-body fs-7 font-mono fw-semibold d-none d-sm-inline">studio.elxo.promptpilot // main-branch</span>
+              </div>
+
+              <!-- Model Selector Tabs -->
+              <div class="provider-tabs d-flex align-items-center gap-1 bg-dark-pill p-1 rounded-pill overflow-x-auto" role="tablist" aria-label="Select AI Model Provider">
+                <button class="provider-tab active" data-provider="chatgpt" role="tab" aria-selected="true" id="tab-chatgpt">
+                  <i class="bi bi-openai me-1" aria-hidden="true"></i> ChatGPT-4o
+                </button>
+                <button class="provider-tab" data-provider="claude" role="tab" aria-selected="false" id="tab-claude">
+                  <i class="bi bi-cpu me-1" aria-hidden="true"></i> Claude 3.5 Sonnet
+                </button>
+                <button class="provider-tab" data-provider="gemini" role="tab" aria-selected="false" id="tab-gemini">
+                  <i class="bi bi-stars me-1 text-cyan" aria-hidden="true"></i> Gemini 1.5 Pro
+                </button>
+                <button class="provider-tab" data-provider="deepseek" role="tab" aria-selected="false" id="tab-deepseek">
+                  <i class="bi bi-diagram-3 me-1 text-purple" aria-hidden="true"></i> DeepSeek V3
+                </button>
+                <button class="provider-tab" data-provider="grok" role="tab" aria-selected="false" id="tab-grok">
+                  <i class="bi bi-rocket-takeoff me-1" aria-hidden="true"></i> Grok 2
+                </button>
+              </div>
+
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-success-subtle text-success fs-8 rounded-pill px-2-5 py-1 fw-bold"><i class="bi bi-wifi me-1" aria-hidden="true"></i> API Connected</span>
+              </div>
+            </div>
+
+            <!-- Studio Inner Workspace -->
+            <div class="row g-0">
+              <div class="col-lg-7 border-end border-subtle p-3 p-md-4">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                  <label for="heroPromptInput" class="form-label text-body-contrast fs-7 fw-bold font-mono mb-0">
+                    <i class="bi bi-sliders me-1 text-purple" aria-hidden="true"></i> SYSTEM PROMPT / INSTRUCTIONS
+                  </label>
+                  <div class="dropdown">
+                    <span class="fs-8 text-secondary-body me-2 font-mono fw-medium">Preset:</span>
+                    <button class="btn btn-sm btn-dark-pill dropdown-toggle fs-8 font-mono py-1 px-2.5 text-light fw-medium" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Production RAG Persona
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end fs-7">
+                      <li><a class="dropdown-item active" href="#">Production RAG Persona</a></li>
+                      <li><a class="dropdown-item" href="#">Code Auditor &amp; Security</a></li>
+                      <li><a class="dropdown-item" href="#">Structured JSON Extractor</a></li>
+                      <li><a class="dropdown-item" href="#">Creative Copywriter</a></li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="prompt-editor-container mb-3 position-relative">
+                  <textarea id="heroPromptInput" class="form-control studio-textarea font-mono fs-7 text-light" rows="6" aria-label="System prompt editor">You are a senior AI System Architect. Analyze the incoming user query: "{{user_query}}" using context documents: "{{context_docs}}". Provide a structured response formatted strictly as "{{output_format}}". Enforce strict factual groundings and zero hallucinations.</textarea>
+                  
+                  <div class="variable-pills-bar d-flex align-items-center gap-2 mt-2 flex-wrap">
+                    <span class="fs-8 text-secondary-body fw-bold font-mono">Detected Variables:</span>
+                    <span class="var-badge" title="Dynamic input variable"><i class="bi bi-braces me-1 text-cyan" aria-hidden="true"></i>{{user_query}}</span>
+                    <span class="var-badge" title="Dynamic input variable"><i class="bi bi-braces me-1 text-cyan" aria-hidden="true"></i>{{context_docs}}</span>
+                    <span class="var-badge" title="Dynamic input variable"><i class="bi bi-braces me-1 text-cyan" aria-hidden="true"></i>{{output_format}}</span>
+                  </div>
+                </div>
+
+                <div class="row g-3 align-items-center bg-dark-soft p-3 rounded-3 mb-3 border border-subtle">
+                  <div class="col-sm-6">
+                    <div class="d-flex justify-content-between fs-8 font-mono text-secondary-body mb-1">
+                      <label for="tempRange" class="mb-0 fw-semibold">Temperature</label>
+                      <span id="tempValue" class="text-cyan fw-bold">0.30</span>
+                    </div>
+                    <input type="range" class="form-range custom-range" id="tempRange" min="0" max="1" step="0.05" value="0.3" aria-label="Temperature slider">
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="d-flex justify-content-between fs-8 font-mono text-secondary-body mb-1">
+                      <label for="tokensRange" class="mb-0 fw-semibold">Max Tokens</label>
+                      <span id="tokensValue" class="text-purple fw-bold">2,048</span>
+                    </div>
+                    <input type="range" class="form-range custom-range" id="tokensRange" min="256" max="4096" step="128" value="2048" aria-label="Max tokens slider">
+                  </div>
+                </div>
+
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-accent-gradient btn-sm px-3 py-2 fw-semibold rounded-2 d-flex align-items-center gap-2" id="btnOptimizePrompt" type="button">
+                      <i class="bi bi-magic" aria-hidden="true"></i>
+                      <span>Auto-Optimize Prompt</span>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm px-3 py-2 font-mono text-light rounded-2 d-flex align-items-center gap-2" id="btnBenchmark" type="button">
+                      <i class="bi bi-speedometer2 text-warning" aria-hidden="true"></i>
+                      <span>Benchmark All Models</span>
+                    </button>
+                  </div>
+                  <span class="fs-8 text-secondary-body font-mono fw-semibold" id="tokenEstimateCount"><i class="bi bi-cpu me-1 text-cyan" aria-hidden="true"></i>Est: 84 tokens</span>
+                </div>
+              </div>
+
+              <div class="col-lg-5 p-3 p-md-4 bg-dark-panel">
+                <div class="score-card p-3 rounded-3 mb-3 border border-subtle">
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="fs-7 fw-bold text-white font-mono">PROMPT HEALTH SCORE</span>
+                    <span class="score-badge bg-success-subtle text-success fw-bold font-mono px-2 py-0-5 rounded" id="heroScoreText">96 / 100</span>
+                  </div>
+                  
+                  <div class="progress custom-progress mb-2" style="height: 8px;">
+                    <div class="progress-bar bg-gradient-score" role="progressbar" id="heroScoreBar" style="width: 96%;" aria-valuenow="96" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+
+                  <div class="row g-2 text-center pt-2 fs-8 font-mono border-top border-subtle">
+                    <div class="col-4">
+                      <div class="text-white fw-bold" id="statClarity">98%</div>
+                      <div class="text-secondary-body fw-medium">Clarity</div>
+                    </div>
+                    <div class="col-4">
+                      <div class="text-cyan fw-bold" id="statEfficiency">-34%</div>
+                      <div class="text-secondary-body fw-medium">Token Cost</div>
+                    </div>
+                    <div class="col-4">
+                      <div class="text-purple fw-bold" id="statRisk">Low</div>
+                      <div class="text-secondary-body fw-medium">Hallucination</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="output-preview-container">
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="fs-8 fw-bold text-white font-mono">MODEL EXECUTION TELEMETRY</span>
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="latency-pill font-mono fs-8 text-success fw-bold" id="heroLatency"><i class="bi bi-lightning-fill me-1" aria-hidden="true"></i>142ms</span>
+                      <button class="btn btn-icon btn-sm text-secondary-body p-0" id="btnCopyPrompt" title="Copy prompt to clipboard" aria-label="Copy prompt text">
+                        <i class="bi bi-copy fs-7" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="simulated-terminal-box p-3 font-mono fs-8 text-light rounded-3 border border-subtle position-relative overflow-hidden" id="heroOutputBox">
+                    <div class="terminal-line text-purple fw-bold">[ELXO Engine v3.0] Ready. Provider: <span id="currentProviderLabel" class="text-cyan">ChatGPT-4o</span></div>
+                    <div class="terminal-line text-secondary-body mt-1">[System Status] Variable bindings verified. Auto-formatting active.</div>
+                    <div class="terminal-line text-success mt-2 fw-semibold">✓ Output Schema: Validated JSON Compliant</div>
+                    <div class="terminal-line text-body-contrast mt-2 border-top border-subtle pt-2" id="simulatedResponseText">
+                      {<br>
+                      &nbsp;&nbsp;"status": "success",<br>
+                      &nbsp;&nbsp;"architecture": "RAG-optimized",<br>
+                      &nbsp;&nbsp;"confidence_score": 0.994,<br>
+                      &nbsp;&nbsp;"token_savings_applied": "34%"<br>
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4. AI CONNECTIONS SECTION -->
+    <section class="section-padding py-6 border-top border-subtle position-relative overflow-hidden" id="providers" aria-labelledby="providersHeading">
+      
+      <!-- High-Visibility Animated Connection Circuit Stream -->
+      <div class="api-connection-stream position-absolute w-100 top-50 start-0 pe-none z-0 translate-middle-y">
+        <svg width="100%" height="90" viewBox="0 0 1400 90" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 45 Q350 15 700 45 T1400 45" stroke="url(#pulseLineGrad)" stroke-width="2.5" class="animated-stream-path"/>
+          <circle cx="200" cy="40" r="5" fill="#06B6D4" class="pulse-node-1"/>
+          <circle cx="550" cy="48" r="5" fill="#8B5CF6" class="pulse-node-2"/>
+          <circle cx="900" cy="42" r="5" fill="#3B82F6" class="pulse-node-3"/>
+          <defs>
+            <linearGradient id="pulseLineGrad" x1="0" y1="0" x2="1400" y2="0" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#3B82F6" stop-opacity="0.4"/>
+              <stop offset="0.5" stop-color="#8B5CF6" stop-opacity="0.95"/>
+              <stop offset="1" stop-color="#06B6D4" stop-opacity="0.4"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <div class="container position-relative z-1">
+        <!-- UNIVERSAL INTEGRATION SECTION HEADER -->
+        <div class="text-center max-w-750 mx-auto mb-5 universal-integration-header" id="universalIntegrationHeader">
+          <!-- Small Badge with Character Blur Stagger -->
+          <div class="section-tag mb-2 d-inline-block char-blur-stagger" id="univTagBadge" data-parallax-depth="0.3" aria-label="UNIVERSAL INTEGRATION">
+            UNIVERSAL INTEGRATION
+          </div>
+
+          <!-- Main Headline Stagger -->
+          <h2 class="section-title fw-bold univ-headline mb-3" id="univHeading" data-parallax-depth="0.4">
+            <span class="univ-part1 d-block mb-1">One Integration.</span>
+            <span class="univ-part2 gradient-text d-block">Every Leading AI Model.</span>
+          </h2>
+
+          <!-- Description Paragraph -->
+          <p class="section-desc text-body-contrast univ-desc mx-auto" id="univDesc" data-parallax-depth="0.6">
+            PromptPilot connects directly with frontier models and custom API endpoints without changing a single line of your application code.
+          </p>
+        </div>
+
+        <!-- INTERACTIVE AI UNIVERSE ECOSYSTEM STAGE -->
+        <div class="ai-universe-stage text-center position-relative my-5 reveal-item" style="--reveal-delay: 0.3s;" id="aiUniverseStage" role="region" aria-label="Interactive AI Ecosystem Universe">
+          
+          <!-- SVG Connector Lines Overlay -->
+          <svg class="universe-connector-svg" id="universeConnectorSvg" aria-hidden="true"></svg>
+
+          <!-- Faint Guide Rings -->
+          <div class="universe-ring ring-1" aria-hidden="true"></div>
+          <div class="universe-ring ring-2" aria-hidden="true"></div>
+          <div class="universe-ring ring-3" aria-hidden="true"></div>
+
+          <!-- Center Interactive Hub Button -->
+          <button type="button" class="universe-center-hub" id="universeCenterHub" aria-expanded="false" aria-label="Click to Explore AI Ecosystem Universe">
+            <div class="hub-ripple" aria-hidden="true"></div>
+            <div class="hub-icon" aria-hidden="true">
+              <svg width="38" height="38" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#06B6D4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 17L12 22L22 17" stroke="#8B5CF6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 12L12 17L22 12" stroke="#3B82F6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </button>
+
+          <!-- Premium Floating CTA Pill (Positioned 24px below center logo) -->
+          <div class="universe-cta-pill" id="universeHint" role="button" tabindex="0" aria-label="Click to Explore AI Ecosystem">
+            <span class="cta-sparkle me-1">✨</span>
+            <span class="cta-text">Click to Explore AI Ecosystem</span>
+            <span class="cta-arrow ms-1.5">→</span>
+          </div>
+
+          <!-- Provider Badges Container (Populated by JavaScript Engine) -->
+          <div class="universe-providers-container" id="universeProvidersContainer"></div>
+
+          <!-- Rich Floating Tooltip Card -->
+          <div class="universe-tooltip text-start" id="universeTooltip" role="tooltip"></div>
+        </div></div>
+
+        <div class="row g-4 justify-content-center">
+          
+          <!-- Provider 1: OpenAI -->
+          <div class="col-6 col-md-4 col-lg-3 reveal-item" style="--reveal-delay: 0.1s;">
+            <div class="provider-card p-4 rounded-4 border border-subtle glass-card text-center position-relative h-100 provider-hover-glow">
+              <div class="provider-icon-wrapper mb-3 mx-auto icon-float-1">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="brand-svg-icon text-emerald">
+                  <path d="M22.2819 9.8211C22.4286 9.33649 22.4705 8.24355 22.2152 7.74712C21.7371 6.81882 20.8413 6.17724 19.808 6.00288C19.4674 5.34446 18.919 4.79603 18.2606 4.45544C17.2272 3.91891 15.961 3.99222 15.006 4.63102C14.4373 4.19502 13.7317 3.96024 13.007 3.96024C11.5977 3.96024 10.3204 4.77382 9.72251 6.04683C9.09673 5.92211 8.44498 6.0173 7.87627 6.31754C6.84293 6.85408 6.1399 7.8939 6.00277 9.06013C5.35914 9.40072 4.81878 9.9481 4.47819 10.6065C3.94165 11.64 4.01496 12.9062 4.65376 13.8612C4.21776 14.4299 3.98298 15.1355 3.98298 15.8602C3.98298 17.2695 4.79656 18.5468 6.06957 19.1447C5.94485 19.7705 6.04004 20.4223 6.34028 20.991C6.87682 22.0243 7.91664 22.7273 9.08287 22.8645C9.42346 23.5081 9.97084 24.0485 10.6293 24.3891C11.6626 24.9256 12.9288 24.8523 13.8838 24.2135C14.4525 24.6495 15.1581 24.8843 15.8828 24.8843C17.2921 24.8843 18.5694 24.0707 19.1673 22.7977C19.7931 22.9224 20.4449 22.8272 21.0136 22.527C22.0469 21.9904 22.7499 20.9506 22.8871 19.7844C23.5307 19.4438 24.0711 18.8964 24.4117 18.238C24.9482 17.2047 24.8749 15.9385 24.2361 14.9835C24.6721 14.4148 24.9069 13.7092 24.9069 12.9845C24.9069 11.5752 24.0933 10.2979 22.8203 9.69996" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h3 class="fw-bold mb-1 fs-6 text-light">OpenAI &amp; ChatGPT</h3>
+              <p class="text-secondary-body fs-8 mb-2">GPT-4o, GPT-4 Turbo, o1-preview</p>
+              <div class="font-mono fs-8 text-cyan fw-semibold">
+                <span>Latency: ~120ms</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Provider 2: Anthropic Claude -->
+          <div class="col-6 col-md-4 col-lg-3 reveal-item" style="--reveal-delay: 0.2s;">
+            <div class="provider-card p-4 rounded-4 border border-subtle glass-card text-center position-relative h-100 provider-hover-glow">
+              <div class="provider-icon-wrapper mb-3 mx-auto icon-float-2">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="brand-svg-icon text-warning">
+                  <path d="M4 19L12 5L20 19M7.5 13H16.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="12" cy="5" r="2" fill="currentColor"/>
+                </svg>
+              </div>
+              <h3 class="fw-bold mb-1 fs-6 text-light">Anthropic Claude</h3>
+              <p class="text-secondary-body fs-8 mb-2">Claude 3.5 Sonnet, Haiku, Opus</p>
+              <div class="font-mono fs-8 text-cyan fw-semibold">
+                <span>Latency: ~140ms</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Provider 3: Google Gemini -->
+          <div class="col-6 col-md-4 col-lg-3 reveal-item" style="--reveal-delay: 0.3s;">
+            <div class="provider-card p-4 rounded-4 border border-subtle glass-card text-center position-relative h-100 provider-hover-glow">
+              <div class="provider-icon-wrapper mb-3 mx-auto icon-float-3">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="brand-svg-icon text-cyan">
+                  <path d="M12 2C12 7.52285 7.52285 12 2 12C7.52285 12 12 16.4771 12 22C12 16.4771 16.4771 12 22 12C16.4771 12 12 7.52285 12 2Z" fill="currentColor"/>
+                </svg>
+              </div>
+              <h3 class="fw-bold mb-1 fs-6 text-light">Google Gemini</h3>
+              <p class="text-secondary-body fs-8 mb-2">Gemini 1.5 Pro, 1.5 Flash</p>
+              <div class="font-mono fs-8 text-cyan fw-semibold">
+                <span>Latency: ~95ms</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Provider 4: xAI Grok -->
+          <div class="col-6 col-md-4 col-lg-3 reveal-item" style="--reveal-delay: 0.4s;">
+            <div class="provider-card p-4 rounded-4 border border-subtle glass-card text-center position-relative h-100 provider-hover-glow">
+              <div class="provider-icon-wrapper mb-3 mx-auto icon-float-1">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="brand-svg-icon text-light">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="currentColor"/>
+                </svg>
+              </div>
+              <h3 class="fw-bold mb-1 fs-6 text-light">xAI Grok</h3>
+              <p class="text-secondary-body fs-8 mb-2">Grok 2, Grok 2 Mini</p>
+              <div class="font-mono fs-8 text-cyan fw-semibold">
+                <span>Latency: ~160ms</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Provider 5: DeepSeek -->
+          <div class="col-6 col-md-4 col-lg-3 reveal-item" style="--reveal-delay: 0.5s;">
+            <div class="provider-card p-4 rounded-4 border border-subtle glass-card text-center position-relative h-100 provider-hover-glow">
+              <div class="provider-icon-wrapper mb-3 mx-auto icon-float-2">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="brand-svg-icon text-purple">
+                  <path d="M12 3L4 9V15L12 21L20 15V9L12 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 8L16 11V15L12 18L8 15V11L12 8Z" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+              </div>
+              <h3 class="fw-bold mb-1 fs-6 text-light">DeepSeek</h3>
+              <p class="text-secondary-body fs-8 mb-2">DeepSeek V3, DeepSeek R1</p>
+              <div class="font-mono fs-8 text-cyan fw-semibold">
+                <span>Latency: ~88ms</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Provider 6: OpenAI API -->
+          <div class="col-6 col-md-4 col-lg-3 reveal-item" style="--reveal-delay: 0.6s;">
+            <div class="provider-card p-4 rounded-4 border border-subtle glass-card text-center position-relative h-100 provider-hover-glow">
+              <div class="provider-icon-wrapper mb-3 mx-auto icon-float-3">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="brand-svg-icon text-blue">
+                  <path d="M8 3L4 7L8 11M16 3L20 7L16 11M14 2L10 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h3 class="fw-bold mb-1 fs-6 text-light">OpenAI API SDK</h3>
+              <p class="text-secondary-body fs-8 mb-2">Direct JSON / Function Calling</p>
+              <div class="font-mono fs-8 text-cyan fw-semibold">
+                <span>Sub-10ms Proxy</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Provider 7: Anthropic API Direct -->
+          <div class="col-6 col-md-4 col-lg-3 reveal-item" style="--reveal-delay: 0.7s;">
+            <div class="provider-card p-4 rounded-4 border border-subtle glass-card text-center position-relative h-100 provider-hover-glow">
+              <div class="provider-icon-wrapper mb-3 mx-auto icon-float-1">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="brand-svg-icon text-danger">
+                  <path d="M4 17L10 11L4 5M12 19H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h3 class="fw-bold mb-1 fs-6 text-light">Anthropic API Direct</h3>
+              <p class="text-secondary-body fs-8 mb-2">Message API &amp; Tool Use</p>
+              <div class="font-mono fs-8 text-cyan fw-semibold">
+                <span>Sub-10ms Proxy</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Provider 8: Custom / Local LLMs -->
+          <div class="col-6 col-md-4 col-lg-3 reveal-item" style="--reveal-delay: 0.8s;">
+            <div class="provider-card p-4 rounded-4 border border-subtle glass-card text-center position-relative h-100 provider-hover-glow">
+              <div class="provider-icon-wrapper mb-3 mx-auto icon-float-2">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="brand-svg-icon text-emerald">
+                  <path d="M21 16V8C21 6.89543 20.1046 6 19 6H5C3.89543 6 3 6.89543 3 8V16C3 17.1046 3.89543 18 5 18H19C20.1046 18 21 17.1046 21 16Z" stroke="currentColor" stroke-width="2"/>
+                  <path d="M7 12H7.01M11 12H11.01" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <h3 class="fw-bold mb-1 fs-6 text-light">Custom / Local LLMs</h3>
+              <p class="text-secondary-body fs-8 mb-2">Ollama, vLLM, Azure AI</p>
+              <div class="font-mono fs-8 text-cyan fw-semibold">
+                <span>Self-Hosted Ready</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. PROMPT OPTIMIZER SECTION -->
+    <section class="section-padding py-6 border-top border-subtle" id="optimizer" aria-labelledby="optimizerHeading">
+      <div class="container">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-5 reveal-item">
+            <span class="section-tag mb-2">AI REFACTORING ENGINE</span>
+            <h2 class="section-title fw-bold mb-3" id="optimizerHeading">Turn Verbose Prompts into Precision Execution.</h2>
+            <p class="section-desc text-body-contrast mb-4">
+              Our optimization engine restructures raw prompts, eliminating filler words, enforcing output schemas, and reducing token overhead by up to 45% without losing intent.
+            </p>
+            
+            <div class="d-flex flex-column gap-3 mb-4">
+              <div class="d-flex align-items-start gap-3">
+                <div class="feature-icon-sm bg-purple-subtle text-purple rounded-3 p-2">
+                  <i class="bi bi-lightning-charge fs-5" aria-hidden="true"></i>
+                </div>
+                <div>
+                  <h3 class="fw-semibold mb-1 fs-6 text-light">Automatic Compression</h3>
+                  <p class="text-secondary-body fs-7 mb-0">Removes redundant context while preserving exact semantic meaning.</p>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-start gap-3">
+                <div class="feature-icon-sm bg-blue-subtle text-blue rounded-3 p-2">
+                  <i class="bi bi-shield-check fs-5" aria-hidden="true"></i>
+                </div>
+                <div>
+                  <h3 class="fw-semibold mb-1 fs-6 text-light">Hallucination Safeguards</h3>
+                  <p class="text-secondary-body fs-7 mb-0">Injects negative constraints and strict boundary rules automatically.</p>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-start gap-3">
+                <div class="feature-icon-sm bg-cyan-subtle text-cyan rounded-3 p-2">
+                  <i class="bi bi-braces fs-5" aria-hidden="true"></i>
+                </div>
+                <div>
+                  <h3 class="fw-semibold mb-1 fs-6 text-light">Variable Auto-Detection</h3>
+                  <p class="text-secondary-body fs-7 mb-0">Automatically converts hardcoded string values into reusable template variables.</p>
+                </div>
+              </div>
+            </div>
+
+            <a href="signup.html" class="btn btn-outline-cyan rounded-pill px-4 py-2-5 font-mono fs-7 fw-semibold d-inline-flex align-items-center gap-2">
+              <span>Test Optimizer Tool</span>
+              <i class="bi bi-chevron-right" aria-hidden="true"></i>
+            </a>
+          </div>
+
+          <div class="col-lg-7 reveal-item" style="--reveal-delay: 0.2s;">
+            <div class="optimizer-comparison-box p-4 rounded-4 border border-subtle glass-card">
+              <div class="d-flex align-items-center justify-content-between mb-3 border-bottom border-subtle pb-3">
+                <span class="fs-7 font-mono fw-bold text-white">PROMPT TRANSFORMER ENGINE</span>
+                <div class="btn-group btn-group-sm font-mono" role="group" aria-label="Toggle Prompt Comparison">
+                  <button type="button" class="btn btn-dark-pill active" id="tabOptBefore">Before (Raw)</button>
+                  <button type="button" class="btn btn-dark-pill" id="tabOptAfter">After (Optimized)</button>
+                </div>
+              </div>
+
+              <div class="prompt-diff-preview font-mono fs-7 p-3 rounded-3 border border-subtle mb-3 bg-dark-soft min-h-200 position-relative" id="optimizerPreviewText">
+                <span class="text-danger fw-bold">[RAW PROMPT - 184 TOKENS]</span><br><br>
+                "Hey ChatGPT can you please look at this text and give me a summary of it? I need it to be short and clear so a busy executive can read it quickly. Make sure to highlight key metrics and don't include any extra pleasantries or introductions. Also make it look like a bulleted list."
+              </div>
+
+              <div class="row g-3 text-center font-mono fs-8">
+                <div class="col-4">
+                  <div class="p-2 rounded bg-dark-panel border border-subtle">
+                    <span class="text-white fw-bold d-block mb-1">TOKENS</span>
+                    <span class="text-danger fw-bold fs-7" id="optTokenBefore">184</span>
+                    <i class="bi bi-arrow-right text-secondary-body mx-1" aria-hidden="true"></i>
+                    <span class="text-success fw-bold fs-7" id="optTokenAfter">62 (-66%)</span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="p-2 rounded bg-dark-panel border border-subtle">
+                    <span class="text-white fw-bold d-block mb-1">ACCURACY</span>
+                    <span class="text-secondary-body fw-bold fs-7">74%</span>
+                    <i class="bi bi-arrow-right text-secondary-body mx-1" aria-hidden="true"></i>
+                    <span class="text-cyan fw-bold fs-7">99.2%</span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="p-2 rounded bg-dark-panel border border-subtle">
+                    <span class="text-white fw-bold d-block mb-1">LATENCY</span>
+                    <span class="text-secondary-body fw-bold fs-7">420ms</span>
+                    <i class="bi bi-arrow-right text-secondary-body mx-1" aria-hidden="true"></i>
+                    <span class="text-purple fw-bold fs-7">180ms</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. PROMPT LIBRARY SECTION -->
+    <section class="section-padding py-6 border-top border-subtle" id="library" aria-labelledby="libraryHeading">
+      <div class="container">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 gap-3 reveal-item">
+          <div>
+            <span class="section-tag mb-2">KNOWLEDGE BASE</span>
+            <h2 class="section-title fw-bold mb-0" id="libraryHeading">Production-Ready Prompt Library.</h2>
+          </div>
+          
+          <div class="d-flex flex-column flex-sm-row align-items-center gap-2">
+            <div class="input-group input-group-sm search-input-group">
+              <span class="input-group-text bg-dark-soft border-subtle text-secondary-body"><i class="bi bi-search" aria-hidden="true"></i></span>
+              <input type="text" class="form-control bg-dark-soft border-subtle text-light font-mono fs-8" id="librarySearchInput" placeholder="Search prompts or tags..." aria-label="Search prompt library">
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex gap-2 overflow-x-auto pb-3 mb-4 reveal-item" style="--reveal-delay: 0.15s;" id="libraryFilterPills" role="tablist" aria-label="Filter prompt categories">
+          <button class="btn btn-sm btn-dark-pill active" data-category="all" type="button">All Templates (24)</button>
+          <button class="btn btn-sm btn-dark-pill" data-category="code" type="button">Coding &amp; Refactoring</button>
+          <button class="btn btn-sm btn-dark-pill" data-category="rag" type="button">RAG &amp; Enterprise Data</button>
+          <button class="btn btn-sm btn-dark-pill" data-category="json" type="button">JSON Schema</button>
+          <button class="btn btn-sm btn-dark-pill" data-category="support" type="button">Support Agents</button>
+        </div>
+
+        <div class="row g-4" id="libraryGrid">
+          <div class="col-md-6 col-lg-4 library-card-item reveal-item" style="--reveal-delay: 0.2s;" data-category="code">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-purple-subtle text-purple font-mono fs-8 fw-bold">Code Refactoring</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v2.4 • Updated 2d ago</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">TypeScript Security Auditor</h3>
+                <p class="text-body-contrast fs-7 mb-3">Scans TypeScript AST nodes for unsafe SQL queries, unsanitized inputs, and memory leaks.</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{code_snippet}}</span>
+                  <span class="var-badge fs-8">{{security_level}}</span>
+                </div>
+              </div>
+              <div class="d-flex align-items-center justify-content-between border-top border-subtle pt-3 mt-2 font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1" aria-hidden="true"></i>4.9 (124 ratings)</span>
+                <button class="btn btn-sm btn-dark-pill text-light btn-copy-prompt-card" data-prompt="You are a senior TypeScript Security Auditor. Scan {{code_snippet}} with security policy level {{security_level}}. Output findings in structured JSON format." type="button">
+                  <i class="bi bi-copy me-1" aria-hidden="true"></i> Copy
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 library-card-item reveal-item" style="--reveal-delay: 0.3s;" data-category="rag">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-blue-subtle text-blue font-mono fs-8 fw-bold">RAG &amp; Data</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v1.8 • Updated 1d ago</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">Strict Context Citation RAG</h3>
+                <p class="text-body-contrast fs-7 mb-3">Ensures responses are strictly anchored in provided knowledge base chunks with exact page citations.</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{context_chunks}}</span>
+                  <span class="var-badge fs-8">{{user_query}}</span>
+                </div>
+              </div>
+              <div class="d-flex align-items-center justify-content-between border-top border-subtle pt-3 mt-2 font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1" aria-hidden="true"></i>5.0 (310 ratings)</span>
+                <button class="btn btn-sm btn-dark-pill text-light btn-copy-prompt-card" data-prompt="Answer {{user_query}} strictly using {{context_chunks}}. If information is absent, respond with 'DATA_NOT_FOUND'. Include citation IDs." type="button">
+                  <i class="bi bi-copy me-1" aria-hidden="true"></i> Copy
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 library-card-item reveal-item" style="--reveal-delay: 0.4s;" data-category="json">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-cyan-subtle text-cyan font-mono fs-8 fw-bold">JSON Schema</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v3.1 • Updated 5h ago</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">Strict Zod Schema Extractor</h3>
+                <p class="text-body-contrast fs-7 mb-3">Parses messy unstructured raw document text into perfectly typed JSON matching your schema.</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{raw_text}}</span>
+                  <span class="var-badge fs-8">{{target_schema}}</span>
+                </div>
+              </div>
+              <div class="d-flex align-items-center justify-content-between border-top border-subtle pt-3 mt-2 font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1" aria-hidden="true"></i>4.8 (98 ratings)</span>
+                <button class="btn btn-sm btn-dark-pill text-light btn-copy-prompt-card" data-prompt="Extract structured JSON from {{raw_text}} complying strictly with {{target_schema}}. Do not wrap in markdown quotes." type="button">
+                  <i class="bi bi-copy me-1" aria-hidden="true"></i> Copy
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. HOW IT WORKS SECTION -->
+    <section class="section-padding py-6 border-top border-subtle" aria-labelledby="howHeading">
+      <div class="container">
+        <div class="text-center max-w-700 mx-auto mb-5 reveal-item">
+          <span class="section-tag mb-2">WORKFLOW SIMPLICITY</span>
+          <h2 class="section-title fw-bold" id="howHeading">From Draft to Production API in 4 Steps.</h2>
+          <p class="section-desc text-body-contrast">PromptPilot standardizes how engineering teams build, test, and ship LLM features.</p>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-3 reveal-item" style="--reveal-delay: 0.1s;">
+            <div class="step-card p-4 rounded-4 border border-subtle glass-card h-100 position-relative">
+              <span class="step-number-glow" aria-hidden="true">01</span>
+              <div class="step-icon mb-3 text-cyan fs-3"><i class="bi bi-pencil-square" aria-hidden="true"></i></div>
+              <h3 class="fw-bold fs-6 mb-2 text-light">1. Draft &amp; Parameterize</h3>
+              <p class="text-body-contrast fs-7 mb-0">Write prompts using template variables, system instructions, and model parameters in the Visual Studio.</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 reveal-item" style="--reveal-delay: 0.2s;">
+            <div class="step-card p-4 rounded-4 border border-subtle glass-card h-100 position-relative">
+              <span class="step-number-glow" aria-hidden="true">02</span>
+              <div class="step-icon mb-3 text-purple fs-3"><i class="bi bi-bar-chart-steps" aria-hidden="true"></i></div>
+              <h3 class="fw-bold fs-6 mb-2 text-light">2. Multi-LLM Benchmark</h3>
+              <p class="text-body-contrast fs-7 mb-0">Run side-by-side execution tests across OpenAI, Anthropic, Gemini, DeepSeek, and Grok instantly.</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 reveal-item" style="--reveal-delay: 0.3s;">
+            <div class="step-card p-4 rounded-4 border border-subtle glass-card h-100 position-relative">
+              <span class="step-number-glow" aria-hidden="true">03</span>
+              <div class="step-icon mb-3 text-blue fs-3"><i class="bi bi-git" aria-hidden="true"></i></div>
+              <h3 class="fw-bold fs-6 mb-2 text-light">3. Version &amp; Approve</h3>
+              <p class="text-body-contrast fs-7 mb-0">Track git-style prompt revisions, configure fallback models, and conduct peer review approvals.</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 reveal-item" style="--reveal-delay: 0.4s;">
+            <div class="step-card p-4 rounded-4 border border-subtle glass-card h-100 position-relative">
+              <span class="step-number-glow" aria-hidden="true">04</span>
+              <div class="step-icon mb-3 text-success fs-3"><i class="bi bi-cloud-arrow-up" aria-hidden="true"></i></div>
+              <h3 class="fw-bold fs-6 mb-2 text-light">4. Deploy via SDK</h3>
+              <p class="text-body-contrast fs-7 mb-0">Invoke prompts dynamically over our ultra-low latency REST &amp; Python/TypeScript SDK proxy endpoints.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. ANALYTICS DASHBOARD SECTION -->
+    <section class="section-padding py-6 border-top border-subtle" id="analytics" aria-labelledby="analyticsHeading">
+      <div class="container">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-4 reveal-item">
+            <span class="section-tag mb-2">ENTERPRISE OBSERVABILITY</span>
+            <h2 class="section-title fw-bold mb-3" id="analyticsHeading">Real-time Token &amp; Cost Analytics.</h2>
+            <p class="section-desc text-body-contrast mb-4">
+              Monitor prompt performance, token throughput, latency breakdown, and API expenditures in one centralized dashboard.
+            </p>
+
+            <div class="d-flex flex-column gap-3 mb-4 font-mono fs-7">
+              <div class="p-3 rounded-3 bg-dark-soft border border-subtle d-flex align-items-center justify-content-between">
+                <span class="text-white fw-semibold"><i class="bi bi-coin text-warning me-2" aria-hidden="true"></i>Total Cost Savings</span>
+                <span class="text-success fw-bold fs-6">$42,890 / mo</span>
+              </div>
+              <div class="p-3 rounded-3 bg-dark-soft border border-subtle d-flex align-items-center justify-content-between">
+                <span class="text-white fw-semibold"><i class="bi bi-activity text-cyan me-2" aria-hidden="true"></i>Avg Response Latency</span>
+                <span class="text-cyan fw-bold fs-6">142ms</span>
+              </div>
+              <div class="p-3 rounded-3 bg-dark-soft border border-subtle d-flex align-items-center justify-content-between">
+                <span class="text-white fw-semibold"><i class="bi bi-check2-circle text-emerald me-2" aria-hidden="true"></i>Prompt Reliability</span>
+                <span class="text-light fw-bold fs-6">99.98%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-8 reveal-item" style="--reveal-delay: 0.2s;">
+            <div class="analytics-card p-4 rounded-4 border border-subtle glass-card">
+              <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+                <div>
+                  <h3 class="fw-bold mb-0 fs-6 text-light">Token Reduction &amp; Cost Curve</h3>
+                  <span class="text-secondary-body fs-8 font-mono fw-semibold">Live telemetry across active production deployments</span>
+                </div>
+                <div class="btn-group btn-group-sm font-mono" role="group" aria-label="Chart time range">
+                  <button class="btn btn-dark-pill active" id="btnChart7d" type="button">7 Days</button>
+                  <button class="btn btn-dark-pill" id="btnChart30d" type="button">30 Days</button>
+                  <button class="btn btn-dark-pill" id="btnChart90d" type="button">90 Days</button>
+                </div>
+              </div>
+
+              <div class="chart-container position-relative mb-3" style="height: 260px;">
+                <canvas id="analyticsCanvas" aria-label="Token usage analytics graph"></canvas>
+              </div>
+
+              <div class="d-flex align-items-center justify-content-around font-mono fs-8 pt-3 border-top border-subtle text-secondary-body fw-semibold flex-wrap gap-2">
+                <span class="d-flex align-items-center gap-2"><span class="chart-legend-dot bg-cyan" aria-hidden="true"></span> Optimized Prompts Token Usage</span>
+                <span class="d-flex align-items-center gap-2"><span class="chart-legend-dot bg-purple" aria-hidden="true"></span> Unoptimized Baseline Usage</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. FEATURE GRID SECTION (BENTO STYLE) -->
+    <section class="section-padding py-6 border-top border-subtle" id="features" aria-labelledby="featuresHeading">
+      <div class="container">
+        <div class="text-center max-w-700 mx-auto mb-5 reveal-item">
+          <span class="section-tag mb-2">BUILT FOR SCALE</span>
+          <h2 class="section-title fw-bold" id="featuresHeading">Everything You Need for Enterprise AI Prompts.</h2>
+          <p class="section-desc text-body-contrast">Architected specifically for production environments that demand high reliability, compliance, and velocity.</p>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-lg-8 reveal-item" style="--reveal-delay: 0.1s;">
+            <div class="bento-card p-4 p-md-5 rounded-4 border border-subtle glass-card h-100 position-relative overflow-hidden">
+              <div class="badge bg-purple-subtle text-purple font-mono mb-3 fw-bold">GIT-LIKE BRANCHING</div>
+              <h3 class="fw-bold mb-3 text-light">Prompt Version Control &amp; Rollbacks</h3>
+              <p class="text-body-contrast mb-4">Branch, commit, tag, and merge prompt edits just like code. Instant 1-click rollback ensures zero downtime during production regressions.</p>
+              <div class="bento-mockup p-3 rounded-3 bg-dark-soft border border-subtle font-mono fs-8">
+                <div class="d-flex justify-content-between text-light mb-2 fw-semibold">
+                  <span>commit <span class="text-purple">a8f91c</span> (main)</span>
+                  <span class="text-success fw-bold">PRODUCTION ACTIVE</span>
+                </div>
+                <div class="text-body-contrast fw-medium">Author: alex@elxo.dev • 2 hours ago</div>
+                <div class="text-secondary-body mt-1">"Optimized RAG retrieval system prompt parameters for GPT-4o"</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 reveal-item" style="--reveal-delay: 0.2s;">
+            <div class="bento-card p-4 p-md-5 rounded-4 border border-subtle glass-card h-100">
+              <div class="badge bg-cyan-subtle text-cyan font-mono mb-3 fw-bold">MULTI-MODEL BENCHMARK</div>
+              <h3 class="fw-bold mb-3 text-light">Side-by-Side Playground</h3>
+              <p class="text-body-contrast mb-4">Execute a single prompt against 7+ LLMs simultaneously to evaluate speed, cost, and output consistency.</p>
+              <div class="d-flex align-items-center gap-2 font-mono fs-8 text-cyan fw-bold">
+                <i class="bi bi-speedometer fs-5 text-warning" aria-hidden="true"></i>
+                <span>Automatic Model Selection Engine</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 reveal-item" style="--reveal-delay: 0.3s;">
+            <div class="bento-card p-4 rounded-4 border border-subtle glass-card h-100">
+              <div class="badge bg-blue-subtle text-blue font-mono mb-3 fw-bold">DYNAMIC SCHEMAS</div>
+              <h3 class="fw-bold mb-2 fs-6 text-light">Typed Variables &amp; Logic</h3>
+              <p class="text-body-contrast fs-7 mb-0">Enforce string, array, and boolean types on prompt inputs with default fallbacks and validation checks.</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 reveal-item" style="--reveal-delay: 0.4s;">
+            <div class="bento-card p-4 rounded-4 border border-subtle glass-card h-100">
+              <div class="badge bg-emerald-subtle text-emerald font-mono mb-3 fw-bold">SECURITY FIRST</div>
+              <h3 class="fw-bold mb-2 fs-6 text-light">SOC2 &amp; Zero Data Retention</h3>
+              <p class="text-body-contrast fs-7 mb-0">Your sensitive prompt templates and user context are encrypted in transit and at rest with zero model training leakage.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 reveal-item" style="--reveal-delay: 0.5s;">
+            <div class="bento-card p-4 rounded-4 border border-subtle glass-card h-100">
+              <div class="badge bg-purple-subtle text-purple font-mono mb-3 fw-bold">SDK INTEGRATION</div>
+              <h3 class="fw-bold mb-2 fs-6 text-light">Python &amp; TypeScript SDKs</h3>
+              <p class="text-body-contrast fs-7 mb-0">Install with <code>npm i @elxo/promptpilot</code> or <code>pip install elxo-promptpilot</code> and fetch optimized prompts in 2 lines of code.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. USE CASES SECTION -->
+    <section class="section-padding py-6 border-top border-subtle" aria-labelledby="usecasesHeading">
+      <div class="container">
+        <div class="text-center max-w-700 mx-auto mb-5 reveal-item">
+          <span class="section-tag mb-2">TAILORED FOR TEAMS</span>
+          <h2 class="section-title fw-bold" id="usecasesHeading">Built for Modern AI Innovators.</h2>
+          <p class="section-desc text-body-contrast">Discover how different teams utilize PromptPilot to streamline AI engineering workflows.</p>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-3 reveal-item" style="--reveal-delay: 0.1s;">
+            <div class="usecase-card p-4 rounded-4 border border-subtle glass-card h-100">
+              <div class="usecase-icon mb-3 text-cyan fs-2"><i class="bi bi-code-slash" aria-hidden="true"></i></div>
+              <h3 class="fw-bold fs-6 mb-2 text-light">Software Developers</h3>
+              <p class="text-body-contrast fs-7 mb-0">Separate prompt logic from core codebase. Update system instructions dynamically without redeploying backend services.</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 reveal-item" style="--reveal-delay: 0.2s;">
+            <div class="usecase-card p-4 rounded-4 border border-subtle glass-card h-100">
+              <div class="usecase-icon mb-3 text-purple fs-2"><i class="bi bi-briefcase" aria-hidden="true"></i></div>
+              <h3 class="fw-bold fs-6 mb-2 text-light">AI Agencies</h3>
+              <p class="text-body-contrast fs-7 mb-0">Manage prompt libraries for multiple client projects with isolated workspaces, usage billing, and client sharing links.</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 reveal-item" style="--reveal-delay: 0.3s;">
+            <div class="usecase-card p-4 rounded-4 border border-subtle glass-card h-100">
+              <div class="usecase-icon mb-3 text-blue fs-2"><i class="bi bi-buildings" aria-hidden="true"></i></div>
+              <h3 class="fw-bold fs-6 mb-2 text-light">Enterprise AI Teams</h3>
+              <p class="text-body-contrast fs-7 mb-0">Maintain audit trails, role-based access control (RBAC), SSO authentication, and centralized API expenditure control.</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 reveal-item" style="--reveal-delay: 0.4s;">
+            <div class="usecase-card p-4 rounded-4 border border-subtle glass-card h-100">
+              <div class="usecase-icon mb-3 text-success fs-2"><i class="bi bi-magic" aria-hidden="true"></i></div>
+              <h3 class="fw-bold fs-6 mb-2 text-light">Prompt Engineers</h3>
+              <p class="text-body-contrast fs-7 mb-0">Rapidly experiment with few-shot examples, temperature tuning, token optimization, and output formatting benchmarks.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. TESTIMONIALS SECTION -->
+    <section class="section-padding py-6 border-top border-subtle" aria-labelledby="testimonialsHeading">
+      <div class="container">
+        <div class="text-center max-w-700 mx-auto mb-5 reveal-item">
+          <span class="section-tag mb-2">USER TESTIMONIALS</span>
+          <h2 class="section-title fw-bold" id="testimonialsHeading">Trusted by Frontier AI Engineers Worldwide.</h2>
+          <p class="section-desc text-body-contrast">See how ELXO PromptPilot transforms AI development workflows across tech scale-ups.</p>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-4 reveal-item" style="--reveal-delay: 0.1s;">
+            <div class="testimonial-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex text-warning fs-8 mb-3" aria-label="5 out of 5 stars rating">
+                  <i class="bi bi-star-fill" aria-hidden="true"></i><i class="bi bi-star-fill me-1" aria-hidden="true"></i><i class="bi bi-star-fill me-1" aria-hidden="true"></i><i class="bi bi-star-fill me-1" aria-hidden="true"></i><i class="bi bi-star-fill" aria-hidden="true"></i>
+                </div>
+                <p class="text-body-contrast fs-7 mb-4">"PromptPilot cut our OpenAI token bill by 38% in the first week. The ability to benchmark prompts across Sonnet 3.5 and DeepSeek V3 in one click is a game-changer for our team."</p>
+              </div>
+              <div class="d-flex align-items-center gap-3 border-top border-subtle pt-3">
+                <div class="avatar-circle bg-purple-subtle text-purple font-mono fw-bold">MS</div>
+                <div>
+                  <h3 class="fw-bold mb-0 fs-7 text-light">Marcus Vance</h3>
+                  <span class="text-secondary-body fs-8 font-mono fw-medium">Head of AI Architecture @ Synth Labs</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 reveal-item" style="--reveal-delay: 0.2s;">
+            <div class="testimonial-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex text-warning fs-8 mb-3" aria-label="5 out of 5 stars rating">
+                  <i class="bi bi-star-fill" aria-hidden="true"></i><i class="bi bi-star-fill me-1" aria-hidden="true"></i><i class="bi bi-star-fill me-1" aria-hidden="true"></i><i class="bi bi-star-fill me-1" aria-hidden="true"></i><i class="bi bi-star-fill" aria-hidden="true"></i>
+                </div>
+                <p class="text-body-contrast fs-7 mb-4">"Having version control for prompts with instant rollbacks prevented two major production breaking changes this month. We can't imagine shipping AI features without ELXO."</p>
+              </div>
+              <div class="d-flex align-items-center gap-3 border-top border-subtle pt-3">
+                <div class="avatar-circle bg-cyan-subtle text-cyan font-mono fw-bold">EL</div>
+                <div>
+                  <h3 class="fw-bold mb-0 fs-7 text-light">Elena Lin</h3>
+                  <span class="text-secondary-body fs-8 font-mono fw-medium">Lead AI Engineer @ FlowStack</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 reveal-item" style="--reveal-delay: 0.3s;">
+            <div class="testimonial-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex text-warning fs-8 mb-3" aria-label="5 out of 5 stars rating">
+                  <i class="bi bi-star-fill" aria-hidden="true"></i><i class="bi bi-star-fill me-1" aria-hidden="true"></i><i class="bi bi-star-fill me-1" aria-hidden="true"></i><i class="bi bi-star-fill me-1" aria-hidden="true"></i><i class="bi bi-star-fill" aria-hidden="true"></i>
+                </div>
+                <p class="text-body-contrast fs-7 mb-4">"The UI is exceptionally calm and fast. It feels like Linear meets OpenAI Playground. Our product managers and engineers finally collaborate on prompts smoothly."</p>
+              </div>
+              <div class="d-flex align-items-center gap-3 border-top border-subtle pt-3">
+                <div class="avatar-circle bg-blue-subtle text-blue font-mono fw-bold">DK</div>
+                <div>
+                  <h3 class="fw-bold mb-0 fs-7 text-light">David Kross</h3>
+                  <span class="text-secondary-body fs-8 font-mono fw-medium">CTO @ OmniBot AI</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12. PRICING SECTION -->
+    <section class="section-padding py-6 border-top border-subtle" id="pricing" aria-labelledby="pricingHeading">
+      <div class="container">
+        <div class="text-center max-w-700 mx-auto mb-4 reveal-item">
+          <span class="section-tag mb-2">TRANSPARENT PLANS</span>
+          <h2 class="section-title fw-bold" id="pricingHeading">Simple, Predictable Pricing.</h2>
+          <p class="section-desc text-body-contrast mb-4">Start free with core capabilities, scale seamlessly as your AI prompt traffic grows.</p>
+          
+          <div class="d-inline-flex align-items-center gap-3 p-1-5 bg-dark-pill rounded-pill border border-subtle font-mono fs-8 mb-4">
+            <span class="text-body-contrast px-2 fw-semibold" id="labelMonthly">Monthly Billing</span>
+            <div class="form-check form-switch mb-0">
+              <input class="form-check-input custom-switch" type="checkbox" id="pricingToggle" aria-label="Toggle annual billing discount">
+            </div>
+            <span class="text-cyan fw-bold px-2" id="labelAnnual">Annual Billing <span class="badge bg-success-subtle text-success ms-1">Save 20%</span></span>
+          </div>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+          <div class="col-md-6 col-lg-4 reveal-item" style="--reveal-delay: 0.1s;">
+            <div class="pricing-card p-4 p-md-5 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between position-relative">
+              <div>
+                <h3 class="fw-bold mb-2 fs-5 text-light">Developer</h3>
+                <p class="pricing-desc text-body-contrast fs-7 mb-4">For solo builders &amp; indie developers experimenting with AI prompts.</p>
+                <div class="mb-4">
+                  <span class="price-val fw-extrabold fs-1 text-light" data-monthly="$29" data-annual="$23">$29</span>
+                  <span class="text-secondary-body font-mono fs-8 fw-semibold">/ month</span>
+                </div>
+                <ul class="list-unstyled d-flex flex-column gap-3 fs-7 text-body-contrast mb-4">
+                  <li class="d-flex align-items-center gap-2"><i class="bi bi-check2 text-cyan fs-6" aria-hidden="true"></i> Up to 500 Prompts in Library</li>
+                  <li class="d-flex align-items-center gap-2"><i class="bi bi-check2 text-cyan fs-6" aria-hidden="true"></i> 3 Supported AI Providers</li>
+                  <li class="d-flex align-items-center gap-2"><i class="bi bi-check2 text-cyan fs-6" aria-hidden="true"></i> Basic Token Optimizer</li>
+                  <li class="d-flex align-items-center gap-2"><i class="bi bi-check2 text-cyan fs-6" aria-hidden="true"></i> 100K Proxy API Requests/mo</li>
+                  <li class="d-flex align-items-center gap-2 text-disabled"><i class="bi bi-x fs-6" aria-hidden="true"></i> Git-Style Version Branching</li>
+                </ul>
+              </div>
+              <a href="signup.html" class="btn btn-outline-light rounded-pill py-2-5 font-mono fs-7 fw-semibold w-100">Get Started Free</a>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 reveal-item" style="--reveal-delay: 0.2s;">
+            <div class="pricing-card p-4 p-md-5 rounded-4 border border-purple-glow glass-card h-100 d-flex flex-column justify-content-between position-relative featured-pricing">
+              <div class="featured-badge font-mono">MOST POPULAR</div>
+              <div>
+                <h3 class="fw-bold mb-2 fs-5 text-light">Team Pro</h3>
+                <p class="pricing-desc text-body-contrast fs-7 mb-4">For fast-growing product teams shipping multi-LLM applications.</p>
+                <div class="mb-4">
+                  <span class="price-val fw-extrabold fs-1 text-light" data-monthly="$79" data-annual="$63">$79</span>
+                  <span class="text-secondary-body font-mono fs-8 fw-semibold">/ month</span>
+                </div>
+                <ul class="list-unstyled d-flex flex-column gap-3 fs-7 text-body-contrast mb-4">
+                  <li class="d-flex align-items-center gap-2"><i class="bi bi-check2 text-cyan fs-6" aria-hidden="true"></i> Unlimited Prompts &amp; Versions</li>
+                  <li class="d-flex align-items-center gap-2"><i class="bi bi-check2 text-cyan fs-6" aria-hidden="true"></i> All 7+ AI Providers (ChatGPT, Claude, Gemini, Grok, DeepSeek)</li>
+                  <li class="d-flex align-items-center gap-2"><i class="bi bi-check2 text-cyan fs-6" aria-hidden="true"></i> AI Optimizer Engine &amp; Refactoring</li>
+                  <li class="d-flex align-items-center gap-2"><i class="bi bi-check2 text-cyan fs-6" aria-hidden="true"></i> 2.5M Proxy API Requests/mo</li>
+                  <li class="d-flex align-items-center gap-2"><i class="bi bi-check2 text-cyan fs-6" aria-hidden="true"></i> Team Collaboration &amp; Rollbacks</li>
+                </ul>
+              </div>
+              <a href="signup.html" class="btn btn-glow-primary rounded-pill py-2-5 font-mono fs-7 fw-semibold w-100">Start 14-Day Free Trial</a>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 reveal-item" style="--reveal-delay: 0.3s;">
+            <div class="pricing-card p-4 p-md-5 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between position-relative">
+              <div>
+                <h3 class="fw-bold mb-2 fs-5 text-light">Enterprise</h3>
+                <p class="pricing-desc text-body-contrast fs-7 mb-4">For large organizations requiring custom SLAs, dedicated infrastructure &amp; SSO.</p>
+                <div class="mb-4">
+                  <span class="fw-extrabold fs-1 text-light">Custom</span>
+                  <span class="text-secondary-body font-mono fs-8 fw-semibold">/ tailored billing</span>
+                </div>
+                <ul class="list-unstyled d-flex flex-column gap-3 fs-7 text-body-contrast mb-4">
+                  <li class="d-flex align-items-center gap-2"><i class="bi bi-check2 text-cyan fs-6" aria-hidden="true"></i> Custom Request Throughput</li>
+                  <li class="d-flex align-items-center gap-2"><i class="bi bi-check2 text-cyan fs-6" aria-hidden="true"></i> Self-Hosted &amp; VPC Deployment</li>
+                  <li class="d-flex align-items-center gap-2"><i class="bi bi-check2 text-cyan fs-6" aria-hidden="true"></i> SAML SSO, Okta, &amp; RBAC</li>
+                  <li class="d-flex align-items-center gap-2"><i class="bi bi-check2 text-cyan fs-6" aria-hidden="true"></i> Dedicated Solutions Architect</li>
+                  <li class="d-flex align-items-center gap-2"><i class="bi bi-check2 text-cyan fs-6" aria-hidden="true"></i> 99.99% Uptime Guarantee SLA</li>
+                </ul>
+              </div>
+              <a href="signup.html" class="btn btn-outline-cyan rounded-pill py-2-5 font-mono fs-7 fw-semibold w-100">Contact Enterprise Sales</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 13. FAQ SECTION -->
+    <section class="section-padding py-6 border-top border-subtle" id="faq" aria-labelledby="faqHeading">
+      <div class="container">
+        <div class="text-center max-w-700 mx-auto mb-5 reveal-item">
+          <span class="section-tag mb-2">FREQUENTLY ASKED QUESTIONS</span>
+          <h2 class="section-title fw-bold" id="faqHeading">Everything You Need to Know.</h2>
+          <p class="section-desc text-body-contrast">Have questions about ELXO PromptPilot? We have answers.</p>
+        </div>
+
+        <div class="max-w-800 mx-auto reveal-item" style="--reveal-delay: 0.2s;">
+          <div class="accordion custom-accordion" id="faqAccordion">
+            <!-- FAQ 1: AI Providers -->
+            <div class="accordion-item bg-transparent border border-subtle rounded-4 mb-3 overflow-hidden">
+              <h3 class="accordion-header" id="headingOne">
+                <button class="accordion-button bg-dark-soft text-light font-mono fs-7 fw-bold shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  How does ELXO PromptPilot route requests across 20+ different AI providers?
+                </button>
+              </h3>
+              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-body-contrast fs-7 bg-dark-panel border-top border-subtle">
+                  PromptPilot acts as an ultra-fast, sub-10ms orchestration proxy. You store your prompt templates centrally in PromptPilot, and invoke them via our Python/TypeScript SDKs or REST proxy. PromptPilot automatically formats the prompt according to the selected model's specifications (OpenAI, Anthropic, Gemini, Grok, DeepSeek, Mistral, Ollama) and dispatches the call securely using your configured API keys.
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 2: Security & Data Privacy -->
+            <div class="accordion-item bg-transparent border border-subtle rounded-4 mb-3 overflow-hidden">
+              <h3 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed bg-dark-soft text-light font-mono fs-7 fw-bold shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  Does PromptPilot store my confidential end-user data or prompt payloads?
+                </button>
+              </h3>
+              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-body-contrast fs-7 bg-dark-panel border-top border-subtle">
+                  No. We operate under strict Zero-Data-Retention (ZDR) guidelines for model payloads. Your prompt templates and version metadata are encrypted using AES-256 at rest, while dynamic user variable data is streamed directly to the AI provider without persistent logging on our proxy servers.
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 3: Prompt Optimization -->
+            <div class="accordion-item bg-transparent border border-subtle rounded-4 mb-3 overflow-hidden">
+              <h3 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed bg-dark-soft text-light font-mono fs-7 fw-bold shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  How does the Automatic Prompt Optimizer reduce token cost while preserving accuracy?
+                </button>
+              </h3>
+              <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-body-contrast fs-7 bg-dark-panel border-top border-subtle">
+                  Our optimization engine uses specialized compression AST algorithms trained on millions of prompt execution trace datasets. It analyzes your raw system prompt to eliminate conversational boilerplate, restructure instruction hierarchy, auto-detect template variables, and enforce negative guardrails to maximize model reasoning accuracy while reducing token overhead by up to 66%.
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 4: Prompt Versioning -->
+            <div class="accordion-item bg-transparent border border-subtle rounded-4 mb-3 overflow-hidden">
+              <h3 class="accordion-header" id="headingFour">
+                <button class="accordion-button collapsed bg-dark-soft text-light font-mono fs-7 fw-bold shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                  How does Git-style prompt versioning and branching work?
+                </button>
+              </h3>
+              <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-body-contrast fs-7 bg-dark-panel border-top border-subtle">
+                  Every change to a prompt creates a immutable semantic version commit (e.g. v1.0, v1.1, v2.0). You can create experimental branches (e.g. `feature/claude-3.5-migration`), test them in Prompt Studio, and merge them into `main` with 1-click rollbacks if model performance regresses.
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 5: Team Workspaces -->
+            <div class="accordion-item bg-transparent border border-subtle rounded-4 mb-3 overflow-hidden">
+              <h3 class="accordion-header" id="headingFive">
+                <button class="accordion-button collapsed bg-dark-soft text-light font-mono fs-7 fw-bold shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                  Can my entire engineering and product team collaborate in shared workspaces?
+                </button>
+              </h3>
+              <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-body-contrast fs-7 bg-dark-panel border-top border-subtle">
+                  Yes. Workspaces support role-based access control (Admin, Developer, Viewer). Product managers can edit system instructions directly in Prompt Studio while engineers integrate prompt aliases into application code, ensuring seamless cross-functional alignment.
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 6: Prompt Variables -->
+            <div class="accordion-item bg-transparent border border-subtle rounded-4 mb-3 overflow-hidden">
+              <h3 class="accordion-header" id="headingSix">
+                <button class="accordion-button collapsed bg-dark-soft text-light font-mono fs-7 fw-bold shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                  How are template variables formatted and validated?
+                </button>
+              </h3>
+              <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-body-contrast fs-7 bg-dark-panel border-top border-subtle">
+                  Variables are defined using double curly braces (e.g. `{{user_query}}`, `{{context_docs}}`). PromptPilot automatically detects missing variables before dispatch and validates inputs against optional Zod JSON schemas.
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 7: API Keys -->
+            <div class="accordion-item bg-transparent border border-subtle rounded-4 mb-3 overflow-hidden">
+              <h3 class="accordion-header" id="headingSeven">
+                <button class="accordion-button collapsed bg-dark-soft text-light font-mono fs-7 fw-bold shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                  How are provider API keys stored and secured?
+                </button>
+              </h3>
+              <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-body-contrast fs-7 bg-dark-panel border-top border-subtle">
+                  All provider API keys are encrypted at rest using AES-256-GCM hardware security modules (HSM) and decrypted only in ephemeral memory during sub-10ms proxy execution.
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 8: Data Privacy -->
+            <div class="accordion-item bg-transparent border border-subtle rounded-4 mb-3 overflow-hidden">
+              <h3 class="accordion-header" id="headingEight">
+                <button class="accordion-button collapsed bg-dark-soft text-light font-mono fs-7 fw-bold shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                  Is ELXO PromptPilot SOC2 Type II and HIPAA compliant?
+                </button>
+              </h3>
+              <div id="collapseEight" class="accordion-collapse collapse" aria-labelledby="headingEight" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-body-contrast fs-7 bg-dark-panel border-top border-subtle">
+                  Yes. Enterprise accounts include SOC2 Type II compliance reports, HIPAA Business Associate Agreements (BAA), and dedicated single-tenant VPC routing option.
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 9: Billing -->
+            <div class="accordion-item bg-transparent border border-subtle rounded-4 mb-3 overflow-hidden">
+              <h3 class="accordion-header" id="headingNine">
+                <button class="accordion-button collapsed bg-dark-soft text-light font-mono fs-7 fw-bold shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                  How does monthly billing and seat allocation work?
+                </button>
+              </h3>
+              <div id="collapseNine" class="accordion-collapse collapse" aria-labelledby="headingNine" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-body-contrast fs-7 bg-dark-panel border-top border-subtle">
+                  Plans are billed monthly or annually with a 20% discount. Developer plans start at $29/mo, while Team Pro plans ($99/mo) include 5 seat licenses and 2.5M proxy requests per month.
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 10: Prompt Export -->
+            <div class="accordion-item bg-transparent border border-subtle rounded-4 mb-3 overflow-hidden">
+              <h3 class="accordion-header" id="headingTen">
+                <button class="accordion-button collapsed bg-dark-soft text-light font-mono fs-7 fw-bold shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                  Can I export my prompt templates to my local repository or CI/CD pipelines?
+                </button>
+              </h3>
+              <div id="collapseTen" class="accordion-collapse collapse" aria-labelledby="headingTen" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-body-contrast fs-7 bg-dark-panel border-top border-subtle">
+                  Yes. You can export your entire prompt library to JSON, YAML, or Markdown files with 1 click or automate syncs via the ELXO CLI and GitHub Actions plugin.
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 11: Prompt Import -->
+            <div class="accordion-item bg-transparent border border-subtle rounded-4 mb-3 overflow-hidden">
+              <h3 class="accordion-header" id="headingEleven">
+                <button class="accordion-button collapsed bg-dark-soft text-light font-mono fs-7 fw-bold shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEleven" aria-expanded="false" aria-controls="collapseEleven">
+                  Can I import existing prompts from LangChain, LlamaIndex, or OpenAI Playground?
+                </button>
+              </h3>
+              <div id="collapseEleven" class="accordion-collapse collapse" aria-labelledby="headingEleven" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-body-contrast fs-7 bg-dark-panel border-top border-subtle">
+                  Yes. PromptPilot includes native importers for LangChain PromptTemplates, OpenAI system messages, and raw JSON configurations.
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 12: Rate Limits -->
+            <div class="accordion-item bg-transparent border border-subtle rounded-4 mb-3 overflow-hidden">
+              <h3 class="accordion-header" id="headingTwelve">
+                <button class="accordion-button collapsed bg-dark-soft text-light font-mono fs-7 fw-bold shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwelve" aria-expanded="false" aria-controls="collapseTwelve">
+                  What are the proxy rate limits and SLA latency guarantees?
+                </button>
+              </h3>
+              <div id="collapseTwelve" class="accordion-collapse collapse" aria-labelledby="headingTwelve" data-bs-parent="#faqAccordion">
+                <div class="accordion-body text-body-contrast fs-7 bg-dark-panel border-top border-subtle">
+                  Standard plans support up to 5,000 requests per minute (RPM). Enterprise accounts feature custom throughput up to 100,000 RPM with a 99.99% uptime SLA guarantee.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 14. FINAL CTA SECTION -->
+    <section class="section-padding py-6 border-top border-subtle my-4" aria-labelledby="ctaHeading">
+      <div class="container">
+        <div class="cta-card p-5 rounded-5 border border-purple-glow text-center position-relative overflow-hidden glass-card reveal-item">
+          <div class="cta-aurora" aria-hidden="true"></div>
+          <div class="position-relative z-1 max-w-700 mx-auto">
+            <span class="badge bg-purple-subtle text-purple font-mono mb-3 px-3 py-1-5 rounded-pill fw-bold">READY FOR PRODUCTION</span>
+            <h2 class="hero-title fw-extrabold mb-3 fs-1" id="ctaHeading">Take Control of Your AI Prompts Today.</h2>
+            <p class="text-body-contrast fs-6 mb-4">Join thousands of developers and teams optimizing, versioning, and deploying prompts across frontier AI models.</p>
+            
+            <form class="d-flex flex-column flex-sm-row justify-content-center gap-2 max-w-500 mx-auto mb-3" onsubmit="event.preventDefault(); window.location.href = 'signup.html';">
+              <input type="email" class="form-control form-control-lg bg-dark-soft border-subtle text-light font-mono fs-7 px-3" placeholder="Enter your work email..." required aria-label="Work email address">
+              <button type="submit" class="btn btn-glow-lg rounded-3 px-4 py-3 fw-semibold text-nowrap">
+                <span>Get Started Free</span>
+                <i class="bi bi-arrow-right ms-1" aria-hidden="true"></i>
+              </button>
+            </form>
+            <span class="text-secondary-body fs-8 font-mono fw-semibold">14-day free trial • No credit card required • Instant API setup</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 15. PREMIUM FOOTER -->
+  <footer class="footer py-5 border-top border-subtle bg-dark-foundation position-relative z-1 reveal-item" aria-label="Site Footer">
+    <div class="container">
+      <div class="row g-4 mb-5">
+        <div class="col-lg-4">
+          <a class="navbar-brand d-flex align-items-center gap-2 mb-3" href="#">
+            <div class="brand-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 17L12 22L22 17" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 12L12 17L22 12" stroke="#06B6D4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="brand-text">ELXO <span class="brand-text-accent">PromptPilot</span></span>
+          </a>
+          <p class="text-body-contrast fs-7 mb-4 max-w-300">
+            The next-generation AI prompt management and studio platform for frontier models.
+          </p>
+          <div class="d-flex align-items-center gap-2 font-mono fs-8 text-success bg-dark-pill px-3 py-1-5 rounded-pill d-inline-flex border border-subtle fw-semibold">
+            <span class="status-indicator-dot" aria-hidden="true"></span>
+            <span>All Systems Operational (99.99%)</span>
+          </div>
+        </div>
+
+        <div class="col-6 col-lg-2">
+          <h3 class="fw-bold text-white font-mono fs-7 mb-3">PRODUCT</h3>
+          <ul class="list-unstyled d-flex flex-column gap-2 fs-7">
+            <li><a href="#studio" class="footer-link">Visual Studio</a></li>
+            <li><a href="#optimizer" class="footer-link">Prompt Optimizer</a></li>
+            <li><a href="#providers" class="footer-link">Multi-LLM Playground</a></li>
+            <li><a href="#library" class="footer-link">Prompt Library</a></li>
+            <li><a href="#analytics" class="footer-link">Token Telemetry</a></li>
+          </ul>
+        </div>
+
+        <div class="col-6 col-lg-2">
+          <h3 class="fw-bold text-white font-mono fs-7 mb-3">PROVIDERS</h3>
+          <ul class="list-unstyled d-flex flex-column gap-2 fs-7">
+            <li><a href="#providers" class="footer-link">ChatGPT &amp; OpenAI</a></li>
+            <li><a href="#providers" class="footer-link">Anthropic Claude</a></li>
+            <li><a href="#providers" class="footer-link">Google Gemini</a></li>
+            <li><a href="#providers" class="footer-link">xAI Grok</a></li>
+            <li><a href="#providers" class="footer-link">DeepSeek V3</a></li>
+          </ul>
+        </div>
+
+        <div class="col-6 col-lg-2">
+          <h3 class="fw-bold text-white font-mono fs-7 mb-3">RESOURCES</h3>
+          <ul class="list-unstyled d-flex flex-column gap-2 fs-7">
+            <li><a href="#" class="footer-link">API Documentation</a></li>
+            <li><a href="#" class="footer-link">Python SDK Docs</a></li>
+            <li><a href="#" class="footer-link">TypeScript SDK Docs</a></li>
+            <li><a href="#" class="footer-link">SOC2 Security Report</a></li>
+            <li><a href="#" class="footer-link">System Status</a></li>
+          </ul>
+        </div>
+
+        <div class="col-6 col-lg-2">
+          <h3 class="fw-bold text-white font-mono fs-7 mb-3">COMPANY</h3>
+          <ul class="list-unstyled d-flex flex-column gap-2 fs-7">
+            <li><a href="#" class="footer-link">About ELXO</a></li>
+            <li><a href="#" class="footer-link">Privacy Policy</a></li>
+            <li><a href="#" class="footer-link">Terms of Service</a></li>
+            <li><a href="#" class="footer-link">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="d-flex flex-column flex-sm-row align-items-center justify-content-between border-top border-subtle pt-4 text-secondary-body fs-8 font-mono fw-medium gap-3">
+        <div>&copy; 2026 ELXO Inc. PromptPilot V3.0. All rights reserved.</div>
+        <div class="d-flex gap-3">
+          <a href="#" class="text-secondary-body text-decoration-none hover-white" aria-label="Twitter X"><i class="bi bi-twitter-x fs-6"></i></a>
+          <a href="#" class="text-secondary-body text-decoration-none hover-white" aria-label="GitHub"><i class="bi bi-github fs-6"></i></a>
+          <a href="#" class="text-secondary-body text-decoration-none hover-white" aria-label="Discord"><i class="bi bi-discord fs-6"></i></a>
+          <a href="#" class="text-secondary-body text-decoration-none hover-white" aria-label="LinkedIn"><i class="bi bi-linkedin fs-6"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom Script JS -->
+<script src="js/script.js"></script>
+</body>
+</html>

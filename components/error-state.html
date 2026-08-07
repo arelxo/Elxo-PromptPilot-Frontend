@@ -1,0 +1,9 @@
+<!-- components/error-state.html -->
+<div class="error-state-box p-5 text-center rounded-4 border border-danger glass-card mx-auto max-w-500 my-4" id="appErrorState">
+  <div class="error-icon text-danger fs-1 mb-3"><i class="bi bi-exclamation-triangle-fill"></i></div>
+  <h3 class="fw-bold fs-5 text-light mb-2">Proxy Dispatch Error</h3>
+  <p class="text-body-contrast fs-7 mb-4">Could not connect to model endpoint. Please verify your API key and proxy gateway settings.</p>
+  <button class="btn btn-outline-danger rounded-pill px-4 py-2 font-mono fs-7 fw-semibold d-inline-flex align-items-center gap-2" onclick="location.reload();">
+    <i class="bi bi-arrow-clockwise"></i><span>Retry Connection</span>
+  </button>
+</div>

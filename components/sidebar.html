@@ -1,0 +1,94 @@
+<!-- components/sidebar.html -->
+<aside class="app-sidebar glass-panel position-fixed top-0 start-0 h-100 p-3 z-3 border-end border-subtle d-flex flex-column justify-content-between" id="appSidebar" aria-label="Main Application Sidebar">
+  <div>
+    <!-- App Brand Logo -->
+    <a href="dashboard.html" class="d-flex align-items-center gap-2 mb-4 px-2 text-decoration-none" aria-label="ELXO PromptPilot Dashboard">
+      <div class="brand-icon-box">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="url(#sideGrad1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 17L12 22L22 17" stroke="url(#sideGrad2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 12L12 17L22 12" stroke="url(#sideGrad3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <defs>
+            <linearGradient id="sideGrad1" x1="2" y1="2" x2="22" y2="12" gradientUnits="userSpaceOnUse"><stop stop-color="#3B82F6"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient>
+            <linearGradient id="sideGrad2" x1="2" y1="12" x2="22" y2="22" gradientUnits="userSpaceOnUse"><stop stop-color="#8B5CF6"/><stop offset="1" stop-color="#06B6D4"/></linearGradient>
+            <linearGradient id="sideGrad3" x1="2" y1="7" x2="22" y2="17" gradientUnits="userSpaceOnUse"><stop stop-color="#60A5FA"/><stop offset="1" stop-color="#A78BFA"/></linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <span class="brand-text fs-6">ELXO <span class="brand-text-accent">PromptPilot</span></span>
+    </a>
+
+    <!-- Workspace Switcher Selector -->
+    <div class="dropdown mb-4">
+      <button class="btn btn-dark-pill w-100 d-flex align-items-center justify-content-between p-2 font-mono fs-8 text-light text-start" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="d-flex align-items-center gap-2 overflow-hidden">
+          <span class="avatar-circle bg-purple-subtle text-purple font-mono fw-bold fs-8" style="width: 26px; height: 26px;">PR</span>
+          <span class="text-truncate fw-semibold">Prod Workspace</span>
+        </div>
+        <i class="bi bi-chevron-expand text-secondary-body" aria-hidden="true"></i>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end w-100 fs-7 shadow-lg">
+        <li><a class="dropdown-item active d-flex align-items-center justify-content-between" href="#"><span class="fw-semibold">Prod Workspace</span><i class="bi bi-check2 text-cyan"></i></a></li>
+        <li><a class="dropdown-item" href="#">Staging Environment</a></li>
+        <li><a class="dropdown-item text-cyan fw-bold" href="#"><i class="bi bi-plus-circle me-1"></i> New Workspace</a></li>
+      </ul>
+    </div>
+
+    <!-- Navigation Menu Links -->
+    <nav class="nav flex-column gap-1 sidebar-nav-list" aria-label="Sidebar navigation">
+      <a href="dashboard.html" class="nav-link sidebar-link d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-secondary-body fw-semibold" id="nav-dashboard" data-bs-toggle="tooltip" data-bs-placement="right" title="View production telemetry & metrics">
+        <i class="bi bi-grid-1x2-fill fs-6" aria-hidden="true"></i>
+        <span>Dashboard</span>
+      </a>
+
+      <a href="studio.html" class="nav-link sidebar-link d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-secondary-body fw-semibold" id="nav-studio" data-bs-toggle="tooltip" data-bs-placement="right" title="Multi-LLM playground & variable tuning">
+        <i class="bi bi-sliders fs-6 text-purple" aria-hidden="true"></i>
+        <span>Prompt Studio</span>
+      </a>
+
+      <a href="library.html" class="nav-link sidebar-link d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-secondary-body fw-semibold" id="nav-library" data-bs-toggle="tooltip" data-bs-placement="right" title="Versioned enterprise prompt templates">
+        <i class="bi bi-journal-code fs-6 text-cyan" aria-hidden="true"></i>
+        <span>Prompt Library</span>
+      </a>
+
+      <a href="optimizer.html" class="nav-link sidebar-link d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-secondary-body fw-semibold" id="nav-optimizer" data-bs-toggle="tooltip" data-bs-placement="right" title="AI token refactoring & AST compressor">
+        <i class="bi bi-magic fs-6 text-warning" aria-hidden="true"></i>
+        <span>Prompt Optimizer</span>
+      </a>
+
+      <a href="connections.html" class="nav-link sidebar-link d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-secondary-body fw-semibold" id="nav-connections" data-bs-toggle="tooltip" data-bs-placement="right" title="Manage API keys & sub-10ms proxies">
+        <i class="bi bi-cpu-fill fs-6 text-emerald" aria-hidden="true"></i>
+        <span>AI Connections</span>
+      </a>
+
+      <a href="analytics.html" class="nav-link sidebar-link d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-secondary-body fw-semibold" id="nav-analytics" data-bs-toggle="tooltip" data-bs-placement="right" title="Token cost graphs & throughput observability">
+        <i class="bi bi-graph-up-arrow fs-6 text-blue" aria-hidden="true"></i>
+        <span>Analytics</span>
+      </a>
+
+      <a href="billing.html" class="nav-link sidebar-link d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-secondary-body fw-semibold" id="nav-billing" data-bs-toggle="tooltip" data-bs-placement="right" title="Subscription plan & proxy meter limits">
+        <i class="bi bi-credit-card-2-front-fill fs-6" aria-hidden="true"></i>
+        <span>Billing &amp; Usage</span>
+      </a>
+
+      <a href="settings.html" class="nav-link sidebar-link d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-secondary-body fw-semibold" id="nav-settings" data-bs-toggle="tooltip" data-bs-placement="right" title="Workspace settings & team RBAC">
+        <i class="bi bi-gear-fill fs-6" aria-hidden="true"></i>
+        <span>Settings</span>
+      </a>
+    </nav>
+  </div>
+
+  <!-- Bottom User Profile Footer -->
+  <div class="border-top border-subtle pt-3 mt-3">
+    <a href="profile.html" class="d-flex align-items-center justify-content-between text-decoration-none text-light p-2 rounded-3 sidebar-user-box" id="nav-profile" data-bs-toggle="tooltip" data-bs-placement="top" title="View Alex Vance's User Profile">
+      <div class="d-flex align-items-center gap-2 overflow-hidden">
+        <div class="avatar-circle bg-cyan-subtle text-cyan font-mono fw-bold" style="width: 32px; height: 32px;">AL</div>
+        <div class="overflow-hidden">
+          <div class="fw-bold fs-7 text-truncate">Alex Vance</div>
+          <div class="fs-8 text-secondary-body font-mono text-truncate">alex@elxo.dev</div>
+        </div>
+      </div>
+      <i class="bi bi-box-arrow-right text-secondary-body fs-6" data-bs-toggle="tooltip" data-bs-placement="top" title="Sign Out of Workspace" aria-hidden="true"></i>
+    </a>
+  </div>
+</aside>

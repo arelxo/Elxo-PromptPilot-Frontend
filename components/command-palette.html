@@ -1,0 +1,38 @@
+<!-- components/command-palette.html -->
+<div class="modal fade" id="commandPaletteModal" tabindex="-1" aria-labelledby="commandPaletteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content glass-panel border border-subtle rounded-4 overflow-hidden shadow-2xl">
+      <div class="modal-header border-bottom border-subtle p-3 bg-dark-soft">
+        <div class="input-group input-group-lg border-0">
+          <span class="input-group-text bg-transparent border-0 text-cyan fs-5"><i class="bi bi-terminal-fill"></i></span>
+          <input type="text" class="form-control bg-transparent border-0 text-light font-mono fs-6 shadow-none" id="commandInput" placeholder="Type a command or search..." autoFocus aria-label="Command palette input">
+        </div>
+      </div>
+      <div class="modal-body p-3 max-h-400 overflow-y-auto font-mono fs-7">
+        <div class="text-secondary-body fs-8 fw-bold mb-2">QUICK ACTIONS</div>
+        <div class="list-group list-group-flush gap-1">
+          <a href="studio.html" class="list-group-item list-group-item-action bg-dark-pill text-light rounded-3 d-flex align-items-center justify-content-between p-2.5 border-subtle">
+            <span class="d-flex align-items-center gap-2"><i class="bi bi-plus-circle text-cyan"></i> Create New Prompt Template</span>
+            <kbd class="badge bg-dark-panel text-white font-mono border border-subtle">C</kbd>
+          </a>
+          <a href="optimizer.html" class="list-group-item list-group-item-action bg-dark-pill text-light rounded-3 d-flex align-items-center justify-content-between p-2.5 border-subtle">
+            <span class="d-flex align-items-center gap-2"><i class="bi bi-magic text-warning"></i> Auto-Optimize Active System Prompt</span>
+            <kbd class="badge bg-dark-panel text-white font-mono border border-subtle">O</kbd>
+          </a>
+          <a href="connections.html" class="list-group-item list-group-item-action bg-dark-pill text-light rounded-3 d-flex align-items-center justify-content-between p-2.5 border-subtle">
+            <span class="d-flex align-items-center gap-2"><i class="bi bi-key text-emerald"></i> Add New Model API Key</span>
+            <kbd class="badge bg-dark-panel text-white font-mono border border-subtle">K</kbd>
+          </a>
+        </div>
+
+        <div class="text-secondary-body fs-8 fw-bold mt-3 mb-2">NAVIGATION</div>
+        <div class="row g-2">
+          <div class="col-6"><a href="dashboard.html" class="p-2 rounded bg-dark-panel border border-subtle d-block text-decoration-none text-light"><i class="bi bi-grid-1x2 me-1 text-purple"></i> Dashboard</a></div>
+          <div class="col-6"><a href="analytics.html" class="p-2 rounded bg-dark-panel border border-subtle d-block text-decoration-none text-light"><i class="bi bi-graph-up me-1 text-blue"></i> Analytics</a></div>
+          <div class="col-6"><a href="library.html" class="p-2 rounded bg-dark-panel border border-subtle d-block text-decoration-none text-light"><i class="bi bi-journal-code me-1 text-cyan"></i> Library</a></div>
+          <div class="col-6"><a href="settings.html" class="p-2 rounded bg-dark-panel border border-subtle d-block text-decoration-none text-light"><i class="bi bi-gear me-1 text-emerald"></i> Settings</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

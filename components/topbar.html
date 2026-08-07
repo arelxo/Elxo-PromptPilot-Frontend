@@ -1,0 +1,32 @@
+<!-- components/topbar.html -->
+<header class="app-topbar glass-panel position-sticky top-0 z-2 py-2.5 px-4 border-bottom border-subtle d-flex align-items-center justify-content-between">
+  <!-- Left Search / Command Bar Trigger -->
+  <div class="d-flex align-items-center gap-3">
+    <button class="btn btn-dark-pill px-3 py-1-5 font-mono fs-8 text-secondary-body d-flex align-items-center gap-2 border border-subtle" type="button" data-bs-toggle="modal" data-bs-target="#commandPaletteModal" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Quick Search & Command Palette (Ctrl + K)">
+      <i class="bi bi-search text-cyan" aria-hidden="true"></i>
+      <span>Search prompts, models, docs...</span>
+      <kbd class="badge bg-dark-panel text-white font-mono border border-subtle ms-2">Ctrl K</kbd>
+    </button>
+  </div>
+
+  <!-- Right Actions & Notifications -->
+  <div class="d-flex align-items-center gap-3">
+    <!-- Live Proxy Telemetry Indicator -->
+    <div class="d-none d-md-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-dark-pill border border-subtle font-mono fs-8 text-success fw-semibold" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Proxy Gateway Latency < 10ms (Global Anycast)">
+      <span class="status-indicator-dot" aria-hidden="true"></span>
+      <span>Sub-10ms Proxy Active</span>
+    </div>
+
+    <!-- Notification Bell Drawer Trigger -->
+    <button class="btn btn-icon btn-dark-pill position-relative text-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#notificationCenterOffcanvas" aria-controls="notificationCenterOffcanvas" aria-label="Open notifications" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View Workspace Notifications">
+      <i class="bi bi-bell fs-6" aria-hidden="true"></i>
+      <span class="position-absolute top-0 start-100 translate-middle p-1 bg-cyan border border-dark rounded-circle" aria-hidden="true"></span>
+    </button>
+
+    <!-- Create Prompt Action Button -->
+    <a href="studio.html" class="btn btn-accent-gradient btn-sm rounded-pill px-3 py-1.5 font-mono fs-7 fw-semibold d-inline-flex align-items-center gap-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Create a new system prompt template">
+      <i class="bi bi-plus-lg" aria-hidden="true"></i>
+      <span>New Prompt</span>
+    </a>
+  </div>
+</header>

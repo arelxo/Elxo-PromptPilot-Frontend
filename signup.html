@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Workspace — ELXO PromptPilot</title>
+  <meta name="description" content="Create your ELXO PromptPilot workspace to orchestrate, benchmark, and optimize enterprise AI prompts.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/signup.css">
+</head>
+<body class="bg-dark-foundation text-light min-vh-100 d-flex align-items-center justify-content-center py-5">
+
+  <!-- 6-Layer Background -->
+  <div class="aurora-container position-fixed w-100 h-100 top-0 start-0 pe-none z-0">
+    <div class="cursor-spotlight" id="cursorSpotlight"></div>
+    <div class="aurora-blob blob-purple parallax-layer" data-speed="0.4"></div>
+    <div class="gradient-mesh-layer parallax-layer" data-speed="0.6"></div>
+    <div class="aurora-blob blob-cyan parallax-layer" data-speed="1.1"></div>
+    <div class="grid-overlay parallax-layer" data-speed="0.5"></div>
+    <div class="noise-overlay"></div>
+  </div>
+
+  <main class="container position-relative z-1">
+    <div class="auth-card glass-panel mx-auto p-4 p-sm-5 rounded-5 border border-subtle shadow-2xl max-w-550 reveal-item">
+      
+      <!-- Brand Header -->
+      <div class="text-center mb-4">
+        <a href="index.html" class="d-inline-flex align-items-center gap-2 mb-3 text-decoration-none" aria-label="PromptPilot Home">
+          <div class="brand-icon-box">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#3B82F6" stroke-width="2"/>
+              <path d="M2 17L12 22L22 17" stroke="#8B5CF6" stroke-width="2"/>
+              <path d="M2 12L12 17L22 12" stroke="#06B6D4" stroke-width="2"/>
+            </svg>
+          </div>
+          <span class="brand-text fs-4">ELXO <span class="brand-text-accent">PromptPilot</span></span>
+        </a>
+        <h1 class="fw-bold fs-4 text-light mb-1" id="stepperTitle">Create your workspace</h1>
+        <p class="text-body-contrast fs-7 mb-0" id="stepperDesc">Step 1: Account Information</p>
+      </div>
+
+      <!-- Animated 5-Step Stepper -->
+      <div class="stepper-nav mb-4" id="signupStepper" aria-label="Signup steps progress">
+        <div class="stepper-progress-line" id="stepperProgressLine" style="width: 0%;"></div>
+        <div class="stepper-step active" data-step="1" data-bs-toggle="tooltip" title="Step 1: Account Info"><i class="bi bi-person-fill"></i></div>
+        <div class="stepper-step" data-step="2" data-bs-toggle="tooltip" title="Step 2: Workspace Setup"><i class="bi bi-briefcase-fill"></i></div>
+        <div class="stepper-step" data-step="3" data-bs-toggle="tooltip" title="Step 3: AI Provider"><i class="bi bi-cpu-fill"></i></div>
+        <div class="stepper-step" data-step="4" data-bs-toggle="tooltip" title="Step 4: Preferences"><i class="bi bi-sliders"></i></div>
+        <div class="stepper-step" data-step="5" data-bs-toggle="tooltip" title="Step 5: Finish & Launch"><i class="bi bi-check-lg"></i></div>
+      </div>
+
+      <!-- Multi-Step Registration Form Container -->
+      <form id="signupForm" novalidate>
+        
+        <!-- STEP 1: Account Info -->
+        <div class="step-pane active" id="stepPane1">
+          <div class="mb-3">
+            <label for="fullName" class="form-label font-mono fs-8 fw-bold text-body-contrast">FULL NAME</label>
+            <input type="text" class="form-control font-mono fs-7" id="fullName" placeholder="Alex Vance" required>
+            <div class="invalid-feedback font-mono fs-8 text-danger mt-1">Full name is required.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="signupEmail" class="form-label font-mono fs-8 fw-bold text-body-contrast">WORK EMAIL</label>
+            <div class="input-group">
+              <span class="input-group-text bg-dark-soft border-subtle text-secondary-body"><i class="bi bi-envelope"></i></span>
+              <input type="email" class="form-control font-mono fs-7" id="signupEmail" placeholder="alex@company.com" required>
+            </div>
+            <div class="invalid-feedback font-mono fs-8 text-danger mt-1">Valid work email is required.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="signupPassword" class="form-label font-mono fs-8 fw-bold text-body-contrast">PASSWORD</label>
+            <div class="input-group">
+              <span class="input-group-text bg-dark-soft border-subtle text-secondary-body"><i class="bi bi-lock"></i></span>
+              <input type="password" class="form-control font-mono fs-7" id="signupPassword" placeholder="Min. 8 characters" required>
+            </div>
+            <div class="progress custom-progress mt-2" style="height: 4px;">
+              <div class="progress-bar" role="progressbar" id="strengthBar" style="width: 0%;"></div>
+            </div>
+            <div class="d-flex justify-content-between font-mono fs-8 text-secondary-body mt-1">
+              <span>Strength: <strong id="strengthLabel" class="text-muted">None</strong></span>
+              <span>Min. 8 chars</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: Workspace Setup -->
+        <div class="step-pane d-none" id="stepPane2">
+          <div class="mb-3">
+            <label for="workspaceName" class="form-label font-mono fs-8 fw-bold text-body-contrast">WORKSPACE NAME</label>
+            <input type="text" class="form-control font-mono fs-7" id="workspaceName" placeholder="Synth Labs AI" required>
+            <div class="invalid-feedback font-mono fs-8 text-danger mt-1">Workspace name is required.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="workspaceSlug" class="form-label font-mono fs-8 fw-bold text-body-contrast">WORKSPACE DOMAIN SLUG</label>
+            <div class="input-group">
+              <input type="text" class="form-control font-mono fs-7 text-cyan fw-bold" id="workspaceSlug" placeholder="synth-labs" readonly>
+              <span class="input-group-text bg-dark-soft border-subtle font-mono fs-8 text-secondary-body">.elxo.dev</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: AI Provider -->
+        <div class="step-pane d-none" id="stepPane3">
+          <label class="form-label font-mono fs-8 fw-bold text-body-contrast mb-3">SELECT PRIMARY AI PROVIDER</label>
+          <div class="d-grid gap-2 mb-3">
+            <div class="p-3 rounded-3 bg-dark-panel border border-subtle d-flex align-items-center justify-content-between provider-option active" data-provider="openai">
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-emerald-subtle text-emerald">OpenAI</span>
+                <span class="fw-bold fs-7 text-light">ChatGPT-4o</span>
+              </div>
+              <i class="bi bi-check-circle-fill text-cyan fs-5"></i>
+            </div>
+            <div class="p-3 rounded-3 bg-dark-panel border border-subtle d-flex align-items-center justify-content-between provider-option" data-provider="anthropic">
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-purple-subtle text-purple">Anthropic</span>
+                <span class="fw-bold fs-7 text-light">Claude 3.5 Sonnet</span>
+              </div>
+              <i class="bi bi-circle text-secondary-body fs-5"></i>
+            </div>
+            <div class="p-3 rounded-3 bg-dark-panel border border-subtle d-flex align-items-center justify-content-between provider-option" data-provider="deepseek">
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-cyan-subtle text-cyan">DeepSeek</span>
+                <span class="fw-bold fs-7 text-light">DeepSeek V3</span>
+              </div>
+              <i class="bi bi-circle text-secondary-body fs-5"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4: Preferences -->
+        <div class="step-pane d-none" id="stepPane4">
+          <div class="mb-3">
+            <label class="form-label font-mono fs-8 fw-bold text-body-contrast">DEFAULT TEMPERATURE: <span id="prefTempLabel" class="text-cyan">0.30</span></label>
+            <input type="range" class="form-range custom-range" id="prefTempRange" min="0" max="1" step="0.05" value="0.30">
+          </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input custom-switch" type="checkbox" id="prefTelemetry" checked>
+            <label class="form-check-label fs-7 text-body-contrast ms-1" for="prefTelemetry">Enable Real-Time Telemetry Alerts</label>
+          </div>
+        </div>
+
+        <!-- STEP 5: Finish -->
+        <div class="step-pane d-none" id="stepPane5">
+          <div class="p-3 rounded-3 bg-dark-soft border border-subtle mb-3 font-mono fs-8">
+            <div class="text-cyan fw-bold mb-1"><i class="bi bi-check2-circle me-1"></i> Setup Summary</div>
+            <div class="text-body-contrast">Account: <span id="sumName" class="text-light fw-bold">Alex Vance</span></div>
+            <div class="text-body-contrast">Workspace: <span id="sumWorkspace" class="text-light fw-bold">Synth Labs AI</span></div>
+            <div class="text-body-contrast">Provider: <span id="sumProvider" class="text-cyan fw-bold">ChatGPT-4o</span></div>
+          </div>
+
+          <div class="form-check mb-4">
+            <input class="form-check-input custom-switch" type="checkbox" id="termsCheck" required>
+            <label class="form-check-label fs-7 text-secondary-body ms-1" for="termsCheck">
+              I agree to the <a href="#" class="text-cyan text-decoration-none fw-semibold">Terms of Service</a> and <a href="#" class="text-cyan text-decoration-none fw-semibold">Privacy Policy</a>
+            </label>
+            <div class="invalid-feedback font-mono fs-8 text-danger mt-1">You must accept the terms to continue.</div>
+          </div>
+        </div>
+
+        <!-- Stepper Navigation Controls (Previous / Next / Submit) -->
+        <div class="d-flex align-items-center justify-content-between mt-4 border-top border-subtle pt-3">
+          <button type="button" class="btn btn-dark-pill px-4 py-2 font-mono fs-7 text-secondary-body d-none" id="btnPrevStep">
+            <i class="bi bi-arrow-left me-1"></i> Previous
+          </button>
+          
+          <button type="button" class="btn btn-accent-gradient rounded-pill px-4 py-2 font-mono fs-7 fw-semibold ms-auto" id="btnNextStep">
+            <span>Next Step</span> <i class="bi bi-arrow-right ms-1"></i>
+          </button>
+
+          <button type="submit" class="btn btn-glow-lg rounded-pill py-2.5 px-4 fw-semibold font-mono fs-7 d-none" id="btnSignupSubmit">
+            <span>Create Workspace &amp; Launch</span> <i class="bi bi-rocket-takeoff ms-1"></i>
+          </button>
+        </div>
+      </form>
+
+      <!-- Auth Footer Link -->
+      <div class="text-center mt-4 border-top border-subtle pt-3 fs-7 text-secondary-body">
+        Already have a workspace? <a href="login.html" class="text-cyan fw-bold text-decoration-none">Sign in instead</a>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/signup.js"></script>
+</body>
+</html>

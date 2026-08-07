@@ -1,0 +1,41 @@
+<!-- components/notification-center.html -->
+<div class="offcanvas offcanvas-end glass-panel text-light border-start border-subtle" tabindex="-1" id="notificationCenterOffcanvas" aria-labelledby="notificationCenterLabel">
+  <div class="offcanvas-header border-bottom border-subtle p-3 bg-dark-soft">
+    <h5 class="offcanvas-title font-mono fs-6 fw-bold text-light" id="notificationCenterLabel">
+      <i class="bi bi-bell-fill me-2 text-cyan"></i>Notification Center
+    </h5>
+    <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body p-3 font-mono fs-8">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <span class="text-secondary-body fw-bold">UNREAD (3)</span>
+      <button class="btn btn-link btn-sm text-cyan text-decoration-none p-0">Mark all as read</button>
+    </div>
+
+    <div class="d-flex flex-column gap-2">
+      <div class="p-3 rounded-3 bg-dark-panel border border-subtle">
+        <div class="d-flex justify-content-between text-cyan fw-bold mb-1">
+          <span>Model Proxy Alert</span>
+          <span class="text-secondary-body fs-8">5m ago</span>
+        </div>
+        <div class="text-body-contrast">DeepSeek V3 proxy latency dropped to 88ms (34% faster).</div>
+      </div>
+
+      <div class="p-3 rounded-3 bg-dark-panel border border-subtle">
+        <div class="d-flex justify-content-between text-purple fw-bold mb-1">
+          <span>Prompt Commit Merged</span>
+          <span class="text-secondary-body fs-8">1h ago</span>
+        </div>
+        <div class="text-body-contrast">Alex Vance merged branch <code>feature/rag-opt-v3</code> into production.</div>
+      </div>
+
+      <div class="p-3 rounded-3 bg-dark-panel border border-subtle">
+        <div class="d-flex justify-content-between text-success fw-bold mb-1">
+          <span>Monthly Billing Invoice</span>
+          <span class="text-secondary-body fs-8">1d ago</span>
+        </div>
+        <div class="text-body-contrast">Team Pro annual plan renewed successfully. Invoice #INV-8921.</div>
+      </div>
+    </div>
+  </div>
+</div>

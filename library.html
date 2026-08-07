@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt Library — ELXO PromptPilot</title>
+  <meta name="description" content="Enterprise prompt template library for versioned, production-ready AI system instructions.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="css/library.css">
+</head>
+<body class="bg-dark-foundation text-light">
+
+  <div class="aurora-container position-fixed w-100 h-100 top-0 start-0 pe-none z-0">
+    <div class="cursor-spotlight" id="cursorSpotlight"></div>
+    <div class="aurora-blob blob-purple parallax-layer" data-speed="0.4"></div>
+    <div class="gradient-mesh-layer parallax-layer" data-speed="0.6"></div>
+    <div class="grid-overlay parallax-layer" data-speed="0.5"></div>
+    <div class="noise-overlay"></div>
+  </div>
+
+  <div class="app-layout position-relative z-1">
+    
+    <!-- Sidebar Container -->
+    <div id="sidebarContainer">
+      <aside class="app-sidebar glass-panel position-fixed top-0 start-0 h-100 p-3 z-3 border-end border-subtle d-flex flex-column justify-content-between">
+        <div>
+          <a href="dashboard.html" class="d-flex align-items-center gap-2 mb-4 px-2 text-decoration-none">
+            <div class="brand-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#3B82F6" stroke-width="2"/>
+                <path d="M2 17L12 22L22 17" stroke="#8B5CF6" stroke-width="2"/>
+                <path d="M2 12L12 17L22 12" stroke="#06B6D4" stroke-width="2"/>
+              </svg>
+            </div>
+            <span class="brand-text fs-6">ELXO <span class="brand-text-accent">PromptPilot</span></span>
+          </a>
+
+          <div class="dropdown mb-4">
+            <button class="btn btn-dark-pill w-100 d-flex align-items-center justify-content-between p-2 font-mono fs-8 text-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <div class="d-flex align-items-center gap-2">
+                <span class="avatar-circle bg-purple-subtle text-purple font-mono fw-bold fs-8" style="width: 26px; height: 26px;">PR</span>
+                <span class="fw-semibold">Prod Workspace</span>
+              </div>
+              <i class="bi bi-chevron-expand text-secondary-body"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end w-100 fs-7 shadow-lg">
+              <li><a class="dropdown-item active d-flex align-items-center justify-content-between" href="#"><span class="fw-semibold">Prod Workspace</span><i class="bi bi-check2 text-cyan"></i></a></li>
+              <li><a class="dropdown-item" href="#">Staging Environment</a></li>
+              <li><a class="dropdown-item text-cyan fw-bold" href="#"><i class="bi bi-plus-circle me-1"></i> New Workspace</a></li>
+            </ul>
+          </div>
+
+          <nav class="nav flex-column gap-1 sidebar-nav-list">
+            <a href="dashboard.html" class="nav-link sidebar-link d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-secondary-body fw-semibold">
+              <i class="bi bi-grid-1x2-fill fs-6"></i><span>Dashboard</span>
+            </a>
+            <a href="studio.html" class="nav-link sidebar-link d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-secondary-body fw-semibold">
+              <i class="bi bi-sliders fs-6 text-purple"></i><span>Prompt Studio</span>
+            </a>
+            <a href="library.html" class="nav-link sidebar-link active d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-light fw-semibold">
+              <i class="bi bi-journal-code fs-6 text-cyan"></i><span>Prompt Library</span>
+            </a>
+            <a href="optimizer.html" class="nav-link sidebar-link d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-secondary-body fw-semibold">
+              <i class="bi bi-magic fs-6 text-warning"></i><span>Prompt Optimizer</span>
+            </a>
+            <a href="analytics.html" class="nav-link sidebar-link d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-secondary-body fw-semibold">
+              <i class="bi bi-graph-up-arrow fs-6 text-blue"></i><span>Analytics</span>
+            </a>
+            <a href="settings.html" class="nav-link sidebar-link d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 text-secondary-body fw-semibold">
+              <i class="bi bi-gear-fill fs-6"></i><span>Settings</span>
+            </a>
+          </nav>
+        </div>
+
+        <div class="border-top border-subtle pt-3 mt-3">
+          <a href="profile.html" class="d-flex align-items-center justify-content-between text-decoration-none text-light p-2 rounded-3 sidebar-user-box">
+            <div class="d-flex align-items-center gap-2">
+              <div class="avatar-circle bg-cyan-subtle text-cyan font-mono fw-bold" style="width: 32px; height: 32px;">AL</div>
+              <div>
+                <div class="fw-bold fs-7">Alex Vance</div>
+                <div class="fs-8 text-secondary-body font-mono">alex@elxo.dev</div>
+              </div>
+            </div>
+            <i class="bi bi-box-arrow-right text-secondary-body fs-6" title="Sign Out"></i>
+          </a>
+        </div>
+      </aside>
+    </div>
+
+    <div class="main-content-wrapper">
+      
+      <header class="app-topbar glass-panel position-sticky top-0 z-2 py-2.5 px-4 border-bottom border-subtle d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+          <span class="fs-6 fw-bold font-mono text-light">Enterprise Prompt Library</span>
+          <span class="badge bg-purple-subtle text-purple font-mono fs-8">20 Templates Catalog</span>
+        </div>
+
+        <div class="d-flex align-items-center gap-2">
+          <a href="studio.html" class="btn btn-accent-gradient btn-sm rounded-pill px-3 py-1.5 font-mono fs-7 fw-semibold">
+            <i class="bi bi-plus-lg me-1"></i> New Template
+          </a>
+        </div>
+      </header>
+
+      <div class="p-4 p-md-5">
+        
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+          <div>
+            <h1 class="fw-bold fs-4 text-light mb-1">Production Prompt Repository</h1>
+            <p class="text-body-contrast fs-7 mb-0">Version-controlled prompt templates for Support Agents, RAG, Code Refactoring &amp; Automation</p>
+          </div>
+          
+          <div class="input-group max-w-300">
+            <span class="input-group-text bg-dark-soft border-subtle text-secondary-body"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control font-mono fs-7" id="librarySearchInput" placeholder="Search templates..." aria-label="Search prompt templates">
+          </div>
+        </div>
+
+        <!-- Filter Category Pills -->
+        <div class="d-flex gap-2 overflow-x-auto pb-3 mb-4" id="libraryFilterPills">
+          <button class="btn btn-sm btn-dark-pill active" data-category="all" type="button">All Templates (20)</button>
+          <button class="btn btn-sm btn-dark-pill" data-category="support" type="button">Support Agents (12)</button>
+          <button class="btn btn-sm btn-dark-pill" data-category="code" type="button">Code &amp; Security (3)</button>
+          <button class="btn btn-sm btn-dark-pill" data-category="rag" type="button">RAG &amp; Data (2)</button>
+          <button class="btn btn-sm btn-dark-pill" data-category="marketing" type="button">Marketing &amp; Sales (3)</button>
+        </div>
+
+        <div class="row g-4 pb-4" id="libraryCardsGrid">
+          
+          <!-- 1. Customer Support Assistant -->
+          <div class="col-md-6 col-lg-4 library-card-item" data-category="support">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-purple-subtle text-purple font-mono fs-8 fw-bold">Support Agent</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v2.1 • Jul 24</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">Customer Support Assistant</h3>
+                <p class="text-body-contrast fs-7 mb-3">Empathetic tier-1 SaaS support agent responding to customer issues with strict SLA compliance.</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{user_issue}}</span>
+                  <span class="var-badge fs-8">{{account_tier}}</span>
+                </div>
+              </div>
+              <div class="border-top border-subtle pt-3 mt-2 d-flex align-items-center justify-content-between font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>4.9 (420)</span>
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light btn-copy-template"><i class="bi bi-copy"></i></button>
+                  <a href="studio.html" class="btn btn-sm btn-accent-gradient text-light px-3 btn-open-studio">Open Studio</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Refund Handling Agent -->
+          <div class="col-md-6 col-lg-4 library-card-item" data-category="support">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-purple-subtle text-purple font-mono fs-8 fw-bold">Support Agent</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v1.4 • Jul 22</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">Refund Handling Agent</h3>
+                <p class="text-body-contrast fs-7 mb-3">Validates refund requests against company policy matrix and outputs Stripe refund parameters.</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{transaction_id}}</span>
+                  <span class="var-badge fs-8">{{refund_reason}}</span>
+                </div>
+              </div>
+              <div class="border-top border-subtle pt-3 mt-2 d-flex align-items-center justify-content-between font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>4.8 (310)</span>
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light btn-copy-template"><i class="bi bi-copy"></i></button>
+                  <a href="studio.html" class="btn btn-sm btn-accent-gradient text-light px-3 btn-open-studio">Open Studio</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Order Tracking Assistant -->
+          <div class="col-md-6 col-lg-4 library-card-item" data-category="support">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-purple-subtle text-purple font-mono fs-8 fw-bold">Support Agent</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v3.0 • Jul 20</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">Order Tracking Assistant</h3>
+                <p class="text-body-contrast fs-7 mb-3">Queries e-commerce fulfillment APIs and delivers real-time carrier tracking updates.</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{order_number}}</span>
+                  <span class="var-badge fs-8">{{postal_code}}</span>
+                </div>
+              </div>
+              <div class="border-top border-subtle pt-3 mt-2 d-flex align-items-center justify-content-between font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>5.0 (512)</span>
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light btn-copy-template"><i class="bi bi-copy"></i></button>
+                  <a href="studio.html" class="btn btn-sm btn-accent-gradient text-light px-3 btn-open-studio">Open Studio</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Live Chat Agent -->
+          <div class="col-md-6 col-lg-4 library-card-item" data-category="support">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-purple-subtle text-purple font-mono fs-8 fw-bold">Support Agent</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v1.9 • Jul 18</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">Live Chat Conversational Agent</h3>
+                <p class="text-body-contrast fs-7 mb-3">Low-latency live website chat agent trained to qualify leads and answer product questions.</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{visitor_intent}}</span>
+                  <span class="var-badge fs-8">{{page_context}}</span>
+                </div>
+              </div>
+              <div class="border-top border-subtle pt-3 mt-2 d-flex align-items-center justify-content-between font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>4.9 (280)</span>
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light btn-copy-template"><i class="bi bi-copy"></i></button>
+                  <a href="studio.html" class="btn btn-sm btn-accent-gradient text-light px-3 btn-open-studio">Open Studio</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. SaaS Technical Support -->
+          <div class="col-md-6 col-lg-4 library-card-item" data-category="support">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-purple-subtle text-purple font-mono fs-8 fw-bold">Support Agent</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v2.5 • Jul 15</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">SaaS Technical Support Engineer</h3>
+                <p class="text-body-contrast fs-7 mb-3">Troubleshoots API webhooks, OAuth tokens, and rate limit errors with step-by-step code snippets.</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{error_code}}</span>
+                  <span class="var-badge fs-8">{{stack_trace}}</span>
+                </div>
+              </div>
+              <div class="border-top border-subtle pt-3 mt-2 d-flex align-items-center justify-content-between font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>5.0 (640)</span>
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light btn-copy-template"><i class="bi bi-copy"></i></button>
+                  <a href="studio.html" class="btn btn-sm btn-accent-gradient text-light px-3 btn-open-studio">Open Studio</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. IT Help Desk -->
+          <div class="col-md-6 col-lg-4 library-card-item" data-category="support">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-purple-subtle text-purple font-mono fs-8 fw-bold">Support Agent</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v1.2 • Jul 12</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">IT Help Desk Technician</h3>
+                <p class="text-body-contrast fs-7 mb-3">Internal IT agent guiding employees through VPN setup, password resets, and hardware requests.</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{os_type}}</span>
+                  <span class="var-badge fs-8">{{ticket_type}}</span>
+                </div>
+              </div>
+              <div class="border-top border-subtle pt-3 mt-2 d-flex align-items-center justify-content-between font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>4.7 (195)</span>
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light btn-copy-template"><i class="bi bi-copy"></i></button>
+                  <a href="studio.html" class="btn btn-sm btn-accent-gradient text-light px-3 btn-open-studio">Open Studio</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 7. CRM Assistant -->
+          <div class="col-md-6 col-lg-4 library-card-item" data-category="support">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-purple-subtle text-purple font-mono fs-8 fw-bold">Support Agent</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v2.0 • Jul 10</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">CRM Contact Enrichment Agent</h3>
+                <p class="text-body-contrast fs-7 mb-3">Extracts company size, tech stack, and intent score from raw sales inquiry emails.</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{email_text}}</span>
+                </div>
+              </div>
+              <div class="border-top border-subtle pt-3 mt-2 d-flex align-items-center justify-content-between font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>4.8 (340)</span>
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light btn-copy-template"><i class="bi bi-copy"></i></button>
+                  <a href="studio.html" class="btn btn-sm btn-accent-gradient text-light px-3 btn-open-studio">Open Studio</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 8. Ticket Classifier -->
+          <div class="col-md-6 col-lg-4 library-card-item" data-category="support">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-purple-subtle text-purple font-mono fs-8 fw-bold">Support Agent</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v1.7 • Jul 08</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">Support Ticket Classifier &amp; Triage</h3>
+                <p class="text-body-contrast fs-7 mb-3">Categorizes incoming Zendesk tickets into urgency buckets (P0, P1, P2) with routing tags.</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{ticket_subject}}</span>
+                  <span class="var-badge fs-8">{{body}}</span>
+                </div>
+              </div>
+              <div class="border-top border-subtle pt-3 mt-2 d-flex align-items-center justify-content-between font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>4.9 (480)</span>
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light btn-copy-template"><i class="bi bi-copy"></i></button>
+                  <a href="studio.html" class="btn btn-sm btn-accent-gradient text-light px-3 btn-open-studio">Open Studio</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 9. Escalation Manager -->
+          <div class="col-md-6 col-lg-4 library-card-item" data-category="support">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-purple-subtle text-purple font-mono fs-8 fw-bold">Support Agent</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v2.3 • Jul 05</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">Customer Escalation Manager</h3>
+                <p class="text-body-contrast fs-7 mb-3">De-escalates frustrated customers with calm executive communication and priority action steps.</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{complaint}}</span>
+                  <span class="var-badge fs-8">{{customer_tier}}</span>
+                </div>
+              </div>
+              <div class="border-top border-subtle pt-3 mt-2 d-flex align-items-center justify-content-between font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>4.9 (310)</span>
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light btn-copy-template"><i class="bi bi-copy"></i></button>
+                  <a href="studio.html" class="btn btn-sm btn-accent-gradient text-light px-3 btn-open-studio">Open Studio</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 10. Knowledge Base Assistant -->
+          <div class="col-md-6 col-lg-4 library-card-item" data-category="support">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-purple-subtle text-purple font-mono fs-8 fw-bold">Support Agent</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v1.5 • Jul 03</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">Knowledge Base Article Assistant</h3>
+                <p class="text-body-contrast fs-7 mb-3">Converts resolved Slack support threads into clean, searchable documentation articles.</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{slack_thread}}</span>
+                </div>
+              </div>
+              <div class="border-top border-subtle pt-3 mt-2 d-flex align-items-center justify-content-between font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>4.8 (220)</span>
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light btn-copy-template"><i class="bi bi-copy"></i></button>
+                  <a href="studio.html" class="btn btn-sm btn-accent-gradient text-light px-3 btn-open-studio">Open Studio</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 11. FAQ Generator -->
+          <div class="col-md-6 col-lg-4 library-card-item" data-category="support">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-purple-subtle text-purple font-mono fs-8 fw-bold">Support Agent</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v1.1 • Jun 30</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">Product FAQ Generator</h3>
+                <p class="text-body-contrast fs-7 mb-3">Generates structured FAQ schema JSON from raw product specifications and release notes.</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{release_notes}}</span>
+                </div>
+              </div>
+              <div class="border-top border-subtle pt-3 mt-2 d-flex align-items-center justify-content-between font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>4.7 (180)</span>
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light btn-copy-template"><i class="bi bi-copy"></i></button>
+                  <a href="studio.html" class="btn btn-sm btn-accent-gradient text-light px-3 btn-open-studio">Open Studio</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 12. Customer Satisfaction Follow-up -->
+          <div class="col-md-6 col-lg-4 library-card-item" data-category="support">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-purple-subtle text-purple font-mono fs-8 fw-bold">Support Agent</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v2.2 • Jun 28</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">CSAT Survey Follow-up Agent</h3>
+                <p class="text-body-contrast fs-7 mb-3">Drafts personalized follow-up emails based on post-ticket CSAT ratings (Detractor vs Promoter).</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{csat_score}}</span>
+                  <span class="var-badge fs-8">{{feedback}}</span>
+                </div>
+              </div>
+              <div class="border-top border-subtle pt-3 mt-2 d-flex align-items-center justify-content-between font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>4.9 (390)</span>
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light btn-copy-template"><i class="bi bi-copy"></i></button>
+                  <a href="studio.html" class="btn btn-sm btn-accent-gradient text-light px-3 btn-open-studio">Open Studio</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 13. TypeScript Security Auditor -->
+          <div class="col-md-6 col-lg-4 library-card-item" data-category="code">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-cyan-subtle text-cyan font-mono fs-8 fw-bold">Code &amp; Security</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v2.4 • Jul 24</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">TypeScript Security Auditor</h3>
+                <p class="text-body-contrast fs-7 mb-3">Scans TypeScript AST nodes for unsafe SQL queries, unsanitized inputs, and memory leaks.</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{code_snippet}}</span>
+                  <span class="var-badge fs-8">{{security_level}}</span>
+                </div>
+              </div>
+              <div class="border-top border-subtle pt-3 mt-2 d-flex align-items-center justify-content-between font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>4.9 (124)</span>
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light btn-copy-template"><i class="bi bi-copy"></i></button>
+                  <a href="studio.html" class="btn btn-sm btn-accent-gradient text-light px-3 btn-open-studio">Open Studio</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 14. Strict Context Citation RAG -->
+          <div class="col-md-6 col-lg-4 library-card-item" data-category="rag">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-blue-subtle text-blue font-mono fs-8 fw-bold">RAG &amp; Data</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v1.8 • Jul 22</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">Strict Context Citation RAG</h3>
+                <p class="text-body-contrast fs-7 mb-3">Ensures responses are strictly anchored in provided knowledge base chunks with exact page citations.</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{context_chunks}}</span>
+                  <span class="var-badge fs-8">{{user_query}}</span>
+                </div>
+              </div>
+              <div class="border-top border-subtle pt-3 mt-2 d-flex align-items-center justify-content-between font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>5.0 (310)</span>
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light btn-copy-template"><i class="bi bi-copy"></i></button>
+                  <a href="studio.html" class="btn btn-sm btn-accent-gradient text-light px-3 btn-open-studio">Open Studio</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 15. Strict Zod Schema Extractor -->
+          <div class="col-md-6 col-lg-4 library-card-item" data-category="rag">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-blue-subtle text-blue font-mono fs-8 fw-bold">RAG &amp; Data</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v3.1 • Jul 20</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">Strict Zod Schema Extractor</h3>
+                <p class="text-body-contrast fs-7 mb-3">Parses messy unstructured raw document text into perfectly typed JSON matching your schema.</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{raw_text}}</span>
+                  <span class="var-badge fs-8">{{target_schema}}</span>
+                </div>
+              </div>
+              <div class="border-top border-subtle pt-3 mt-2 d-flex align-items-center justify-content-between font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>4.8 (98)</span>
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light btn-copy-template"><i class="bi bi-copy"></i></button>
+                  <a href="studio.html" class="btn btn-sm btn-accent-gradient text-light px-3 btn-open-studio">Open Studio</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 16. FastAPI SQL Query Generator -->
+          <div class="col-md-6 col-lg-4 library-card-item" data-category="code">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-cyan-subtle text-cyan font-mono fs-8 fw-bold">Code &amp; Security</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v2.0 • Jul 18</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">FastAPI PostgreSQL Generator</h3>
+                <p class="text-body-contrast fs-7 mb-3">Generates safe SQLAlchemy ORM queries and Pydantic models from natural language requests.</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{query_desc}}</span>
+                  <span class="var-badge fs-8">{{table_schema}}</span>
+                </div>
+              </div>
+              <div class="border-top border-subtle pt-3 mt-2 d-flex align-items-center justify-content-between font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>4.9 (210)</span>
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light btn-copy-template"><i class="bi bi-copy"></i></button>
+                  <a href="studio.html" class="btn btn-sm btn-accent-gradient text-light px-3 btn-open-studio">Open Studio</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 17. SEO Content Marketing Generator -->
+          <div class="col-md-6 col-lg-4 library-card-item" data-category="marketing">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-warning-subtle text-warning font-mono fs-8 fw-bold">Marketing &amp; Sales</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v1.6 • Jul 14</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">SEO Blog Outline Generator</h3>
+                <p class="text-body-contrast fs-7 mb-3">Generates keyword-optimized H2/H3 article outlines with meta descriptions and internal links.</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{target_keyword}}</span>
+                </div>
+              </div>
+              <div class="border-top border-subtle pt-3 mt-2 d-flex align-items-center justify-content-between font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>4.8 (175)</span>
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light btn-copy-template"><i class="bi bi-copy"></i></button>
+                  <a href="studio.html" class="btn btn-sm btn-accent-gradient text-light px-3 btn-open-studio">Open Studio</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 18. Sales Email Outreach Agent -->
+          <div class="col-md-6 col-lg-4 library-card-item" data-category="marketing">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-warning-subtle text-warning font-mono fs-8 fw-bold">Marketing &amp; Sales</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v2.1 • Jul 11</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">B2B Cold Outreach Email Agent</h3>
+                <p class="text-body-contrast fs-7 mb-3">Drafts personalized cold outreach emails based on lead LinkedIn profile summaries.</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{lead_profile}}</span>
+                  <span class="var-badge fs-8">{{value_prop}}</span>
+                </div>
+              </div>
+              <div class="border-top border-subtle pt-3 mt-2 d-flex align-items-center justify-content-between font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>4.9 (310)</span>
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light btn-copy-template"><i class="bi bi-copy"></i></button>
+                  <a href="studio.html" class="btn btn-sm btn-accent-gradient text-light px-3 btn-open-studio">Open Studio</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 19. Python Data Analysis Agent -->
+          <div class="col-md-6 col-lg-4 library-card-item" data-category="code">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-cyan-subtle text-cyan font-mono fs-8 fw-bold">Code &amp; Security</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v1.9 • Jul 09</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">Pandas Data Analysis Agent</h3>
+                <p class="text-body-contrast fs-7 mb-3">Generates clean Python Pandas code for CSV data cleaning, groupbys, and Matplotlib charts.</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{dataframe_head}}</span>
+                  <span class="var-badge fs-8">{{analysis_goal}}</span>
+                </div>
+              </div>
+              <div class="border-top border-subtle pt-3 mt-2 d-flex align-items-center justify-content-between font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>5.0 (420)</span>
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light btn-copy-template"><i class="bi bi-copy"></i></button>
+                  <a href="studio.html" class="btn btn-sm btn-accent-gradient text-light px-3 btn-open-studio">Open Studio</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 20. Product Marketing Landing Copy Agent -->
+          <div class="col-md-6 col-lg-4 library-card-item" data-category="marketing">
+            <div class="library-card p-4 rounded-4 border border-subtle glass-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-warning-subtle text-warning font-mono fs-8 fw-bold">Marketing &amp; Sales</span>
+                  <span class="font-mono text-secondary-body fs-8 fw-medium">v2.0 • Jul 06</span>
+                </div>
+                <h3 class="fw-bold mb-2 fs-6 text-light">SaaS Hero Section Copywriter</h3>
+                <p class="text-body-contrast fs-7 mb-3">Writes high-converting hero headlines, subheadings, and primary CTAs using positioning frameworks.</p>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                  <span class="var-badge fs-8">{{product_name}}</span>
+                  <span class="var-badge fs-8">{{target_audience}}</span>
+                </div>
+              </div>
+              <div class="border-top border-subtle pt-3 mt-2 d-flex align-items-center justify-content-between font-mono fs-8">
+                <span class="text-cyan fw-bold"><i class="bi bi-star-fill text-warning me-1"></i>4.9 (290)</span>
+                <div class="d-flex gap-1">
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light btn-copy-template"><i class="bi bi-copy"></i></button>
+                  <a href="studio.html" class="btn btn-sm btn-accent-gradient text-light px-3 btn-open-studio">Open Studio</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Version Drawer (Offcanvas) -->
+  <div class="offcanvas offcanvas-end glass-panel border-start border-subtle text-light" tabindex="-1" id="versionDrawer" aria-labelledby="versionDrawerLabel" style="width: 460px; background: rgba(16, 19, 31, 0.94); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);">
+    <div class="offcanvas-header border-bottom border-subtle">
+      <div>
+        <span class="badge bg-purple-subtle text-purple font-mono fs-8 mb-1.5" id="versionDrawerCategory">Support Agent</span>
+        <h5 class="offcanvas-title fw-bold text-light fs-5" id="versionDrawerLabel">Prompt Version Control</h5>
+      </div>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column justify-content-between">
+      <div class="d-flex flex-column gap-3">
+        <!-- Tab Switcher -->
+        <ul class="nav nav-pills nav-fill bg-dark-soft p-1 rounded-3 border border-subtle mb-2" id="drawerTabList" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="btn btn-sm w-100 active text-light font-mono fs-8 py-1.5" id="tabVersions" data-bs-toggle="pill" data-bs-target="#panelVersions" type="button" role="tab"><i class="bi bi-git me-1"></i>Versioning</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="btn btn-sm w-100 text-light font-mono fs-8 py-1.5" id="tabGateway" data-bs-toggle="pill" data-bs-target="#panelGateway" type="button" role="tab"><i class="bi bi-cpu-fill me-1"></i>API Gateway</button>
+          </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="drawerTabContent">
+          
+          <!-- Panel 1: Versioning & Deployments -->
+          <div class="tab-pane fade show active d-flex flex-column gap-3" id="panelVersions" role="tabpanel">
+            <!-- Deployment Environments Panel -->
+            <div class="d-flex flex-column gap-2 mb-2">
+              <span class="text-body-contrast fs-7 fw-semibold">Deployment Environments</span>
+              <div class="glass-inner-card p-3 rounded-3 border border-subtle d-flex flex-column gap-2" id="deploymentEnvironmentsList">
+                <!-- Populated Dynamically -->
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="text-body-contrast fs-7 fw-semibold">Version History</span>
+              <button type="button" class="btn btn-sm btn-accent-gradient px-3 py-1 font-mono fs-8 fw-bold" id="btnOpenCreateTag"><i class="bi bi-tag-fill me-1"></i>Tag Version</button>
+            </div>
+            <div class="glass-inner-card p-2 rounded-3 border border-subtle" style="max-height: 280px; overflow-y: auto;" id="versionHistoryList">
+              <!-- Populated Dynamically -->
+            </div>
+          </div>
+
+          <!-- Panel 2: API Gateway -->
+          <div class="tab-pane fade d-flex flex-column gap-3" id="panelGateway" role="tabpanel">
+            
+            <!-- API Key Section -->
+            <div class="d-flex flex-column gap-2">
+              <span class="text-body-contrast fs-7 fw-semibold">API Credentials</span>
+              <div class="glass-inner-card p-3 rounded-3 border border-subtle d-flex flex-column gap-2">
+                <label class="form-label text-secondary-body fs-9 font-mono m-0">WORKSPACE API KEY</label>
+                <div class="d-flex gap-2">
+                  <input type="text" class="form-control bg-dark-soft border-subtle text-light font-mono fs-8" id="gatewayApiKeyVal" value="pp_live_••••••••••••••••" readonly>
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light" id="btnRevealApiKey"><i class="bi bi-eye"></i></button>
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light" id="btnRegenApiKey" title="Regenerate API Key"><i class="bi bi-arrow-clockwise"></i></button>
+                </div>
+              </div>
+            </div>
+
+            <!-- API Endpoint Details -->
+            <div class="d-flex flex-column gap-2">
+              <span class="text-body-contrast fs-7 fw-semibold">API Endpoint Route</span>
+              <div class="glass-inner-card p-3 rounded-3 border border-subtle d-flex flex-column gap-1.5 font-mono fs-8">
+                <div class="text-secondary-body fs-9">GATEWAY TARGET URL</div>
+                <div class="p-2 rounded bg-dark-soft border border-subtle text-cyan text-truncate" id="gatewayUrlVal">
+                  https://api.promptpilot.com/v1/gateway/run/customer-support
+                </div>
+                <div class="d-flex align-items-center justify-content-between mt-2 pt-2 border-top border-dashed" style="border-color: rgba(255,255,255,0.06);">
+                  <span class="text-secondary-body fs-9">HTTP ROUTING HEADER:</span>
+                  <span class="badge bg-purple-subtle text-purple fs-9">X-PromptPilot-Env: production</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Caching and Fallbacks (Milestone 5) -->
+            <div class="d-flex flex-column gap-2">
+              <span class="text-body-contrast fs-7 fw-semibold">Enterprise Runtime Settings</span>
+              <div class="glass-inner-card p-3 rounded-3 border border-subtle d-flex flex-column gap-3">
+                
+                <!-- Edge Caching Switch -->
+                <div class="d-flex align-items-center justify-content-between">
+                  <div>
+                    <div class="fw-bold fs-8 text-light">Edge Caching</div>
+                    <div class="text-secondary-body fs-9">Resolve queries in sub-10ms using edge cache</div>
+                  </div>
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="gatewayCacheSwitch" checked>
+                  </div>
+                </div>
+
+                <!-- Cache TTL Range Slider -->
+                <div id="gatewayCacheTtlContainer">
+                  <label class="form-label text-body-contrast fs-9 font-mono d-flex justify-content-between mb-1.5">
+                    <span>CACHE TTL</span>
+                    <span id="gatewayCacheTtlVal" class="text-cyan">5 minutes</span>
+                  </label>
+                  <input type="range" class="form-range" min="60" max="3600" step="60" value="300" id="gatewayCacheTtlRange">
+                </div>
+
+                <!-- Provider Fallbacks -->
+                <div class="border-top border-subtle pt-2.5">
+                  <label class="form-label text-body-contrast fs-9 font-mono mb-1.5">ROUTING FALLBACK CONNECTION</label>
+                  <select class="form-select bg-dark-soft border-subtle text-light font-mono fs-8" id="gatewayFallbackModel">
+                    <option value="claude-3-5" selected>Claude 3.5 Sonnet (Anthropic)</option>
+                    <option value="gpt-4o">GPT-4o (OpenAI)</option>
+                    <option value="gemini-1-5">Gemini 1.5 Pro (Google)</option>
+                    <option value="deepseek-v3">DeepSeek V3 (DeepSeek)</option>
+                  </select>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- SDK Integration snippets -->
+            <div class="d-flex flex-column gap-2">
+              <span class="text-body-contrast fs-7 fw-semibold">SDK Snippets</span>
+              <div class="glass-inner-card rounded-3 border border-subtle overflow-hidden">
+                <div class="d-flex border-bottom border-subtle bg-dark-soft" id="sdkTabList">
+                  <button class="btn btn-sm btn-dark-tab active border-0 px-3 py-2 font-mono fs-8" data-lang="curl">cURL</button>
+                  <button class="btn btn-sm btn-dark-tab border-0 px-3 py-2 font-mono fs-8" data-lang="node">Node.js</button>
+                  <button class="btn btn-sm btn-dark-tab border-0 px-3 py-2 font-mono fs-8" data-lang="python">Python</button>
+                  <button class="btn btn-sm btn-dark-tab border-0 px-3 py-2 font-mono fs-8" data-lang="go">Go</button>
+                </div>
+                <div class="position-relative">
+                  <pre class="m-0 p-3 bg-dark-foundation font-mono fs-8 text-light overflow-x-auto" id="sdkCodeSnippet" style="max-height: 220px;"></pre>
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light position-absolute top-0 end-0 m-2" id="btnCopySdkSnippet"><i class="bi bi-copy"></i></button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Gateway Run Sandbox Testing Console -->
+            <div class="d-flex flex-column gap-2 mt-2">
+              <span class="text-body-contrast fs-7 fw-semibold">Gateway Execution Sandbox</span>
+              <div class="glass-inner-card p-3 rounded-3 border border-subtle d-flex flex-column gap-3">
+                <div class="d-flex flex-column gap-2" id="sandboxInputsContainer">
+                  <!-- Dynamic Variable Inputs go here -->
+                </div>
+                
+                <div class="d-flex gap-2">
+                  <button type="button" class="btn btn-sm btn-accent-gradient flex-grow-1 font-mono fs-8 fw-bold py-2" id="btnRunSandbox">
+                    <i class="bi bi-play-fill me-1"></i>Execute Gateway API
+                  </button>
+                  <button type="button" class="btn btn-sm btn-dark-pill text-light" id="btnResetSandbox" title="Reset Sandbox"><i class="bi bi-arrow-counterclockwise"></i></button>
+                </div>
+
+                <!-- Simulation Output -->
+                <div class="d-none" id="sandboxOutputWrapper">
+                  <div class="border-top border-subtle pt-2.5 mt-1 font-mono fs-9">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <span class="text-secondary-body">LATENCY TELEMETRY:</span>
+                      <span class="text-emerald" id="sandboxTelemetry">142ms • Status 200 OK</span>
+                    </div>
+                    <pre class="p-2.5 rounded bg-dark-foundation border border-subtle text-light overflow-x-auto" id="sandboxOutputText" style="max-height: 180px; font-size: 0.7rem; white-space: pre-wrap; word-break: break-all;"></pre>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Gateway Telemetry Logs (Milestone 6) -->
+            <div class="d-flex flex-column gap-2 mt-2">
+              <span class="text-body-contrast fs-7 fw-semibold">Gateway Telemetry Logs (Production)</span>
+              <div class="glass-inner-card p-2.5 rounded-3 border border-subtle d-flex flex-column gap-1.5" id="gatewayLogsList" style="max-height: 200px; overflow-y: auto;">
+                <!-- Populated Dynamically -->
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+      <div class="border-top border-subtle pt-3 mt-3">
+        <div class="text-secondary-body fs-9 font-mono">PROMPT SLUG: <span class="text-light" id="versionDrawerSlug">customer-support</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Version Modal -->
+  <div class="modal fade" id="createVersionModal" tabindex="-1" aria-labelledby="createVersionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content glass-panel border border-subtle text-light" style="background: rgba(16, 19, 31, 0.96); backdrop-filter: blur(24px);">
+        <div class="modal-header border-bottom border-subtle">
+          <h5 class="modal-title fw-bold text-light fs-6" id="createVersionModalLabel"><i class="bi bi-tag-fill text-purple me-1.5"></i>Create Version Tag</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="createVersionForm">
+          <div class="modal-body d-flex flex-column gap-3">
+            <div>
+              <label class="form-label text-body-contrast fs-8 font-mono">Semantic Version Tag</label>
+              <input type="text" class="form-control bg-dark-soft border-subtle text-light font-mono fs-7" id="newVersionTag" placeholder="e.g. v2.2.0" required>
+            </div>
+            <div>
+              <label class="form-label text-body-contrast fs-8 font-mono">Revision Description</label>
+              <textarea class="form-control bg-dark-soft border-subtle text-light fs-7" id="newVersionDesc" rows="3" placeholder="Describe the changes made to the prompt..." required></textarea>
+            </div>
+            <div>
+              <label class="form-label text-body-contrast fs-8 font-mono">Model Configuration</label>
+              <select class="form-select bg-dark-soft border-subtle text-light font-mono fs-7" id="newVersionModel">
+                <option value="gpt-4o" selected>GPT-4o (OpenAI)</option>
+                <option value="claude-3-5">Claude 3.5 Sonnet</option>
+                <option value="gemini-1-5">Gemini 1.5 Pro</option>
+                <option value="deepseek-v3">DeepSeek V3</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label text-body-contrast fs-8 font-mono">Prompt Template Source</label>
+              <textarea class="form-control bg-dark-soft border-subtle text-light font-mono fs-8" id="newVersionTemplate" rows="4" readonly></textarea>
+            </div>
+          </div>
+          <div class="modal-footer border-top border-subtle">
+            <button type="button" class="btn btn-sm btn-dark-pill text-light px-3" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-sm btn-accent-gradient text-light px-4">Create Tag</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compare Versions / Diff Modal -->
+  <div class="modal fade" id="compareVersionsModal" tabindex="-1" aria-labelledby="compareVersionsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content glass-panel border border-subtle text-light" style="background: rgba(16, 19, 31, 0.96); backdrop-filter: blur(24px); width: 100%;">
+        <div class="modal-header border-bottom border-subtle">
+          <h5 class="modal-title fw-bold text-light fs-6" id="compareVersionsModalLabel"><i class="bi bi-file-diff-fill text-cyan me-1.5"></i>Compare Prompt Versions</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex flex-column gap-3">
+          <div class="row g-2 font-mono fs-8 text-secondary-body">
+            <div class="col-6">COMPARE SOURCE: <span class="text-light" id="diffSrcLabel">v2.1.0</span></div>
+            <div class="col-6">TARGET VERSION: <span class="text-light" id="diffTargetLabel">v2.0.0</span></div>
+          </div>
+          <div class="glass-inner-card p-3 rounded-3 border border-subtle font-mono fs-8 text-light overflow-x-auto" id="diffContainer" style="background: rgba(8, 10, 16, 0.92); min-height: 240px; max-height: 480px; white-space: pre-wrap; word-break: break-all;">
+            <!-- Diff content injected here -->
+          </div>
+        </div>
+        <div class="modal-footer border-top border-subtle">
+          <button type="button" class="btn btn-sm btn-dark-pill text-light px-4" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Promote Version Modal -->
+  <div class="modal fade" id="promoteVersionModal" tabindex="-1" aria-labelledby="promoteVersionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content glass-panel border border-subtle text-light" style="background: rgba(16, 19, 31, 0.96); backdrop-filter: blur(24px);">
+        <div class="modal-header border-bottom border-subtle">
+          <h5 class="modal-title fw-bold text-light fs-6" id="promoteVersionModalLabel"><i class="bi bi-cloud-arrow-up-fill text-emerald me-1.5"></i>Deploy / Promote Version</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="promoteVersionForm">
+          <div class="modal-body d-flex flex-column gap-3">
+            <div>
+              <label class="form-label text-body-contrast fs-8 font-mono">Deploy Version</label>
+              <select class="form-select bg-dark-soft border-subtle text-light font-mono fs-7" id="promoteVersionSelect" required>
+                <!-- Filled dynamically with tag list -->
+              </select>
+            </div>
+            <div>
+              <label class="form-label text-body-contrast fs-8 font-mono">Target Environment</label>
+              <select class="form-select bg-dark-soft border-subtle text-light font-mono fs-7" id="promoteEnvironmentSelect" required>
+                <option value="production">Production</option>
+                <option value="staging">Staging</option>
+                <option value="development">Development</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer border-top border-subtle">
+            <button type="button" class="btn btn-sm btn-dark-pill text-light px-3" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-sm btn-accent-gradient text-light px-4">Deploy Version</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Log Inspector Modal -->
+  <div class="modal fade" id="logInspectorModal" tabindex="-1" aria-labelledby="logInspectorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content glass-panel border border-subtle text-light" style="background: rgba(16, 19, 31, 0.96); backdrop-filter: blur(24px);">
+        <div class="modal-header border-bottom border-subtle">
+          <h5 class="modal-title fw-bold text-light fs-6" id="logInspectorModalLabel"><i class="bi bi-file-text-fill text-purple me-1.5"></i>API Transaction Audit Log</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex flex-column gap-4 font-mono fs-8">
+          
+          <!-- Basic Telemetry Metadata -->
+          <div class="row g-3 text-secondary-body">
+            <div class="col-6 col-md-3">METHOD / ROUTE<br><span class="text-light fw-bold" id="logInspectRoute">POST /v1/gateway/run/...</span></div>
+            <div class="col-6 col-md-3">STATUS CODE<br><span class="badge bg-emerald-subtle text-emerald fs-9 mt-1" id="logInspectStatus">200 OK</span></div>
+            <div class="col-6 col-md-3">LATENCY<br><span class="text-light fw-bold" id="logInspectLatency">142ms</span></div>
+            <div class="col-6 col-md-3">COST &amp; TOKENS<br><span class="text-light fw-bold" id="logInspectUsage">320 tokens ($0.0021)</span></div>
+          </div>
+
+          <!-- Connection Routing info -->
+          <div class="border-top border-subtle pt-3">
+            <span class="text-body-contrast fs-8 fw-semibold d-block mb-2">ROUTING RESOLVER METADATA</span>
+            <div class="row g-2 text-secondary-body">
+              <div class="col-6">PRIMARY RESOLVED MODEL: <span class="text-light" id="logInspectModel">gpt-4o (OpenAI)</span></div>
+              <div class="col-6">ROUTING FALLBACK ACTIVE: <span class="text-light" id="logInspectFallback">FALSE</span></div>
+              <div class="col-6">CACHE STATUS: <span class="text-light" id="logInspectCache">MISS</span></div>
+              <div class="col-6">API CREDENTIAL PREFIX: <span class="text-light" id="logInspectKeyPrefix">pp_live_7a9e</span></div>
+            </div>
+          </div>
+
+          <!-- Variable Input payload -->
+          <div class="border-top border-subtle pt-3">
+            <span class="text-body-contrast fs-8 fw-semibold d-block mb-2">REQUEST VARIABLES PAYLOAD</span>
+            <pre class="p-2.5 rounded bg-dark-foundation border border-subtle text-light overflow-x-auto" id="logInspectVariables" style="max-height: 120px;"></pre>
+          </div>
+
+          <!-- Model Output Completion response -->
+          <div class="border-top border-subtle pt-3">
+            <span class="text-body-contrast fs-8 fw-semibold d-block mb-2">LLM RESPONSE COMPLETION</span>
+            <pre class="p-2.5 rounded bg-dark-foundation border border-subtle text-cyan overflow-x-auto" id="logInspectCompletion" style="max-height: 150px; white-space: pre-wrap; word-break: break-all;"></pre>
+          </div>
+
+        </div>
+        <div class="modal-footer border-top border-subtle">
+          <button type="button" class="btn btn-sm btn-dark-pill text-light px-4" data-bs-dismiss="modal">Close Audit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/bootstrap.bundle.min.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/library.js"></script></body>
+</html>
