@@ -1,1 +1,42 @@
 /* billing.css */
+.billing-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  transition: all 0.3s ease;
+}
+
+.billing-card:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+}
+
+.progress-track {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
+  border-radius: 4px;
+}
+
+.empty-state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-5) var(--space-3);
+  background: rgba(13, 15, 22, 0.4);
+  border: 1px dashed var(--glass-border);
+  border-radius: 16px;
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  color: var(--accent-purple-soft);
+  margin-bottom: var(--space-2);
+}
