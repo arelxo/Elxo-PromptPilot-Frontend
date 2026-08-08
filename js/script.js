@@ -2048,7 +2048,7 @@ async function updateSidebarUser() {
   if (!token) return;
 
   try {
-    const response = await fetch('http://127.0.0.1:8000/api/accounts/me/', {
+    const response = await fetch('https://elxo-promptpilot-backend.onrender.com/api/accounts/me/', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,

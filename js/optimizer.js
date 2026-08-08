@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
       btnRunOptimizer.innerHTML = `<i class="bi bi-arrow-repeat spin-icon me-1"></i> Optimizing AST...`;
 
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/optimizer/optimize/', {
+        const response = await fetch('https://elxo-promptpilot-backend.onrender.com/api/optimizer/optimize/', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,

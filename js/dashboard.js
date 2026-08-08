@@ -7,7 +7,7 @@ async function loadDashboard() {
     }
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/api/dashboard/", {
+        const response = await fetch("https://elxo-promptpilot-backend.onrender.com/api/dashboard/", {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
