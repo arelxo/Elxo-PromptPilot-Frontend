@@ -153,18 +153,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Helper to escape HTML tags
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+  }
+
   // 6. Benchmark Execution with Shimmering Processing Text
   if (btnRunBenchmark) {
-    btnRunBenchmark.addEventListener('click', () => {
+    btnRunBenchmark.addEventListener('click', async () => {
+      const promptValue = textarea ? textarea.value.trim() : "";
+      if (!promptValue) {
+        if (typeof window.showToast === 'function') {
+          window.showToast('Please type a prompt template before running.', 'warning', 'Empty Input');
+        }
+        return;
+      }
+
       const origText = btnRunBenchmark.innerHTML;
       btnRunBenchmark.disabled = true;
 
       const messages = [
         'Analyzing Prompt Structure...',
-        'Optimizing AST Variables...',
-        'Comparing Models (GPT-4o, Claude 3.5, DeepSeek)...',
-        'Generating Output Stream...',
-        'Almost Finished...'
+        'Checking Provider Connections...',
+        'Routing API Payloads...',
+        'Executing Concurrent Tasks...',
+        'Decoding Response Stream...'
       ];
 
       let step = 0;
@@ -174,19 +188,72 @@ document.addEventListener('DOMContentLoaded', () => {
         step++;
         if (step < messages.length) {
           btnRunBenchmark.innerHTML = `<span class="shimmering-processing-text">${messages[step]}</span>`;
-        } else {
-          clearInterval(msgInterval);
         }
-      }, 400);
+      }, 500);
 
-      setTimeout(() => {
+      const terminal = document.querySelector('.simulated-terminal-box');
+      if (terminal) {
+        terminal.innerHTML = `<div class="terminal-line text-cyan font-mono fs-8"><span class="spinner-border spinner-border-sm me-2"></span>Connecting to remote model nodes...</div>`;
+      }
+
+      const provider = document.getElementById("studioProviderSelect")?.value || "all";
+      const temperature = parseFloat(document.getElementById("studioTemperature")?.value || "0.3");
+      const max_tokens = parseInt(document.getElementById("studioMaxTokens")?.value || "2048");
+
+      try {
+        const response = await window.apiRequest("/prompts/run/", {
+          method: "POST",
+          body: JSON.stringify({
+            prompt: promptValue,
+            provider: provider,
+            temperature: temperature,
+            max_tokens: max_tokens
+          })
+        });
+
         clearInterval(msgInterval);
+
+        if (terminal && response.results) {
+          if (response.results.length === 0) {
+            terminal.innerHTML = `<div class="terminal-line text-warning fw-bold">[Gateway] Notice</div><div class="terminal-line text-secondary-body">No connections executed. Please enable provider status on connections panel.</div>`;
+          } else {
+            terminal.innerHTML = response.results.map(res => {
+              if (res.status === "success") {
+                let colorClass = "text-purple"; // OpenAI
+                if (res.provider === "Claude") colorClass = "text-cyan";
+                else if (res.provider === "Gemini") colorClass = "text-emerald";
+                
+                return `
+                  <div class="terminal-line ${colorClass} fw-bold mt-2">[${res.provider}] Latency: ${res.latency}ms • Cost: $${res.cost.toFixed(6)} • Tokens: ${res.tokens}</div>
+                  <div class="terminal-line text-secondary-body mb-2" style="white-space: pre-wrap;">${escapeHtml(res.response)}</div>
+                `;
+              } else {
+                return `
+                  <div class="terminal-line text-danger fw-bold mt-2">[${res.provider}] Failed • Latency: ${res.latency}ms</div>
+                  <div class="terminal-line text-danger mb-2">Error: ${escapeHtml(res.detail)}</div>
+                `;
+              }
+            }).join('');
+          }
+        }
+
+        if (typeof window.showToast === 'function') {
+          window.showToast('Execution stream completed successfully.', 'success', 'Run Complete');
+        }
+
+      } catch (error) {
+        clearInterval(msgInterval);
+        console.error('Run Error:', error);
+        if (terminal) {
+          terminal.innerHTML = `<div class="terminal-line text-danger fw-bold mt-2">[Gateway Error] System Fault</div><div class="terminal-line text-danger mb-2">${escapeHtml(error.message)}</div>`;
+        }
+        if (typeof window.showToast === 'function') {
+          window.showToast(error.message || 'Run request failed.', 'error', 'Error');
+        }
+      } finally {
         btnRunBenchmark.disabled = false;
         btnRunBenchmark.innerHTML = origText;
-        if (typeof window.showToast === 'function') {
-          window.showToast('Benchmark run completed across 3 LLM providers in 345ms.', 'success', 'Benchmark Complete');
-        }
-      }, 2200);
+      }
     });
   }
 
