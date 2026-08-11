@@ -6,56 +6,93 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Load backend KPI metrics dynamically
+  let data = null;
   try {
-    const data = await window.apiRequest('/analytics/');
-    
-    // Select the counter metric-value containers
-    const cards = document.querySelectorAll('.metric-card');
-    if (cards.length >= 6) {
-      // 1. Total Requests
-      const reqVal = cards[0].querySelector('.counter-val');
-      if (reqVal) reqVal.setAttribute('data-target', Number(data.total_requests).toLocaleString());
-
-      // 2. Token Usage
-      const tokVal = cards[1].querySelector('.counter-val');
-      if (tokVal) tokVal.setAttribute('data-target', data.token_usage);
-
-      // 3. Estimated Cost
-      const costVal = cards[2].querySelector('.counter-val');
-      if (costVal) costVal.setAttribute('data-target', '$' + Number(data.estimated_cost).toLocaleString());
-
-      // 4. Avg Latency
-      const latencyVal = cards[3].querySelector('.counter-val');
-      if (latencyVal) latencyVal.setAttribute('data-target', data.avg_latency + 'ms');
-
-      // 5. Success Rate
-      const successVal = cards[4].querySelector('.counter-val');
-      if (successVal) successVal.setAttribute('data-target', data.success_rate + '%');
-
-      // 6. Active Users
-      const usersVal = cards[5].querySelector('.counter-val');
-      if (usersVal) usersVal.setAttribute('data-target', Number(data.active_users).toLocaleString());
-    }
+    data = await window.apiRequest('/analytics/');
+    bindKpiCards(data);
   } catch (error) {
     console.error('Failed to load live analytics:', error);
+    // Show fallback for KPIs
+    bindKpiCards({
+      total_requests: 0,
+      token_usage: "0.000M Tokens",
+      estimated_cost: 0.0,
+      avg_latency: 0,
+      success_rate: 100.0,
+      active_connections: 0
+    });
   }
 
   // Count-up animations for KPI cards
   initCounters();
 
-  // Initialize all charts
-  initUsageChart();
-  initCostChart();
-  initLatencyChart();
-  initProviderChart();
+  const totalRequests = data ? data.total_requests : 0;
 
-  // Initialize Search & Filter for Tables
-  initModelPerformanceTable();
-  initTopPromptTable();
+  if (totalRequests === 0) {
+    // Show "No activity yet" empty states
+    showEmptyState('usageChartCanvas', 'No activity yet');
+    showEmptyState('costChartCanvas', 'No activity yet');
+    showEmptyState('latencyChartCanvas', 'No activity yet');
+    showEmptyState('providerChartCanvas', 'No activity yet');
+    
+    const modelBody = document.getElementById('modelPerformanceTableBody');
+    if (modelBody) {
+      modelBody.innerHTML = `<tr><td colspan="8" class="text-center text-secondary-body py-4">No activity yet</td></tr>`;
+    }
+    const promptsBody = document.getElementById('topPromptsTableBody');
+    if (promptsBody) {
+      promptsBody.innerHTML = `<tr><td colspan="5" class="text-center text-secondary-body py-4">No activity yet</td></tr>`;
+    }
+    const timeline = document.querySelector('.timeline-activity');
+    if (timeline) {
+      timeline.innerHTML = `<div class="text-center text-secondary-body font-mono fs-8 py-4">No activity yet</div>`;
+    }
+  } else {
+    // Initialize all charts with live data
+    initUsageChart(data.usage_by_day);
+    initCostChart(data.cost_data);
+    initLatencyChart(data.usage_by_model.latency);
+    initProviderChart(data.usage_by_model.distribution);
+
+    // Populate Tables and Timeline
+    populateModelPerformanceTable(data.model_performance);
+    populateTopPromptTable(data.prompt_performance);
+    populateTimeline(data.recent_activity);
+  }
 
   // Reports download handlers
   initReportsDownloader();
 });
+
+/* Bind KPIs */
+function bindKpiCards(data) {
+  const cards = document.querySelectorAll('.metric-card');
+  if (cards.length >= 6) {
+    // 1. Total Requests
+    const reqVal = cards[0].querySelector('.counter-val');
+    if (reqVal) reqVal.setAttribute('data-target', Number(data.total_requests).toLocaleString());
+
+    // 2. Token Usage
+    const tokVal = cards[1].querySelector('.counter-val');
+    if (tokVal) tokVal.setAttribute('data-target', data.token_usage);
+
+    // 3. Estimated Cost
+    const costVal = cards[2].querySelector('.counter-val');
+    if (costVal) costVal.setAttribute('data-target', '$' + Number(data.estimated_cost).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+
+    // 4. Avg Latency
+    const latencyVal = cards[3].querySelector('.counter-val');
+    if (latencyVal) latencyVal.setAttribute('data-target', data.avg_latency + 'ms');
+
+    // 5. Success Rate
+    const successVal = cards[4].querySelector('.counter-val');
+    if (successVal) successVal.setAttribute('data-target', data.success_rate + '%');
+
+    // 6. Active Connections
+    const connVal = cards[5].querySelector('.counter-val');
+    if (connVal) connVal.setAttribute('data-target', Number(data.active_connections).toLocaleString());
+  }
+}
 
 /* Helper: Inject Skeleton Loader and Fade Out */
 function showSkeleton(canvasId) {
@@ -64,18 +101,32 @@ function showSkeleton(canvasId) {
   const wrapper = canvas.parentElement;
   if (!wrapper) return;
 
-  // Ensure relative positioning for layout layering
   wrapper.style.position = 'relative';
 
   const skeleton = document.createElement('div');
   skeleton.className = 'chart-skeleton';
   wrapper.appendChild(skeleton);
 
-  // Fade out loader once the chart renders and animates
   setTimeout(() => {
     skeleton.classList.add('fade-out');
     setTimeout(() => skeleton.remove(), 500);
   }, 1000);
+}
+
+/* Helper: Show empty state placeholder instead of chart */
+function showEmptyState(canvasId, message) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const wrapper = canvas.parentElement;
+  if (!wrapper) return;
+  
+  canvas.style.display = 'none';
+  
+  const placeholder = document.createElement('div');
+  placeholder.className = 'd-flex align-items-center justify-content-center text-secondary-body font-mono fs-7 w-100 py-5';
+  placeholder.style.height = '100%';
+  placeholder.textContent = message;
+  wrapper.appendChild(placeholder);
 }
 
 /* KPI Count-Up Logic */
@@ -84,13 +135,11 @@ function initCounters() {
   counters.forEach(counter => {
     const targetText = counter.getAttribute('data-target') || '0';
     
-    // Check type of formatting based on original data-target format or text context
     const isCurrency = targetText.includes('$');
-    const isTokens = targetText.toLowerCase().includes('m');
+    const isTokens = targetText.toLowerCase().includes('m') || targetText.toLowerCase().includes('k');
     const isPercent = targetText.includes('%');
     const isMs = targetText.includes('ms');
 
-    // Clean formatting characters to extract the numeric value for calculations
     const cleanVal = targetText.replace(/[\$,%ms\s]/gi, '').replace('Tokens', '');
     const target = parseFloat(cleanVal.replace(/,/g, ''));
     if (isNaN(target)) return;
@@ -100,31 +149,40 @@ function initCounters() {
     const stepTime = 16; // ~60fps
     const steps = duration / stepTime;
     const increment = target / steps;
+    let step = 0;
 
     const timer = setInterval(() => {
       current += increment;
-      if (current >= target) {
-        counter.textContent = targetText;
+      step++;
+
+      let formatted = '';
+      if (isPercent) {
+        formatted = current.toFixed(2) + '%';
+      } else if (isCurrency) {
+        formatted = '$' + current.toFixed(2);
+      } else if (isMs) {
+        formatted = Math.round(current) + 'ms';
+      } else if (isTokens) {
+        formatted = targetText; // Keep formatted string for tokens
         clearInterval(timer);
+        counter.textContent = formatted;
+        return;
       } else {
-        if (isCurrency) {
-          counter.textContent = '$' + Math.floor(current).toLocaleString();
-        } else if (isTokens) {
-          counter.textContent = current.toFixed(1) + 'M Tokens';
-        } else if (isPercent) {
-          counter.textContent = current.toFixed(2) + '%';
-        } else if (isMs) {
-          counter.textContent = Math.floor(current) + 'ms';
-        } else {
-          counter.textContent = Math.floor(current).toLocaleString();
-        }
+        formatted = Math.round(current).toLocaleString();
+      }
+
+      counter.textContent = formatted;
+
+      if (step >= steps) {
+        clearInterval(timer);
+        counter.textContent = targetText;
       }
     }, stepTime);
   });
 }
 
 /* 1. AI Usage Analytics Line Chart */
-function initUsageChart() {
+function initUsageChart(usageData) {
   const ctx = document.getElementById('usageChartCanvas');
   if (!ctx) return;
 
@@ -132,48 +190,20 @@ function initUsageChart() {
 
   const context = ctx.getContext('2d');
   
-  // Custom linear gradients for line fills
   const gradRequests = context.createLinearGradient(0, 0, 0, 300);
   gradRequests.addColorStop(0, 'rgba(6, 182, 212, 0.25)');
   gradRequests.addColorStop(1, 'rgba(6, 182, 212, 0)');
-
-  const dataSets = {
-    'today': {
-      labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
-      requests: [1200, 1500, 3200, 4100, 3800, 2400],
-      executions: [1180, 1490, 3180, 4080, 3760, 2380],
-      tokens: [4.2, 5.1, 10.8, 14.5, 12.9, 8.2]
-    },
-    '7d': {
-      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-      requests: [18400, 21200, 24100, 22800, 25400, 14200, 16800],
-      executions: [18350, 21100, 24000, 22710, 25300, 14150, 16720],
-      tokens: [58.2, 65.4, 76.1, 71.9, 82.4, 45.1, 52.8]
-    },
-    '30d': {
-      labels: ['Wk 1', 'Wk 2', 'Wk 3', 'Wk 4'],
-      requests: [82000, 94000, 105000, 98000],
-      executions: [81800, 93700, 104600, 97600],
-      tokens: [260.4, 298.1, 332.9, 310.5]
-    },
-    '12m': {
-      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-      requests: [120000, 140000, 160000, 180000, 210000, 230000, 250000, 260000, 280000, 310000, 340000, 380000],
-      executions: [119500, 139200, 159100, 179000, 209200, 229100, 249000, 258800, 278600, 308500, 338100, 378000],
-      tokens: [3.8, 4.4, 5.1, 5.7, 6.6, 7.2, 7.8, 8.2, 8.8, 9.7, 10.6, 12.0]
-    }
-  };
 
   let activeRange = '7d';
 
   const chart = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: dataSets[activeRange].labels,
+      labels: usageData[activeRange].labels,
       datasets: [
         {
           label: 'Prompt Requests',
-          data: dataSets[activeRange].requests,
+          data: usageData[activeRange].requests,
           borderColor: '#06B6D4',
           backgroundColor: gradRequests,
           tension: 0.4,
@@ -183,7 +213,7 @@ function initUsageChart() {
         },
         {
           label: 'Prompt Executions',
-          data: dataSets[activeRange].executions,
+          data: usageData[activeRange].executions,
           borderColor: '#8B5CF6',
           backgroundColor: 'transparent',
           tension: 0.4,
@@ -192,8 +222,8 @@ function initUsageChart() {
           borderDash: [5, 5]
         },
         {
-          label: 'Tokens Used (K or M)',
-          data: dataSets[activeRange].tokens,
+          label: 'Tokens Used (K)',
+          data: usageData[activeRange].tokens,
           borderColor: '#22C55E',
           backgroundColor: 'transparent',
           tension: 0.4,
@@ -221,9 +251,7 @@ function initUsageChart() {
         tooltip: {
           mode: 'index',
           intersect: false,
-          animation: {
-            duration: 200
-          }
+          animation: { duration: 200 }
         }
       },
       scales: {
@@ -244,7 +272,6 @@ function initUsageChart() {
     }
   });
 
-  // Range selector buttons
   const buttons = document.querySelectorAll('.usage-range-btn');
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -252,17 +279,17 @@ function initUsageChart() {
       btn.classList.add('active');
       activeRange = btn.getAttribute('data-range');
 
-      chart.data.labels = dataSets[activeRange].labels;
-      chart.data.datasets[0].data = dataSets[activeRange].requests;
-      chart.data.datasets[1].data = dataSets[activeRange].executions;
-      chart.data.datasets[2].data = dataSets[activeRange].tokens;
+      chart.data.labels = usageData[activeRange].labels;
+      chart.data.datasets[0].data = usageData[activeRange].requests;
+      chart.data.datasets[1].data = usageData[activeRange].executions;
+      chart.data.datasets[2].data = usageData[activeRange].tokens;
       chart.update();
     });
   });
 }
 
 /* 2. Token Cost Analytics Area Chart */
-function initCostChart() {
+function initCostChart(costData) {
   const ctx = document.getElementById('costChartCanvas');
   if (!ctx) return;
 
@@ -270,7 +297,6 @@ function initCostChart() {
 
   const context = ctx.getContext('2d');
   
-  // Custom gradients for input/output tokens
   const gradInput = context.createLinearGradient(0, 0, 0, 300);
   gradInput.addColorStop(0, 'rgba(59, 130, 246, 0.25)');
   gradInput.addColorStop(1, 'rgba(59, 130, 246, 0)');
@@ -278,13 +304,6 @@ function initCostChart() {
   const gradOutput = context.createLinearGradient(0, 0, 0, 300);
   gradOutput.addColorStop(0, 'rgba(139, 92, 246, 0.2)');
   gradOutput.addColorStop(1, 'rgba(139, 92, 246, 0)');
-
-  const costData = {
-    labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
-    inputTokens: [1.2, 1.3, 1.1, 1.4, 1.6, 1.5, 1.8, 2.0, 1.9, 2.2, 2.5, 2.1, 2.3, 2.4, 2.8, 3.0, 2.7, 2.9, 3.1, 3.3, 3.5, 3.2, 3.4, 3.6, 3.8, 3.9, 4.2, 4.5, 4.3, 4.6],
-    outputTokens: [0.8, 0.9, 0.7, 1.0, 1.2, 1.1, 1.3, 1.5, 1.4, 1.6, 1.8, 1.5, 1.7, 1.8, 2.1, 2.2, 2.0, 2.1, 2.3, 2.4, 2.6, 2.3, 2.5, 2.7, 2.8, 2.9, 3.1, 3.3, 3.2, 3.4],
-    cost: [220, 240, 205, 260, 310, 290, 340, 380, 360, 410, 470, 395, 430, 450, 520, 560, 510, 540, 580, 610, 650, 595, 630, 670, 710, 730, 790, 840, 810, 860]
-  };
 
   const chart = new Chart(ctx, {
     type: 'line',
@@ -350,42 +369,14 @@ function initCostChart() {
       }
     }
   });
-
-  // Daily/Monthly trend toggle
-  const costTrendSelect = document.getElementById('costTrendSelect');
-  if (costTrendSelect) {
-    costTrendSelect.addEventListener('change', (e) => {
-      const mode = e.target.value;
-      if (mode === 'monthly') {
-        // Mock monthly projection
-        chart.data.labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        chart.data.datasets[0].data = [24, 28, 32, 36, 42, 48, 54, 58, 64, 70, 78, 89];
-        chart.data.datasets[1].data = [16, 19, 21, 24, 28, 32, 36, 39, 43, 47, 52, 59];
-        chart.data.datasets[2].data = [4200, 4800, 5400, 6100, 7200, 8100, 9100, 9800, 10800, 11800, 13100, 14800];
-      } else {
-        chart.data.labels = costData.labels;
-        chart.data.datasets[0].data = costData.inputTokens;
-        chart.data.datasets[1].data = costData.outputTokens;
-        chart.data.datasets[2].data = costData.cost;
-      }
-      chart.update();
-    });
-  }
 }
 
 /* 3. Latency Analytics Bar Chart */
-function initLatencyChart() {
+function initLatencyChart(latencyData) {
   const ctx = document.getElementById('latencyChartCanvas');
   if (!ctx) return;
 
   showSkeleton('latencyChartCanvas');
-
-  const latencyData = {
-    labels: ['GPT-4o', 'Claude 4', 'Gemini', 'DeepSeek', 'Llama', 'Mistral'],
-    avg: [120, 142, 95, 88, 110, 135],
-    min: [70, 90, 55, 45, 60, 80],
-    max: [280, 310, 220, 195, 240, 290]
-  };
 
   new Chart(ctx, {
     type: 'bar',
@@ -448,7 +439,7 @@ function initLatencyChart() {
 }
 
 /* 4. Provider Distribution Donut Chart */
-function initProviderChart() {
+function initProviderChart(distData) {
   const ctx = document.getElementById('providerChartCanvas');
   if (!ctx) return;
 
@@ -457,16 +448,16 @@ function initProviderChart() {
   new Chart(ctx, {
     type: 'doughnut',
     data: {
-      labels: ['OpenAI', 'Anthropic', 'Google', 'DeepSeek', 'Mistral', 'Meta'],
+      labels: distData.labels,
       datasets: [{
-        data: [42, 28, 12, 10, 5, 3],
+        data: distData.data,
         backgroundColor: [
-          '#06B6D4', // Cyan
-          '#8B5CF6', // Purple
-          '#3B82F6', // Blue
-          '#22C55E', // Emerald
-          '#F59E0B', // Warning
-          '#6B7280'  // Grey
+          '#06B6D4', // OpenAI
+          '#8B5CF6', // Claude / Anthropic
+          '#3B82F6', // Google Gemini
+          '#22C55E', // DeepSeek
+          '#F59E0B', // Mistral
+          '#6B7280'  // Meta / Other
         ],
         borderWidth: 2,
         borderColor: 'rgba(13, 15, 22, 0.95)',
@@ -493,56 +484,122 @@ function initProviderChart() {
   });
 }
 
-/* 5. Model Performance Table Handling */
-function initModelPerformanceTable() {
-  const searchInput = document.getElementById('tableSearchInput');
-  const tableRows = document.querySelectorAll('#modelPerformanceTableBody tr');
-  const paginationLinks = document.querySelectorAll('.table-pagination-link');
+/* Populate Model Performance Table */
+function populateModelPerformanceTable(modelsList) {
+  const tbody = document.getElementById('modelPerformanceTableBody');
+  if (!tbody) return;
 
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase().trim();
-      tableRows.forEach(row => {
-        const text = row.innerText.toLowerCase();
-        if (text.includes(query)) {
-          row.style.display = '';
-        } else {
-          row.style.display = 'none';
-        }
-      });
-    });
+  if (!modelsList || modelsList.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8" class="text-center text-secondary-body py-4">No model metrics available yet.</td></tr>`;
+    return;
   }
 
-  // Handle Mock Pagination clicks
-  paginationLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      paginationLinks.forEach(l => l.parentElement.classList.remove('active'));
-      link.parentElement.classList.add('active');
-      if (typeof window.showToast === 'function') {
-        window.showToast('Navigating performance metric rows...', 'info', 'Table Paged');
-      }
-    });
-  });
+  tbody.innerHTML = modelsList.map(item => {
+    let badgeClass = 'bg-secondary bg-opacity-25 text-white';
+    if (item.provider === 'OpenAI') badgeClass = 'bg-emerald-subtle text-emerald';
+    else if (item.provider === 'Claude' || item.provider === 'Anthropic') badgeClass = 'bg-purple-subtle text-purple';
+    else if (item.provider === 'Google' || item.provider === 'Gemini') badgeClass = 'bg-blue-subtle text-blue';
+    else if (item.provider === 'DeepSeek') badgeClass = 'bg-cyan-subtle text-cyan';
+    else if (item.provider === 'Mistral') badgeClass = 'bg-warning-subtle text-warning';
+
+    return `
+      <tr>
+        <td><span class="badge ${badgeClass}">${item.provider}</span></td>
+        <td class="text-light fw-bold">${item.model}</td>
+        <td>${item.requests.toLocaleString()}</td>
+        <td>${item.avg_tokens.toLocaleString()}</td>
+        <td>${item.avg_latency}ms</td>
+        <td class="text-success fw-bold">${item.success_rate}%</td>
+        <td class="text-emerald">$${item.cost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</td>
+        <td><span class="badge bg-success-subtle text-success">${item.status}</span></td>
+      </tr>
+    `;
+  }).join('');
+
+  // Re-init search filter on table rows
+  initModelPerformanceTableSearch();
 }
 
-/* 6. Top Prompt Table search hook */
-function initTopPromptTable() {
-  const searchInput = document.getElementById('promptSearchInput');
-  if (searchInput) {
+function initModelPerformanceTableSearch() {
+  const searchInput = document.getElementById('tableSearchInput');
+  const tbody = document.getElementById('modelPerformanceTableBody');
+  if (searchInput && tbody) {
     searchInput.addEventListener('input', (e) => {
       const query = e.target.value.toLowerCase().trim();
-      const rows = document.querySelectorAll('#topPromptsTableBody tr');
+      const rows = tbody.querySelectorAll('tr');
       rows.forEach(row => {
         const text = row.innerText.toLowerCase();
-        if (text.includes(query)) {
-          row.style.display = '';
-        } else {
-          row.style.display = 'none';
-        }
+        row.style.display = text.includes(query) ? '' : 'none';
       });
     });
   }
+}
+
+/* Populate Top Prompt Table */
+function populateTopPromptTable(promptsList) {
+  const tbody = document.getElementById('topPromptsTableBody');
+  if (!tbody) return;
+
+  if (!promptsList || promptsList.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" class="text-center text-secondary-body py-4">No prompt stats available yet.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = promptsList.map(item => `
+    <tr>
+      <td class="text-light fw-bold">${item.name}</td>
+      <td>${item.executions.toLocaleString()}</td>
+      <td class="text-success fw-bold">${item.success_rate}%</td>
+      <td class="text-cyan">${item.avg_latency}ms</td>
+      <td class="text-emerald">$${item.cost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</td>
+    </tr>
+  `).join('');
+
+  initTopPromptTableSearch();
+}
+
+function initTopPromptTableSearch() {
+  const searchInput = document.getElementById('promptSearchInput');
+  const tbody = document.getElementById('topPromptsTableBody');
+  if (searchInput && tbody) {
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      const rows = tbody.querySelectorAll('tr');
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(query) ? '' : 'none';
+      });
+    });
+  }
+}
+
+/* Populate Timeline */
+function populateTimeline(activityList) {
+  const timeline = document.querySelector('.timeline-activity');
+  if (!timeline) return;
+
+  if (!activityList || activityList.length === 0) {
+    timeline.innerHTML = `<div class="text-center text-secondary-body font-mono fs-8 py-4">No activity logged.</div>`;
+    return;
+  }
+
+  timeline.innerHTML = activityList.map(event => {
+    let colorClass = 'item-blue';
+    if (event.status !== 'success') colorClass = 'item-warning';
+    else if (event.provider === 'openai') colorClass = 'item-blue';
+    else if (event.provider === 'claude' || event.provider === 'anthropic') colorClass = 'item-purple';
+    else if (event.provider === 'google' || event.provider === 'gemini') colorClass = 'item-emerald';
+
+    return `
+      <div class="timeline-item ${colorClass}">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+          <span class="fw-bold fs-7 text-light">Prompt Executed</span>
+          <span class="fs-9 text-secondary-body font-mono">${event.timestamp}</span>
+        </div>
+        <p class="fs-8 text-secondary-body mb-0">Template <span class="text-cyan">${event.prompt_title}</span> executed via ${event.provider} in ${event.latency_ms}ms.</p>
+      </div>
+    `;
+  }).join('');
 }
 
 /* 7. Reports Download Event triggers */

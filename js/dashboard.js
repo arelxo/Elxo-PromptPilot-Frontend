@@ -7,27 +7,7 @@ async function loadDashboard() {
     }
 
     try {
-        const response = await fetch("https://elxo-promptpilot-backend.onrender.com/api/dashboard/", {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
-            }
-        });
-
-        if (response.status === 401) {
-            alert("Session expired. Please login again.");
-            localStorage.removeItem("access_token");
-            localStorage.removeItem("refresh_token");
-            window.location.href = "login.html";
-            return;
-        }
-
-        if (!response.ok) {
-            throw new Error("Failed to load dashboard");
-        }
-
-        const data = await response.json();
+        const data = await window.apiRequest('/dashboard/');
 
         console.log("Dashboard API:", JSON.stringify(data));
 
@@ -74,6 +54,11 @@ async function loadDashboard() {
 
     } catch (error) {
         console.error("Dashboard Error:", error);
+        if (error.message && error.message.includes("401")) {
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("refresh_token");
+            window.location.href = "login.html";
+        }
     }
 }
 document.addEventListener("DOMContentLoaded", loadDashboard);

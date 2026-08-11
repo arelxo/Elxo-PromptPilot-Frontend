@@ -2048,19 +2048,7 @@ async function updateSidebarUser() {
   if (!token) return;
 
   try {
-    const response = await fetch('https://elxo-promptpilot-backend.onrender.com/api/accounts/me/', {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error('Response not OK');
-    }
-
-    const data = await response.json();
+    const data = await window.apiRequest('/accounts/me/');
     
     // Select elements in sidebar
     const userBox = document.querySelector('.sidebar-user-box');
