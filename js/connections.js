@@ -33,6 +33,24 @@ async function loadConnections() {
     }
 }
 
+function setCardChecking(provider) {
+    const card = document.getElementById(`provider-card-${provider}`);
+    if (card) {
+        const badge = card.querySelector('.badge');
+        if (badge) {
+            badge.className = "badge bg-dark-pill text-secondary-body font-mono fs-9";
+            badge.innerHTML = `<span class="spinner-border spinner-border-sm text-cyan me-1" style="width: 8px; height: 8px; border-width: 1px;"></span>Checking...`;
+        }
+        const statusContainer = card.querySelector('.font-mono');
+        if (statusContainer) {
+            statusContainer.innerHTML = `
+                <div>Status: <span class="text-secondary-body">Checking...</span></div>
+                <div>Last sync: <span class="text-light">Checking...</span></div>
+            `;
+        }
+    }
+}
+
 function renderConnections(connections) {
     const mainContent = document.getElementById("connectionsMainContent");
     if (!mainContent) return;
@@ -95,7 +113,7 @@ function renderConnections(connections) {
         const dateStr = conn.connected_at ? new Date(conn.connected_at).toLocaleDateString() : "Never";
 
         return `
-            <div class="col-md-6 col-lg-4">
+            <div class="col-md-6 col-lg-4" id="provider-card-${config.shortName}">
               <div class="provider-card p-4 rounded-4 h-100 d-flex flex-column justify-content-between">
                 <div>
                   <div class="d-flex justify-content-between align-items-center mb-3">
@@ -136,6 +154,7 @@ async function handleConnect(provider, button) {
     const origHtml = button.innerHTML;
     button.disabled = true;
     button.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>`;
+    setCardChecking(provider);
 
     try {
         await window.apiRequest(`/connections/${provider}/connect/`, {
@@ -150,6 +169,7 @@ async function handleConnect(provider, button) {
         if (typeof window.showToast === "function") {
             window.showToast(err.message || "Connection activation failed.", "error", "Error");
         }
+        await loadConnections();
     } finally {
         button.disabled = false;
         button.innerHTML = origHtml;
@@ -160,6 +180,7 @@ async function handleDisconnect(provider, button) {
     const origHtml = button.innerHTML;
     button.disabled = true;
     button.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>`;
+    setCardChecking(provider);
 
     try {
         await window.apiRequest(`/connections/${provider}/disconnect/`, {
@@ -174,6 +195,7 @@ async function handleDisconnect(provider, button) {
         if (typeof window.showToast === "function") {
             window.showToast(err.message || "Connection deactivation failed.", "error", "Error");
         }
+        await loadConnections();
     } finally {
         button.disabled = false;
         button.innerHTML = origHtml;
@@ -184,6 +206,7 @@ async function handleTest(provider, button) {
     const origHtml = button.innerHTML;
     button.disabled = true;
     button.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span> Testing...`;
+    setCardChecking(provider);
 
     try {
         const response = await window.apiRequest(`/connections/${provider}/test/`, {
@@ -192,11 +215,13 @@ async function handleTest(provider, button) {
         if (typeof window.showToast === "function") {
             window.showToast(`${provider.toUpperCase()} validated: API online!`, "success", "Test Succeeded");
         }
+        await loadConnections();
     } catch (err) {
         console.error("Test error:", err);
         if (typeof window.showToast === "function") {
             window.showToast(err.message || "API key validation failed.", "error", "Test Failed");
         }
+        await loadConnections();
     } finally {
         button.disabled = false;
         button.innerHTML = origHtml;

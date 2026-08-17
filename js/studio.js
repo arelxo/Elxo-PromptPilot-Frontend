@@ -193,7 +193,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const terminal = document.querySelector('.simulated-terminal-box');
       if (terminal) {
-        terminal.innerHTML = `<div class="terminal-line text-cyan font-mono fs-8"><span class="spinner-border spinner-border-sm me-2"></span>Connecting to remote model nodes...</div>`;
+        terminal.innerHTML = `<div class="terminal-line text-cyan font-mono fs-8"><span class="spinner-border spinner-border-sm me-2"></span>Running...</div>`;
+        setTimeout(() => {
+          if (btnRunBenchmark.disabled && terminal) {
+            terminal.innerHTML = `<div class="terminal-line text-cyan font-mono fs-8"><span class="spinner-border spinner-border-sm me-2"></span>Generating response...</div>`;
+          }
+        }, 1500);
       }
 
       const provider = document.getElementById("studioProviderSelect")?.value || "all";

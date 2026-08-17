@@ -5,6 +5,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
+  showSkeleton('usageChartCanvas');
+  showSkeleton('costChartCanvas');
+  showSkeleton('latencyChartCanvas');
+  showSkeleton('providerChartCanvas');
+
   // Load backend KPI metrics dynamically
   let data = null;
   try {
@@ -22,6 +27,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       active_connections: 0
     });
   }
+
+  hideSkeleton('usageChartCanvas');
+  hideSkeleton('costChartCanvas');
+  hideSkeleton('latencyChartCanvas');
+  hideSkeleton('providerChartCanvas');
 
   // Count-up animations for KPI cards
   initCounters();
@@ -95,6 +105,8 @@ function bindKpiCards(data) {
 }
 
 /* Helper: Inject Skeleton Loader and Fade Out */
+const activeSkeletons = new Map();
+
 function showSkeleton(canvasId) {
   const canvas = document.getElementById(canvasId);
   if (!canvas) return;
@@ -106,11 +118,21 @@ function showSkeleton(canvasId) {
   const skeleton = document.createElement('div');
   skeleton.className = 'chart-skeleton';
   wrapper.appendChild(skeleton);
+  
+  activeSkeletons.set(canvasId, skeleton);
+}
 
-  setTimeout(() => {
+function hideSkeleton(canvasId) {
+  const skeleton = activeSkeletons.get(canvasId);
+  if (skeleton) {
     skeleton.classList.add('fade-out');
-    setTimeout(() => skeleton.remove(), 500);
-  }, 1000);
+    setTimeout(() => {
+      if (skeleton.parentNode) {
+        skeleton.remove();
+      }
+    }, 500);
+    activeSkeletons.delete(canvasId);
+  }
 }
 
 /* Helper: Show empty state placeholder instead of chart */

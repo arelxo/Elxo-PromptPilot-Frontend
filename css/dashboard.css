@@ -131,3 +131,21 @@
     width: 100% !important;
   }
 }
+
+/* Pulsating Skeleton Placeholders */
+@keyframes skeletonPulse {
+  0% {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  100% {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
+.skeleton-text {
+  display: inline-block;
+  height: 1.25rem;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.05);
+  animation: skeletonPulse 1.2s ease-in-out infinite alternate;
+}
