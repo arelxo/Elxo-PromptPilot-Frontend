@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Update sidebar user details dynamically
   updateSidebarUser();
+  initMobileSidebar();
 });
 
 /* ==========================================
@@ -2072,6 +2073,34 @@ async function updateSidebarUser() {
   } catch (error) {
     console.error('Failed to load user info:', error);
   }
+}
+
+function initMobileSidebar() {
+  const toggleBtn = document.getElementById('sidebarToggleBtn');
+  const sidebar = document.querySelector('.app-sidebar');
+
+  if (!toggleBtn || !sidebar) return;
+
+  toggleBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    sidebar.classList.toggle('show');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (sidebar.classList.contains('show')) {
+      const isClickInsideSidebar = sidebar.contains(e.target);
+      const isClickOnToggle = toggleBtn.contains(e.target);
+      if (!isClickInsideSidebar && !isClickOnToggle) {
+        sidebar.classList.remove('show');
+      }
+    }
+  });
+
+  sidebar.querySelectorAll('.sidebar-link').forEach(link => {
+    link.addEventListener('click', () => {
+      sidebar.classList.remove('show');
+    });
+  });
 }
 
 

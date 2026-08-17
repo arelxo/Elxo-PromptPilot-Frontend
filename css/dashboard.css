@@ -36,12 +36,98 @@
 @media (max-width: 991.98px) {
   .app-sidebar {
     transform: translateX(-100%);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+    z-index: 2050 !important;
   }
   .app-sidebar.show {
     transform: translateX(0);
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), 0 0 20px rgba(139, 92, 246, 0.25);
   }
   .main-content-wrapper {
     margin-left: 0;
+  }
+}
+
+/* Mobile Responsiveness General Fixes (< 992px) */
+@media (max-width: 991.98px) {
+  .app-layout, .main-content-wrapper {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+}
+
+/* Mobile Breakpoints (< 768px) */
+@media (max-width: 767.98px) {
+  .app-topbar {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 12px !important;
+    height: auto !important;
+    padding: 12px 16px !important;
+    text-align: center;
+  }
+  
+  .app-topbar > div, .app-topbar > span {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  .app-topbar span.fs-6 {
+    font-size: 0.9rem !important;
+    width: auto !important;
+  }
+
+  .app-topbar .badge {
+    display: none !important;
+  }
+
+  .metric-card {
+    height: auto !important;
+    min-height: 120px;
+    padding: 16px !important;
+  }
+
+  .metric-value {
+    font-size: 20px !important;
+  }
+}
+
+/* Extra Small Mobile Breakpoints (< 576px) */
+@media (max-width: 575.98px) {
+  .app-topbar button[data-bs-target="#commandPaletteModal"] {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+  .app-topbar button[data-bs-target="#commandPaletteModal"] span {
+    display: none !important;
+  }
+  .app-topbar button[data-bs-target="#commandPaletteModal"]::after {
+    content: "Search...";
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .app-topbar button[data-bs-target="#commandPaletteModal"] kbd {
+    display: none !important;
+  }
+
+  .studio-textarea {
+    font-size: 0.8rem !important;
+  }
+
+  .d-flex.gap-2 {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+  }
+  
+  .provider-card .d-flex {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+  .provider-card .btn {
+    width: 100% !important;
   }
 }

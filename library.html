@@ -103,6 +103,9 @@
       
       <header class="app-topbar glass-panel position-sticky top-0 z-2 py-2.5 px-4 border-bottom border-subtle d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center gap-3">
+            <button id="sidebarToggleBtn" class="btn btn-dark-pill d-lg-none px-3 py-1.5 text-secondary-body d-flex align-items-center justify-content-center border border-subtle" type="button">
+              <i class="bi bi-list fs-5 text-cyan"></i>
+            </button>
           <span class="fs-6 fw-bold font-mono text-light">Enterprise Prompt Library</span>
           <span class="badge bg-purple-subtle text-purple font-mono fs-8">20 Templates Catalog</span>
         </div>
@@ -641,7 +644,7 @@
   </div>
 
   <!-- Version Drawer (Offcanvas) -->
-  <div class="offcanvas offcanvas-end glass-panel border-start border-subtle text-light" tabindex="-1" id="versionDrawer" aria-labelledby="versionDrawerLabel" style="width: 460px; background: rgba(16, 19, 31, 0.94); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);">
+  <div class="offcanvas offcanvas-end glass-panel border-start border-subtle text-light" tabindex="-1" id="versionDrawer" aria-labelledby="versionDrawerLabel" style="max-width: 460px; width: 100%; background: rgba(16, 19, 31, 0.94); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);">
     <div class="offcanvas-header border-bottom border-subtle">
       <div>
         <span class="badge bg-purple-subtle text-purple font-mono fs-8 mb-1.5" id="versionDrawerCategory">Support Agent</span>
